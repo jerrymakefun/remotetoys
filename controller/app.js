@@ -355,10 +355,14 @@ function stopSendCommandInterval() {
 
 // Called by the SEND interval timer
 function constructAndSendCommand() {
+    // Performance monitoring: start timer
+    const startTime = performance.now();
+    
     if (!serverWs || serverWs.readyState !== WebSocket.OPEN) {
         console.warn('Server not connected, stopping send interval.');
         stopSendCommandInterval();
         stopHighFrequencySampler(); // Also stop sampler if server disconnects
+        console.log(`constructAndSendCommand took ${performance.now() - startTime}ms (early return - no connection)`);
         return;
     }
 
@@ -374,6 +378,7 @@ function constructAndSendCommand() {
         sendControlCommand(initialLimitedPos, 0); // Send speed 0
         currentSpeedElem.textContent = (0.0).toFixed(1); // Update UI
         speedWarningElem.textContent = ''; // Clear warning
+        console.log(`constructAndSendCommand took ${performance.now() - startTime}ms (early return - insufficient samples)`);
         return;
     }
 
@@ -438,6 +443,9 @@ function constructAndSendCommand() {
     // --- Update UI ---
     // Position UI updated in high freq loop for responsiveness
     currentSpeedElem.textContent = (limitedSpeed * 100).toFixed(1); // Update speed display here
+    
+    // Performance monitoring: log total time
+    console.log(`constructAndSendCommand took ${performance.now() - startTime}ms`);
 }
 
 // Helper function to send the actual control message
@@ -943,6 +951,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 // --- Session Status Update ---
 function updateSessionStatus(state) {
     if (!sessionStatusElem) return;
+
+    // State guard: if already in 'ready' state, don't allow reverting to intermediate states
+    if (sessionStatusElem.dataset.state === 'ready' && state !== 'ready') {
+        console.log(`Ignoring status update '${state}' because session is already ready.`);
+        return;
+    }
+    
+    // Store current state in dataset for future reference
+    sessionStatusElem.dataset.state = state;
 
     let i18nKey = '';
     let cssClass = 'status-unknown'; // Default class

@@ -302,6 +302,9 @@ func handleControllerMessages(controller *Client, room *Room) { // Added room pa
 		}
 
 		log.Printf("Key %s: Received from controller: %+v", room.key, msg)
+		
+		// Performance monitoring: start timer
+		startTime := time.Now()
 
 		var buttplugCmdJSON []byte
 		var constructErr error
@@ -348,6 +351,10 @@ func handleControllerMessages(controller *Client, room *Room) { // Added room pa
 			continue
 		}
 
+		// Performance monitoring: log processing time
+		processingTime := time.Since(startTime)
+		log.Printf("Key %s: Command processing took %v", room.key, processingTime)
+
 		// Forward the command to the client/beikongduan in the same room if connected
 		room.mu.RLock()
 		beikongduan := room.client // Get the client specific to this room
@@ -363,8 +370,8 @@ func handleControllerMessages(controller *Client, room *Room) { // Added room pa
 				room.lastCommandedPosition = msg.Position
 				room.mu.Unlock()
 			default:
-				// Channel is full, drop the message
-				log.Printf("Key %s: Command dropped: Client send buffer full", room.key)
+				// Channel is full, drop the message to maintain real-time performance
+				log.Printf("Key %s: Command dropped to maintain real-time performance (send buffer full)", room.key)
 			}
 		} else if beikongduan == nil {
 			log.Printf("Key %s: Command dropped: Client/Beikongduan not connected in this room.", room.key)

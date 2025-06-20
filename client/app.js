@@ -221,11 +221,14 @@ function connectToServer() {
     		} else {
     			// Assume it's a Buttplug command for Intiface
     			console.log('Received Buttplug Command from server:', event.data);
+    			// Performance monitoring: start timer
+    			const forwardStartTime = performance.now();
     			// Forward message to Intiface if connected AND we have a target device index
     			if (intifaceWs && intifaceWs.readyState === WebSocket.OPEN && targetDeviceIndex !== null) {
     				try {
     					intifaceWs.send(event.data);
-    					console.log(`Forwarded command to Intiface (DeviceIndex ${targetDeviceIndex})`);
+    					const forwardTime = performance.now() - forwardStartTime;
+    					console.log(`Forwarded command to Intiface (DeviceIndex ${targetDeviceIndex}) - took ${forwardTime}ms`);
     				} catch (e) {
     					console.error("Error forwarding message to Intiface:", e);
     				}
