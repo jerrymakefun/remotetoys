@@ -137,7 +137,8 @@ function connectToServer() {
        }
 
     // 3. Construct WebSocket URL with key
-    const serverUrl = `ws://${window.location.hostname}:8080/ws?type=client&key=${encodeURIComponent(key)}`;
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const serverUrl = `${protocol}//${window.location.host}/ws?type=client&key=${encodeURIComponent(key)}`;
     console.log(`Connecting to: ${serverUrl}`); // Log the full URL for debugging
     updateClientStatus('statusConnectingServer', 'connecting'); // Use new status function and key
    
