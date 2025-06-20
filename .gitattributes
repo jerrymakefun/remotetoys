@@ -21,3 +21,5 @@ Dockerfile text eol=lf
 *.gif binary
 *.ico binary
 *.exe binary
+
+zen-mcp-server/

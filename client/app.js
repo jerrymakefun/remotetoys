@@ -199,28 +199,14 @@ function connectToServer() {
     				// Add other server-sent statuses if needed
     			}
     		} else {
-    			// Assume it's a Buttplug command array for Intiface
+    			// Assume it's a Buttplug command for Intiface
     			console.log('Received Buttplug Command from server:', event.data);
     			// Forward message to Intiface if connected AND we have a target device index
     			if (intifaceWs && intifaceWs.readyState === WebSocket.OPEN && targetDeviceIndex !== null) {
     				try {
-    					// Parse the command array
-    					const commands = JSON.parse(event.data);
-    					
-    					// Implement stop-then-move atomic operation
-    					// First send StopDeviceCmd
-    					const stopCmd = [{
-    						"StopDeviceCmd": {
-    							"Id": nextButtplugId++,
-    							"DeviceIndex": targetDeviceIndex
-    						}
-    					}];
-    					intifaceWs.send(JSON.stringify(stopCmd));
-    					console.log('Sent StopDeviceCmd to clear queue');
-    					
-    					// Then send the LinearCmd
+    					// Just forward the command as is
     					intifaceWs.send(event.data);
-    					console.log(`Forwarded LinearCmd to Intiface (DeviceIndex ${targetDeviceIndex})`);
+    					console.log(`Forwarded command to Intiface (DeviceIndex ${targetDeviceIndex})`);
     				} catch (e) {
     					console.error("Error forwarding message to Intiface:", e);
     				}
@@ -333,6 +319,19 @@ function connectToIntiface() {
             messages.forEach(msgContainer => {
                 if (msgContainer.Ok) {
                     console.log(`Intiface OK for Id: ${msgContainer.Ok.Id}`);
+                    // Send command_ok receipt to server for tracking
+                    if (serverWs && serverWs.readyState === WebSocket.OPEN) {
+                        const receiptMsg = {
+                            type: "command_ok",
+                            id: msgContainer.Ok.Id
+                        };
+                        try {
+                            serverWs.send(JSON.stringify(receiptMsg));
+                            console.log("Sent command_ok to server:", receiptMsg);
+                        } catch (e) {
+                            console.error("Error sending command_ok to server:", e);
+                        }
+                    }
                 } else if (msgContainer.Error) {
                     console.error(`Intiface Error: ${msgContainer.Error.ErrorMessage} (Code: ${msgContainer.Error.ErrorCode}, Id: ${msgContainer.Error.Id})`);
                 } else if (msgContainer.ServerInfo) {
