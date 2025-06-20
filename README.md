@@ -132,6 +132,24 @@ Once the image is successfully built, you can run it with a single command.
 
 ## Updating the Application
 
+### One-Click Update (Recommended)
+
+For a quick and automated update process, use the provided deployment script:
+
+1. **Make the script executable** (only needed once):
+   ```bash
+   chmod +x deploy.sh
+   ```
+
+2. **Run the deployment script**:
+   ```bash
+   ./deploy.sh
+   ```
+
+This script will automatically pull the latest code, rebuild the Docker image, restart the container, and clean up old images.
+
+### Manual Update Steps
+
 To update your running application with the latest code from GitHub, follow these steps on your server.
 
 1.  **Navigate to the project directory and pull the latest changes**:
