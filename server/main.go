@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"os"            // Added for file operations
@@ -26,11 +25,8 @@ type Room struct {
 	controller            *Client
 	client                *Client
 	clientDeviceIndex     *uint32 // Use pointer to allow nil. Non-nil implies device selected.
-	desiredPosition       float64 // The desired position state (0.0 to 1.0)
 	controllerConnected   bool    // Track if controller is currently connected
 	clientConnected       bool    // Track if client is currently connected
-	broadcastTicker       *time.Ticker // Ticker for the broadcast loop
-	broadcastStopChan     chan bool    // Channel to stop the broadcast loop
 	mu                    sync.RWMutex
 }
 
@@ -57,14 +53,14 @@ var upgrader = websocket.Upgrader{
 
 // ControlMessage represents messages from Controller
 type ControlMessage struct {
-	Type     string  `json:"type"`     // "update" for position updates
-	Position float64 `json:"position"` // Position value 0.0 to 1.0
+	Commands []string `json:"commands"` // Array of JSON-stringified Buttplug commands
 }
 
 // MessageFromClient defines messages received FROM the client/beikongduan
 type MessageFromClient struct {
-	Type  string  `json:"type"`  // "setDeviceIndex"
+	Type  string  `json:"type"`  // "setDeviceIndex" or "command_ok"
 	Index *uint32 `json:"index"` // Pointer to handle null (for setDeviceIndex)
+	Id    *uint32 `json:"id"`    // Command ID (for command_ok)
 }
 
 // Handle incoming websocket requests
@@ -103,10 +99,8 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Creating new room for key: %s", key)
 		room = &Room{
 			key:                   key,
-			desiredPosition:       0.5, // Initialize to center position
 			controllerConnected:   false,
 			clientConnected:       false,
-			broadcastStopChan:     make(chan bool),
 		}
 		rooms[key] = room
 	}
@@ -145,11 +139,6 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		// Notify client (if connected) that controller is present
 		if room.client != nil {
 			room.sendStatusUpdate(room.client, "controller_present", "")
-		}
-		
-		// Start broadcast loop if we have both controller and device ready
-		if room.clientDeviceIndex != nil && room.clientConnected {
-			go room.broadcastLoop()
 		}
 
 	} else { // clientType == "client"
@@ -196,13 +185,6 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 			room.controllerConnected = false
 			otherParty = room.client
 			disconnectStatusForOtherParty = "controller_disconnected"
-			// Stop broadcast loop when controller disconnects
-			select {
-			case room.broadcastStopChan <- true:
-				// Successfully sent stop signal
-			default:
-				// Channel might be closed or loop already stopped
-			}
 		} else if clientType == "client" && room.client == currentClient {
 			log.Printf("Key %s: Client/Beikongduan disconnected", key)
 			room.client = nil
@@ -211,13 +193,6 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 			otherParty = room.controller
 			disconnectStatusForOtherParty = "client_disconnected"
 			finalStatusForOtherParty = "waiting_client" // Controller goes back to waiting for a client
-			// Stop broadcast loop when client disconnects
-			select {
-			case room.broadcastStopChan <- true:
-				// Successfully sent stop signal
-			default:
-				// Channel might be closed or loop already stopped
-			}
 		}
 
 		// Send status updates outside the main lock if possible, but need otherParty
@@ -257,7 +232,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Reads messages from the controller and updates desired position
+// Reads messages from the controller and forwards commands to the client
 func handleControllerMessages(controller *Client, room *Room) {
 	defer func() {
 		log.Printf("Key %s: Exiting handleControllerMessages loop.", room.key)
@@ -280,22 +255,27 @@ func handleControllerMessages(controller *Client, room *Room) {
 		controller.lastPingTime = time.Now()
 		room.mu.Unlock()
 
-		// Handle position updates
-		if msg.Type == "update" {
-			// Clamp position to valid range
-			position := msg.Position
-			if position < 0.0 {
-				position = 0.0
-			} else if position > 1.0 {
-				position = 1.0
+		log.Printf("Key %s: Received from controller with %d commands", room.key, len(msg.Commands))
+
+		// Get client from room
+		room.mu.RLock()
+		client := room.client
+		room.mu.RUnlock()
+
+		if client == nil {
+			log.Printf("Key %s: Commands dropped: Client not connected.", room.key)
+			continue
+		}
+
+		// Forward each command to the client
+		for i, cmdJSON := range msg.Commands {
+			err = client.conn.WriteMessage(websocket.TextMessage, []byte(cmdJSON))
+			if err != nil {
+				log.Printf("Key %s: Error writing command %d to client: %v", room.key, i, err)
+				break
+			} else {
+				log.Printf("Key %s: Forwarded command %d to client", room.key, i)
 			}
-
-			// Update desired position
-			room.mu.Lock()
-			room.desiredPosition = position
-			room.mu.Unlock()
-
-			log.Printf("Key %s: Updated desired position to %.3f", room.key, position)
 		}
 	}
 }
@@ -325,7 +305,6 @@ func handleClientMessages(client *Client, room *Room) { // Added room parameter
 		switch msg.Type {
 		case "setDeviceIndex":
 			room.mu.Lock() // Lock the specific room
-			oldDeviceIndex := room.clientDeviceIndex
 			if msg.Index == nil {
 				log.Printf("Key %s: Client reported device index removed/unset.", room.key)
 				room.clientDeviceIndex = nil
@@ -337,28 +316,32 @@ func handleClientMessages(client *Client, room *Room) { // Added room parameter
 			// Notify controller about the device status change
 			controller := room.controller // Get controller reference while locked
 			deviceSelected := room.clientDeviceIndex != nil
-			hasController := room.controllerConnected
 			room.mu.Unlock() // Unlock the specific room
-
-			// Start or stop broadcast loop based on device availability
-			if deviceSelected && hasController && oldDeviceIndex == nil {
-				// Device just became available and we have a controller - start broadcast loop
-				go room.broadcastLoop()
-			} else if !deviceSelected && oldDeviceIndex != nil {
-				// Device was removed - stop broadcast loop
-				select {
-				case room.broadcastStopChan <- true:
-					// Successfully sent stop signal
-				default:
-					// Channel might be closed or loop already stopped
-				}
-			}
 
 			if controller != nil {
 				if deviceSelected {
 					room.sendStatusUpdateWithDevice(controller, "ready", "", room.clientDeviceIndex)
 				} else {
 					room.sendStatusUpdate(controller, "waiting_toy", "")
+				}
+			}
+
+		case "command_ok":
+			// Forward command_ok receipt to controller
+			room.mu.RLock()
+			controller := room.controller
+			room.mu.RUnlock()
+			
+			if controller != nil && msg.Id != nil {
+				receiptMsg := map[string]interface{}{
+					"type": "command_ok",
+					"id":   *msg.Id,
+				}
+				err := controller.conn.WriteJSON(receiptMsg)
+				if err != nil {
+					log.Printf("Key %s: Error forwarding command_ok to controller: %v", room.key, err)
+				} else {
+					log.Printf("Key %s: Forwarded command_ok (id: %d) to controller", room.key, *msg.Id)
 				}
 			}
 
@@ -405,68 +388,6 @@ func (r *Room) sendStatusUpdateWithDevice(targetClient *Client, state string, me
 	}
 }
 
-
-// broadcastLoop runs at fixed intervals to broadcast the desired position to the client
-func (r *Room) broadcastLoop() {
-	// Create ticker for 50ms intervals
-	ticker := time.NewTicker(50 * time.Millisecond)
-	r.mu.Lock()
-	r.broadcastTicker = ticker
-	r.mu.Unlock()
-	
-	defer ticker.Stop()
-	
-	log.Printf("Key %s: Starting broadcast loop", r.key)
-	
-	for {
-		select {
-		case <-ticker.C:
-			// Get current state
-			r.mu.RLock()
-			client := r.client
-			deviceIndex := r.clientDeviceIndex
-			position := r.desiredPosition
-			r.mu.RUnlock()
-			
-			// Only broadcast if we have a connected client with a device
-			if client == nil || deviceIndex == nil {
-				continue
-			}
-			
-			// Construct LinearCmd with fixed 75ms duration (slightly longer than ticker interval)
-			linearCmd := map[string]interface{}{
-				"LinearCmd": map[string]interface{}{
-					"Id":          1, // Use a fixed ID since we're not tracking responses
-					"DeviceIndex": *deviceIndex,
-					"Vectors": []map[string]interface{}{
-						{
-							"Index":    0,
-							"Duration": 75, // Fixed duration, slightly longer than broadcast interval
-							"Position": position,
-						},
-					},
-				},
-			}
-			
-			// Send command to client
-			cmdJSON, err := json.Marshal([]interface{}{linearCmd})
-			if err != nil {
-				log.Printf("Key %s: Error marshaling LinearCmd: %v", r.key, err)
-				continue
-			}
-			
-			err = client.conn.WriteMessage(websocket.TextMessage, cmdJSON)
-			if err != nil {
-				log.Printf("Key %s: Error broadcasting to client: %v", r.key, err)
-				// Don't break here, let the connection close handler deal with it
-			}
-			
-		case <-r.broadcastStopChan:
-			log.Printf("Key %s: Stopping broadcast loop", r.key)
-			return
-		}
-	}
-}
 
 // heartbeatChecker periodically checks for stale connections and closes them
 func heartbeatChecker() {
