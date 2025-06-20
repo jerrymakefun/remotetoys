@@ -24,31 +24,22 @@ type Client struct {
 
 // writePump pumps messages from the send channel to the websocket connection.
 func (c *Client) writePump() {
-	ticker := time.NewTicker(54 * time.Second)
 	defer func() {
-		ticker.Stop()
 		c.conn.Close()
 	}()
 	
 	for {
-		select {
-		case message, ok := <-c.send:
+		message, ok := <-c.send
+		if !ok {
+			// The send channel was closed.
 			c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
-			if !ok {
-				// The send channel was closed.
-				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
-				return
-			}
-			
-			if err := c.conn.WriteMessage(websocket.TextMessage, message); err != nil {
-				return
-			}
-			
-		case <-ticker.C:
-			c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
-			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
-				return
-			}
+			c.conn.WriteMessage(websocket.CloseMessage, []byte{})
+			return
+		}
+		
+		c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
+		if err := c.conn.WriteMessage(websocket.TextMessage, message); err != nil {
+			return
 		}
 	}
 }
@@ -657,26 +648,9 @@ func heartbeatChecker() {
 
 func main() {
 	// --- Log Setup ---
-	// Note: Paths are relative to the CWD where the executable is run (server/)
-	logDir := "./log"
-	err := os.MkdirAll(logDir, 0755) // Create log directory if it doesn't exist
-	if err != nil {
-		// Use initial stderr for critical setup errors before redirection
-		log.Printf("CRITICAL: Failed to create log directory '%s': %v", logDir, err)
-		os.Exit(1) // Exit if we can't create the log dir
-	}
-
-	logFilePath := filepath.Join(logDir, "server.log")
-	logFile, err := os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		// Use initial stderr for critical setup errors before redirection
-		log.Printf("CRITICAL: Failed to open log file '%s': %v", logFilePath, err)
-		os.Exit(1) // Exit if we can't open the log file
-	}
-	defer logFile.Close() // Ensure the log file is closed when main exits
-
-	log.SetOutput(logFile) // Redirect standard log output to the file
-	log.Println("--- Server Started: Logging redirected to file ---")
+	// Output logs to stdout for docker logs compatibility
+	log.SetOutput(os.Stdout)
+	log.Println("--- Server Started ---")
 	// --- End Log Setup ---
 
 	// Start heartbeat checker goroutine

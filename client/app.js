@@ -289,6 +289,16 @@ function connectToServer() {
 
    function updateSessionStatus(i18nKey, className, ...args) {
     if (!sessionStatusElem) return;
+    
+    // State guard: if already in 'ready' state, don't allow reverting to intermediate states
+    if (sessionStatusElem.dataset.state === 'statusDeviceReady' && i18nKey !== 'statusDeviceReady') {
+        console.log(`Ignoring status update '${i18nKey}' because session is already ready.`);
+        return;
+    }
+    
+    // Store current state in dataset for future reference
+    sessionStatusElem.dataset.state = i18nKey;
+    
     sessionStatusElem.textContent = i18n.t(i18nKey, ...args);
     sessionStatusElem.className = `status ${className}`;
    }
