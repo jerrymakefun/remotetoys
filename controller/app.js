@@ -156,6 +156,10 @@ let shouldReconnect = true; // Flag to control reconnection
 // --- Heartbeat State ---
 let heartbeatIntervalId = null;
 
+// --- Momentum State ---
+let momentumIntervalId = null;
+let lastCalculatedSpeed = 0; // Store last speed for momentum calculation
+
 // --- Custom Range Slider State ---
 const rangeContainer = document.querySelector('.range-slider-container');
 const rangeMinHandle = document.getElementById('range-handle-min');
@@ -427,6 +431,9 @@ function constructAndSendCommand() {
 
     // --- Send Command ---
     sendControlCommand(limitedPos, limitedSpeed);
+    
+    // Store the last calculated speed for momentum
+    lastCalculatedSpeed = limitedSpeed;
 
     // --- Update UI ---
     // Position UI updated in high freq loop for responsiveness
@@ -460,6 +467,69 @@ function sendControlCommand(position, speed, isFinal = false) {
     serverWs.send(JSON.stringify(message));
 }
 
+
+// --- Momentum Implementation ---
+function initiateMomentum(initialSpeed) {
+    // Clear any existing momentum interval
+    if (momentumIntervalId) {
+        clearInterval(momentumIntervalId);
+        momentumIntervalId = null;
+    }
+    
+    const MOMENTUM_INTERVAL = 20; // 20ms = 50fps
+    const DECAY_FACTOR = 0.95; // Speed decays by 5% each frame
+    const MIN_MOMENTUM_SPEED = 0.02; // Stop when speed is very low
+    
+    let currentSpeed = initialSpeed;
+    let virtualPosition = currentRawPosition; // Start from current position
+    
+    console.log(`Starting momentum with initial speed: ${initialSpeed.toFixed(3)}`);
+    
+    momentumIntervalId = setInterval(() => {
+        // Calculate how much to move in this frame
+        const frameMovement = currentSpeed * (MOMENTUM_INTERVAL / 1000.0);
+        
+        // Determine direction based on the last movement
+        const direction = sampleBuffer.length > 1 && 
+                         sampleBuffer[sampleBuffer.length - 1].position > sampleBuffer[sampleBuffer.length - 2].position ? 1 : -1;
+        
+        // Update virtual position
+        virtualPosition += frameMovement * direction;
+        
+        // Clamp to valid range
+        virtualPosition = Math.max(0, Math.min(1, virtualPosition));
+        
+        // Convert to device coordinates
+        const minSL = minStrokeValue;
+        const maxSL = maxStrokeValue;
+        const devicePosition = minSL + virtualPosition * (maxSL - minSL);
+        
+        // Send command with current (decaying) speed
+        sendControlCommand(devicePosition, currentSpeed);
+        
+        // Update UI
+        updateSleevePosition(virtualPosition);
+        updatePositionDisplay(virtualPosition);
+        currentSpeedElem.textContent = (currentSpeed * 100).toFixed(1);
+        
+        // Apply decay
+        currentSpeed *= DECAY_FACTOR;
+        
+        // Check stopping conditions
+        if (currentSpeed < MIN_MOMENTUM_SPEED || virtualPosition <= 0 || virtualPosition >= 1) {
+            // Stop momentum
+            clearInterval(momentumIntervalId);
+            momentumIntervalId = null;
+            
+            // Send final positioning command
+            sendControlCommand(devicePosition, 0.1, true);
+            
+            // Update UI to show stopped
+            currentSpeedElem.textContent = "0.0";
+            console.log(`Momentum stopped at position: ${virtualPosition.toFixed(3)}`);
+        }
+    }, MOMENTUM_INTERVAL);
+}
 
 // --- UI Update Helpers ---
 function updateSleevePosition(position) { // position is 0-1
@@ -539,16 +609,26 @@ verticalSliderContainer.addEventListener('pointerup', (e) => {
     updateSleevePosition(currentRawPosition);
     updatePositionDisplay(currentRawPosition);
 
-    // Send final positioning command with low speed for precise arrival
-    const minSL = minStrokeValue;
-    const maxSL = maxStrokeValue;
-    const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
-    const finalSpeed = 0.1; // Low speed for precise positioning
-    sendControlCommand(finalPosition, finalSpeed, true); // Send with isFinal=true
+    // Check if we should initiate momentum or send final command
+    const MOMENTUM_THRESHOLD = 0.3; // Minimum speed to trigger momentum
     
-    // Update UI speed display
-    currentSpeedElem.textContent = (0.0).toFixed(1); // Show 0 speed immediately on UI
-    speedWarningElem.textContent = ''; // Clear warning on pointer up
+    if (lastCalculatedSpeed > MOMENTUM_THRESHOLD) {
+        // High speed detected, initiate momentum
+        console.log(`High speed detected (${lastCalculatedSpeed.toFixed(3)}), initiating momentum`);
+        initiateMomentum(lastCalculatedSpeed);
+        speedWarningElem.textContent = ''; // Clear warning
+    } else {
+        // Low speed, send final positioning command
+        const minSL = minStrokeValue;
+        const maxSL = maxStrokeValue;
+        const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
+        const finalSpeed = 0.1; // Low speed for precise positioning
+        sendControlCommand(finalPosition, finalSpeed, true); // Send with isFinal=true
+        
+        // Update UI speed display
+        currentSpeedElem.textContent = (0.0).toFixed(1); // Show 0 speed immediately on UI
+        speedWarningElem.textContent = ''; // Clear warning on pointer up
+    }
 });
 
 verticalSliderContainer.addEventListener('pointerleave', (e) => {
@@ -571,13 +651,20 @@ verticalSliderContainer.addEventListener('pointerleave', (e) => {
              isDragging = false;
              stopSendCommandInterval();
              stopHighFrequencySampler();
-             // Send final positioning command, using the last known raw position
-             const minSL = minStrokeValue;
-             const maxSL = maxStrokeValue;
-             const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
-             sendControlCommand(finalPosition, 0.1, true); // Send with isFinal=true
-             // Update UI
-             currentSpeedElem.textContent = (0.0).toFixed(1);
+             
+             // Check if we should initiate momentum or send final command
+             const MOMENTUM_THRESHOLD = 0.3;
+             if (lastCalculatedSpeed > MOMENTUM_THRESHOLD) {
+                 initiateMomentum(lastCalculatedSpeed);
+             } else {
+                 // Send final positioning command, using the last known raw position
+                 const minSL = minStrokeValue;
+                 const maxSL = maxStrokeValue;
+                 const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
+                 sendControlCommand(finalPosition, 0.1, true); // Send with isFinal=true
+                 // Update UI
+                 currentSpeedElem.textContent = (0.0).toFixed(1);
+             }
              speedWarningElem.textContent = '';
          }
     }
