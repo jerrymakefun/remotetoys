@@ -544,6 +544,19 @@ func constructStopCmd(deviceIndex uint32) ([]byte, error) {
 	return wrapButtplugMessage(cmd)
 }
 
+// noCache is a middleware that adds cache-control headers to prevent browser caching
+func noCache(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Set headers to prevent caching
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		w.Header().Set("Pragma", "no-cache")
+		w.Header().Set("Expires", "0")
+		
+		// Call the wrapped handler
+		h.ServeHTTP(w, r)
+	})
+}
+
 // heartbeatChecker periodically checks for stale connections and closes them
 func heartbeatChecker() {
 	const timeout = 30 * time.Second
@@ -614,23 +627,23 @@ func main() {
 	// WebSocket handler
 	http.HandleFunc("/ws", handleConnections)
 
-	// Serve style.css from the root directory
-	http.HandleFunc("/style.css", func(w http.ResponseWriter, r *http.Request) {
+	// Serve style.css from the root directory with no-cache
+	http.Handle("/style.css", noCache(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./style.css")
-	})
+	})))
 
-	// Serve files from the locales directory
+	// Serve files from the locales directory with no-cache
 	localesFS := http.FileServer(http.Dir("./locales"))
-	http.Handle("/locales/", http.StripPrefix("/locales/", localesFS))
+	http.Handle("/locales/", noCache(http.StripPrefix("/locales/", localesFS)))
 
-	// Static file serving for controller and client apps (Keep these)
+	// Static file serving for controller and client apps with no-cache
 	controllerFS := http.FileServer(http.Dir("./controller"))
-	http.Handle("/controller/", http.StripPrefix("/controller/", controllerFS))
+	http.Handle("/controller/", noCache(http.StripPrefix("/controller/", controllerFS)))
 	clientFS := http.FileServer(http.Dir("./client"))
-	http.Handle("/client/", http.StripPrefix("/client/", clientFS))
+	http.Handle("/client/", noCache(http.StripPrefix("/client/", clientFS)))
 
-	// Serve index.html at the root (Keep this)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	// Serve index.html at the root with no-cache
+	http.Handle("/", noCache(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Ensure only the exact root path "/" serves index.html
 		if r.URL.Path != "/" {
 			http.NotFound(w, r)
@@ -638,7 +651,7 @@ func main() {
 		}
 		// Serve the index.html file from the current directory
 		http.ServeFile(w, r, "./index.html")
-	})
+	})))
 
 	// Start server
 	log.Println("HTTP server starting on :8080, serving /ws, /style.css, /locales/, /controller/, /client/, and / for index.html")
