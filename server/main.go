@@ -353,6 +353,13 @@ func handleClientMessages(client *Client, room *Room) { // Added room parameter
 		log.Printf("Key %s: Received from client/beikongduan: %+v", room.key, msg)
 
 		switch msg.Type {
+		case "ping":
+			// Handle heartbeat ping from client
+			room.mu.Lock()
+			if room.client == client {
+				client.lastPingTime = time.Now()
+			}
+			room.mu.Unlock()
 		case "setDeviceIndex":
 			room.mu.Lock() // Lock the specific room
 			if msg.Index == nil {
@@ -421,7 +428,7 @@ func (r *Room) sendStatusUpdate(targetClient *Client, state string, message stri
 
 const (
 	ButtplugMsgID     uint   = 1  // Use a fixed ID for commands sent to the server
-	minSafetyDuration uint32 = 30 // Ensure duration is at least 30ms
+	minSafetyDuration uint32 = 20 // Ensure duration is at least 20ms - reduced for better responsiveness
 )
 
 type ButtplugLinearVector struct {
@@ -461,25 +468,18 @@ func constructLinearCmd(deviceIndex uint32, targetPosition float64, speed float6
 	pos := math.Max(0.0, math.Min(1.0, targetPosition)) // Clamp position
 
 	var duration uint32
-	const maxCalculatedDuration uint32 = 90 // Max duration in ms (e.g., 3 * minSafetyDuration)
+	const maxCalculatedDuration uint32 = 120 // Max duration in ms - increased for smoother transitions
 	const assumedMaxRawSpeed float64 = 5.0  // Maximum physical speed (units per second) when speed=1.0
 	const minSpeedThreshold float64 = 0.05  // Minimum speed to avoid extremely long durations
 	const finalCommandDuration uint32 = 150 // Fixed duration for final positioning commands
-	const endpointThreshold float64 = 0.05  // 5% from either end
-	const endpointDuration uint32 = 200     // Fixed duration for endpoint movements
 
 	// --- Handle Final Command ---
 	if isFinal {
 		duration = finalCommandDuration
 		log.Printf("Final command: Using fixed duration of %dms for precise positioning", duration)
 		// Skip the rest of the velocity calculation
-	} else if pos < endpointThreshold || pos > (1.0 - endpointThreshold) {
-		// --- Handle Endpoint Regions ---
-		duration = endpointDuration
-		log.Printf("Endpoint region detected (pos=%.3f): Using fixed duration of %dms for stable positioning", pos, duration)
-		// Skip the rest of the velocity calculation
 	} else {
-		// --- Velocity-Aware Duration Calculation ---
+		// --- Unified Velocity-Aware Duration Calculation ---
 	// Calculate position displacement
 	deltaPos := 0.0
 	if lastCommandedPosition >= 0.0 {
@@ -546,33 +546,38 @@ func constructStopCmd(deviceIndex uint32) ([]byte, error) {
 
 // heartbeatChecker periodically checks for stale connections and closes them
 func heartbeatChecker() {
-	const checkInterval = 15 * time.Second
 	const timeout = 30 * time.Second
 	
 	for {
-		time.Sleep(checkInterval)
+		time.Sleep(10 * time.Second)
 		
+		// Create a list to store connections that need to be closed
+		var connectionsToClose []*websocket.Conn
+		
+		// Lock for reading the rooms map
 		roomsMu.RLock()
-		roomsCopy := make([]*Room, 0, len(rooms))
 		for _, room := range rooms {
-			roomsCopy = append(roomsCopy, room)
+			room.mu.RLock()
+			
+			// Check controller heartbeat
+			if room.controller != nil && time.Since(room.controller.lastPingTime) > timeout {
+				connectionsToClose = append(connectionsToClose, room.controller.conn)
+				log.Printf("Key %s: Controller heartbeat timeout (>%v) detected", room.key, timeout)
+			}
+			
+			// Check client heartbeat
+			if room.client != nil && time.Since(room.client.lastPingTime) > timeout {
+				connectionsToClose = append(connectionsToClose, room.client.conn)
+				log.Printf("Key %s: Client heartbeat timeout (>%v) detected", room.key, timeout)
+			}
+			
+			room.mu.RUnlock()
 		}
 		roomsMu.RUnlock()
 		
-		// Check each room without holding the global lock
-		for _, room := range roomsCopy {
-			room.mu.Lock()
-			
-			// Check controller heartbeat
-			if room.controller != nil && room.controllerConnected {
-				if time.Since(room.controller.lastPingTime) > timeout {
-					log.Printf("Key %s: Controller heartbeat timeout, closing connection", room.key)
-					room.controller.conn.Close()
-					// The defer in handleConnections will handle cleanup
-				}
-			}
-			
-			room.mu.Unlock()
+		// Close the connections outside of the locks
+		for _, conn := range connectionsToClose {
+			conn.Close()
 		}
 	}
 }
