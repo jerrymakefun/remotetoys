@@ -562,9 +562,6 @@ func constructLinearCmd(deviceIndex uint32, targetPosition float64, speed float6
 		if duration < minSafetyDuration {
 			log.Printf("Duration %dms below minimum, clamping to %dms", duration, minSafetyDuration)
 			duration = minSafetyDuration
-		} else if duration > maxCalculatedDuration {
-			log.Printf("Duration %dms above maximum, clamping to %dms", duration, maxCalculatedDuration)
-			duration = maxCalculatedDuration
 		}
 		// --- End Velocity-Aware Duration Calculation ---
 	}
@@ -605,40 +602,44 @@ func noCache(h http.Handler) http.Handler {
 	})
 }
 
-// heartbeatChecker periodically checks for stale connections and closes them
+// heartbeatChecker periodically checks for stale connections and closes them.
 func heartbeatChecker() {
-	const timeout = 30 * time.Second
+	const checkInterval = 10 * time.Second
+	const timeout = 35 * time.Second // Give a generous 35-second timeout
 	
-	for {
-		time.Sleep(10 * time.Second)
-		
-		// Create a list to store connections that need to be closed
-		var connectionsToClose []*websocket.Conn
-		
-		// Lock for reading the rooms map
+	ticker := time.NewTicker(checkInterval)
+	defer ticker.Stop()
+
+	for range ticker.C {
+		var clientsToClose []*Client // Collect clients to close to avoid locking issues
+
 		roomsMu.RLock()
 		for _, room := range rooms {
 			room.mu.RLock()
 			
 			// Check controller heartbeat
-			if room.controller != nil && time.Since(room.controller.lastPingTime) > timeout {
-				connectionsToClose = append(connectionsToClose, room.controller.conn)
-				log.Printf("Key %s: Controller heartbeat timeout (>%v) detected", room.key, timeout)
+			if room.controller != nil && room.controllerConnected {
+				if time.Since(room.controller.lastPingTime) > timeout {
+					log.Printf("Key %s: Controller heartbeat timeout, scheduling closure. Last ping: %v", room.key, room.controller.lastPingTime)
+					clientsToClose = append(clientsToClose, room.controller)
+				}
 			}
 			
 			// Check client heartbeat
-			if room.client != nil && time.Since(room.client.lastPingTime) > timeout {
-				connectionsToClose = append(connectionsToClose, room.client.conn)
-				log.Printf("Key %s: Client heartbeat timeout (>%v) detected", room.key, timeout)
+			if room.client != nil && room.clientConnected {
+				 if time.Since(room.client.lastPingTime) > timeout {
+					log.Printf("Key %s: Client/Beikongduan heartbeat timeout, scheduling closure. Last ping: %v", room.key, room.client.lastPingTime)
+					clientsToClose = append(clientsToClose, room.client)
+				}
 			}
 			
 			room.mu.RUnlock()
 		}
 		roomsMu.RUnlock()
-		
-		// Close the connections outside of the locks
-		for _, conn := range connectionsToClose {
-			conn.Close()
+
+		// Close all timed-out connections now
+		for _, client := range clientsToClose {
+			client.conn.Close() // This will trigger the defer logic in handleConnections for cleanup
 		}
 	}
 }
