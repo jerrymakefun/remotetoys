@@ -162,10 +162,12 @@ let mainLoopFrameId = null; // ID for requestAnimationFrame
 let lastSentPosition = 0.5; // Track last sent position to detect meaningful changes
 let lastCommandedPosition = -1.0; // Track last commanded position for duration calculation
 
-// --- Dynamic Hybrid Control State ---
-let currentSendingMode = 'streaming'; // 'streaming' or 'acknowledged'
-let previousSendingMode = 'streaming'; // Track previous mode for transition handling
-const SPEED_THRESHOLD = 0.4; // 40% speed threshold for mode switching
+// --- Dynamic Multi-Algorithm Fusion State ---
+let isSprinting = false; // Track if we're in high-speed sprint mode
+let sprintStartPosition = null; // Starting position of sprint
+let sprintStartTime = null; // Starting time of sprint
+const SPEED_THRESHOLD = 0.4; // 40% speed threshold for sprint detection
+const SPEED_SLOWDOWN_THRESHOLD = 0.2; // 20% speed threshold for sprint end detection
 
 // --- Reconnection State ---
 let reconnectAttempts = 0;
@@ -370,6 +372,89 @@ function stopHighFrequencySampler() {
 }
 
 
+// --- Algorithm Engines ---
+
+// Micro-adjustment Engine - for low-speed, fine control
+function calculateMicroAdjustment(state) {
+    const { currentPos, lastPos, speed, deviceIndex } = state;
+    
+    // Calculate very short duration for immediate response
+    const duration = 30; // Fixed short duration for micro adjustments
+    
+    // Generate command ID
+    const commandId = nextButtplugId++;
+    
+    // Construct stop-then-move commands
+    const stopCmd = {
+        "StopDeviceCmd": {
+            "Id": commandId,
+            "DeviceIndex": deviceIndex
+        }
+    };
+    
+    const linearCmd = {
+        "LinearCmd": {
+            "Id": commandId,
+            "DeviceIndex": deviceIndex,
+            "Vectors": [{
+                "Index": 0,
+                "Duration": duration,
+                "Position": currentPos
+            }]
+        }
+    };
+    
+    return {
+        commandId,
+        commands: [JSON.stringify([stopCmd]), JSON.stringify([linearCmd])],
+        duration,
+        position: currentPos
+    };
+}
+
+// Sprint Engine - for high-speed, long-distance movements
+function calculateSprint(startPosition, endPosition, deviceIndex) {
+    const distance = Math.abs(endPosition - startPosition);
+    
+    // Calculate longer duration to cover the entire distance smoothly
+    // Longer distances get proportionally longer durations
+    const baseDuration = 100; // Base duration in ms
+    const durationPerUnit = 500; // Additional ms per unit of distance
+    const duration = Math.floor(baseDuration + (distance * durationPerUnit));
+    const clampedDuration = Math.min(duration, 1000); // Cap at 1 second
+    
+    // Generate command ID
+    const commandId = nextButtplugId++;
+    
+    // Construct stop-then-move commands
+    const stopCmd = {
+        "StopDeviceCmd": {
+            "Id": commandId,
+            "DeviceIndex": deviceIndex
+        }
+    };
+    
+    const linearCmd = {
+        "LinearCmd": {
+            "Id": commandId,
+            "DeviceIndex": deviceIndex,
+            "Vectors": [{
+                "Index": 0,
+                "Duration": clampedDuration,
+                "Position": endPosition
+            }]
+        }
+    };
+    
+    return {
+        commandId,
+        commands: [JSON.stringify([stopCmd]), JSON.stringify([linearCmd])],
+        duration: clampedDuration,
+        position: endPosition,
+        distance
+    };
+}
+
 // --- Main Control Loop Management ---
 function startMainControlLoop() {
     if (mainLoopFrameId) return; // Already running
@@ -403,15 +488,8 @@ function mainControlLoop() {
     const maxStrokeLimit = maxStrokeValue;
     const limitedPos = minStrokeLimit + currentRawPosition * (maxStrokeLimit - minStrokeLimit);
     
-    // Check if position has changed meaningfully (threshold: 0.5%)
-    const positionChangeThreshold = 0.005;
-    if (Math.abs(limitedPos - lastSentPosition) < positionChangeThreshold) {
-        return; // No meaningful change
-    }
-    
-    // Calculate speed and duration
+    // Calculate current speed
     let calculatedSpeed = 0.0;
-    let duration = 30; // Default minimum duration
     
     if (sampleBuffer.length >= 2) {
         const latestSample = sampleBuffer[sampleBuffer.length - 1];
@@ -429,104 +507,131 @@ function mainControlLoop() {
             // Apply max speed limit
             const maxSpeedLimit = maxSpeedSlider.value / 100.0;
             calculatedSpeed = calculatedSpeed * maxSpeedLimit;
-            
-            // Calculate duration based on displacement and speed
-            if (lastCommandedPosition >= 0) {
-                const deltaPos = Math.abs(limitedPos - lastCommandedPosition);
-                if (calculatedSpeed > 0.05 && deltaPos > 0.001) {
-                    const effectiveSpeed = calculatedSpeed * assumedMaxRawSpeed;
-                    const durationSeconds = deltaPos / effectiveSpeed;
-                    duration = Math.floor(durationSeconds * 1000);
-                    duration = Math.max(30, Math.min(duration, 150)); // Clamp between 30-150ms
-                }
+        }
+    }
+    
+    // State machine decision logic
+    if (!isSprinting) {
+        // Not currently sprinting
+        if (calculatedSpeed < SPEED_THRESHOLD) {
+            // Low speed - use micro adjustment engine
+            // Check for meaningful position change
+            const positionChangeThreshold = 0.005;
+            if (Math.abs(limitedPos - lastSentPosition) < positionChangeThreshold) {
+                // Update UI but don't send command
+                updateUI(limitedPos, calculatedSpeed, null);
+                return;
             }
+            
+            const state = {
+                currentPos: limitedPos,
+                lastPos: lastSentPosition,
+                speed: calculatedSpeed,
+                deviceIndex: currentDeviceIndex
+            };
+            
+            const result = calculateMicroAdjustment(state);
+            
+            // Send the command
+            const message = {
+                commands: result.commands
+            };
+            
+            serverWs.send(JSON.stringify(message));
+            console.log(`[Micro] Sent command ${result.commandId}: pos=${result.position.toFixed(3)}, speed=${calculatedSpeed.toFixed(3)}, duration=${result.duration}ms`);
+            
+            // Update state
+            lastSentPosition = result.position;
+            lastCommandedPosition = result.position;
+            lastSentCommandId = result.commandId;
+            
+            // Update UI
+            updateUI(limitedPos, calculatedSpeed, {
+                mode: 'Micro',
+                duration: result.duration
+            });
+            
+        } else {
+            // High speed detected - enter sprint mode
+            isSprinting = true;
+            sprintStartPosition = limitedPos;
+            sprintStartTime = performance.now();
+            console.log(`Sprint started at position ${sprintStartPosition.toFixed(3)}`);
+            
+            // Update UI to show sprint mode
+            updateUI(limitedPos, calculatedSpeed, {
+                mode: 'Sprint (Recording)',
+                duration: '-'
+            });
         }
-    }
-    
-    // Mode decision based on speed
-    previousSendingMode = currentSendingMode;
-    if (calculatedSpeed < SPEED_THRESHOLD) {
-        currentSendingMode = 'streaming';
     } else {
-        currentSendingMode = 'acknowledged';
-    }
-    
-    // Handle mode transition
-    if (previousSendingMode === 'acknowledged' && currentSendingMode === 'streaming') {
-        // Switching from acknowledged to streaming mode
-        // Reset the ready flag to allow immediate sending in streaming mode
-        isDeviceReadyForNextCommand = true;
-        console.log('Mode switch: acknowledged -> streaming, resetting ready flag');
-    }
-    
-    // Conditional sending based on mode
-    let shouldSend = false;
-    if (currentSendingMode === 'streaming') {
-        // In streaming mode, always send without waiting for receipt
-        shouldSend = true;
-    } else {
-        // In acknowledged mode, only send if device is ready
-        if (isDeviceReadyForNextCommand) {
-            shouldSend = true;
-            // Mark device as busy - will be reset when receipt arrives
-            isDeviceReadyForNextCommand = false;
+        // Currently in sprint mode
+        // Check for sprint end conditions
+        if (calculatedSpeed < SPEED_SLOWDOWN_THRESHOLD || !isDragging) {
+            // Sprint ending - send the sprint command
+            const sprintEndPosition = limitedPos;
+            const sprintDuration = performance.now() - sprintStartTime;
+            
+            console.log(`Sprint ending: start=${sprintStartPosition.toFixed(3)}, end=${sprintEndPosition.toFixed(3)}, duration=${sprintDuration.toFixed(0)}ms`);
+            
+            const result = calculateSprint(sprintStartPosition, sprintEndPosition, currentDeviceIndex);
+            
+            // Send the sprint command
+            const message = {
+                commands: result.commands
+            };
+            
+            serverWs.send(JSON.stringify(message));
+            console.log(`[Sprint] Sent command ${result.commandId}: distance=${result.distance.toFixed(3)}, duration=${result.duration}ms`);
+            
+            // Update state
+            lastSentPosition = result.position;
+            lastCommandedPosition = result.position;
+            lastSentCommandId = result.commandId;
+            
+            // Reset sprint mode
+            isSprinting = false;
+            sprintStartPosition = null;
+            sprintStartTime = null;
+            
+            // Update UI
+            updateUI(limitedPos, calculatedSpeed, {
+                mode: 'Sprint (Sent)',
+                duration: result.duration
+            });
+        } else {
+            // Still sprinting - just update UI
+            updateUI(limitedPos, calculatedSpeed, {
+                mode: 'Sprint (Recording)',
+                duration: '-'
+            });
         }
     }
-    
-    if (!shouldSend) {
-        return; // Wait for receipt in acknowledged mode
-    }
-    
-    // Generate command ID
-    const commandId = nextButtplugId++;
-    lastSentCommandId = commandId;
-    
-    // Construct commands
-    const stopCmd = {
-        "StopDeviceCmd": {
-            "Id": commandId,
-            "DeviceIndex": currentDeviceIndex
-        }
-    };
-    
-    const linearCmd = {
-        "LinearCmd": {
-            "Id": commandId,
-            "DeviceIndex": currentDeviceIndex,
-            "Vectors": [{
-                "Index": 0,
-                "Duration": duration,
-                "Position": limitedPos
-            }]
-        }
-    };
-    
-    // Send commands
-    const message = {
-        commands: [JSON.stringify([stopCmd]), JSON.stringify([linearCmd])]
-    };
-    
-    serverWs.send(JSON.stringify(message));
-    console.log(`[${currentSendingMode}] Sent command ${commandId}: pos=${limitedPos.toFixed(3)}, speed=${calculatedSpeed.toFixed(3)}, duration=${duration}ms`);
-    
-    // Update state
-    lastSentPosition = limitedPos;
-    lastCommandedPosition = limitedPos;
-    
+}
+
+// Helper function to update UI
+function updateUI(position, speed, commandInfo) {
     // Update diagnostic panel
     if (diagRawPositionElem) diagRawPositionElem.textContent = currentRawPosition.toFixed(3);
-    if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = (calculatedSpeed * 100).toFixed(1);
-    if (diagSentPositionElem) diagSentPositionElem.textContent = limitedPos.toFixed(3);
-    if (diagSentDurationElem) diagSentDurationElem.textContent = duration + ' ms';
-    if (diagSampleIntervalElem) {
-        diagSampleIntervalElem.textContent = currentSendingMode === 'streaming' ? '流模式' : '确认模式';
-        // Add visual feedback for mode
-        diagSampleIntervalElem.style.color = currentSendingMode === 'streaming' ? '#28a745' : '#dc3545';
-        diagSampleIntervalElem.style.fontWeight = 'bold';
+    if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = (speed * 100).toFixed(1);
+    if (diagSentPositionElem) diagSentPositionElem.textContent = position.toFixed(3);
+    
+    if (commandInfo) {
+        if (diagSentDurationElem) diagSentDurationElem.textContent = commandInfo.duration === '-' ? '-' : commandInfo.duration + ' ms';
+        if (diagSampleIntervalElem) {
+            diagSampleIntervalElem.textContent = commandInfo.mode;
+            // Add visual feedback for mode
+            if (commandInfo.mode.includes('Micro')) {
+                diagSampleIntervalElem.style.color = '#28a745'; // Green for micro
+            } else if (commandInfo.mode.includes('Sprint')) {
+                diagSampleIntervalElem.style.color = commandInfo.mode.includes('Recording') ? '#ffc107' : '#dc3545'; // Yellow for recording, red for sent
+            }
+            diagSampleIntervalElem.style.fontWeight = 'bold';
+        }
     }
     
-    // Update UI
-    currentSpeedElem.textContent = (calculatedSpeed * 100).toFixed(1);
+    // Update speed display
+    currentSpeedElem.textContent = (speed * 100).toFixed(1);
 }
 
 // Removed Buttplug command constructors - no longer needed in state sync model
@@ -610,13 +715,50 @@ verticalSliderContainer.addEventListener('pointerup', (e) => {
     updateSleevePosition(currentRawPosition);
     updatePositionDisplay(currentRawPosition);
     
-    // Send final position command if needed
-    const minSL = minStrokeValue;
-    const maxSL = maxStrokeValue;
-    const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
-    
-    // Force one last update by changing lastSentPosition
-    lastSentPosition = -1;
+    // Check if we're currently in sprint mode
+    if (isSprinting && serverWs && serverWs.readyState === WebSocket.OPEN && currentDeviceIndex !== null) {
+        // User lifted finger during sprint - send the sprint command immediately
+        const minSL = minStrokeValue;
+        const maxSL = maxStrokeValue;
+        const sprintEndPosition = minSL + currentRawPosition * (maxSL - minSL);
+        const sprintDuration = performance.now() - sprintStartTime;
+        
+        console.log(`Sprint ending (pointerup): start=${sprintStartPosition.toFixed(3)}, end=${sprintEndPosition.toFixed(3)}, duration=${sprintDuration.toFixed(0)}ms`);
+        
+        const result = calculateSprint(sprintStartPosition, sprintEndPosition, currentDeviceIndex);
+        
+        // Send the sprint command
+        const message = {
+            commands: result.commands
+        };
+        
+        serverWs.send(JSON.stringify(message));
+        console.log(`[Sprint] Sent command ${result.commandId} on pointerup: distance=${result.distance.toFixed(3)}, duration=${result.duration}ms`);
+        
+        // Update state
+        lastSentPosition = result.position;
+        lastCommandedPosition = result.position;
+        lastSentCommandId = result.commandId;
+        
+        // Reset sprint mode
+        isSprinting = false;
+        sprintStartPosition = null;
+        sprintStartTime = null;
+        
+        // Update UI to show sprint was sent
+        updateUI(sprintEndPosition, 0, {
+            mode: 'Sprint (Sent)',
+            duration: result.duration
+        });
+    } else {
+        // Normal pointerup - not in sprint mode
+        const minSL = minStrokeValue;
+        const maxSL = maxStrokeValue;
+        const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
+        
+        // Force one last update by changing lastSentPosition
+        lastSentPosition = -1;
+    }
     
     speedWarningElem.textContent = '';
 });
