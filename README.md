@@ -90,15 +90,15 @@ With the server ready, you need to get the project files onto it and build the i
 1.  **Get the project files on the server**.
     The most recommended way is to use Git to clone your project repository.
     ```bash
-    # Replace with your project repository address
-    git clone https://github.com/your-username/your-repo-name.git
+    # Clone this repository
+    git clone https://github.com/jerrymakefun/remotetoys.git
     ```
     If the project is not hosted, you can also use tools like `scp` to upload the local `GO` folder to the server.
 
 2.  **Navigate to the project directory and build the image**.
     ```bash
     # Navigate to the directory containing the Dockerfile
-    cd your-repo-name/GO/
+    cd remotetoys/GO/
     
     # Build the Docker image
     # `.` indicates that the Dockerfile is in the current directory
