@@ -585,6 +585,12 @@ function updateRangeSliderVisuals() {
 
     rangeMinValElem.textContent = minPercent.toFixed(0);
     rangeMaxValElem.textContent = maxPercent.toFixed(0);
+    
+    // Update the entire stroke range label using i18n
+    const strokeRangeLabelElem = document.querySelector('[data-i18n="strokeRangeLabel"]');
+    if (strokeRangeLabelElem) {
+        strokeRangeLabelElem.innerHTML = i18n.t('strokeRangeLabel', minPercent.toFixed(0), maxPercent.toFixed(0));
+    }
 }
 
 function onRangePointerMove(e) {
