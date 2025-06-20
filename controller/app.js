@@ -145,6 +145,8 @@ let sendIntervalId = null; // Interval timer ID for SENDING commands
 let currentSampleIntervalMs = parseInt(sampleIntervalSlider.value, 10);
 let currentControlMode = 'slider';
 let currentRawPosition = 0.5; // Store the raw 0-1 position from the vertical slider
+let lastCommandedPosition = -1.0; // Track last commanded position for duration calculation
+let currentDeviceIndex = null; // Track current device index
 
 // --- Reconnection State ---
 let reconnectAttempts = 0;
@@ -217,7 +219,8 @@ function connectToServer() {
         }
         heartbeatIntervalId = setInterval(() => {
             if (serverWs && serverWs.readyState === WebSocket.OPEN) {
-                const pingMsg = { type: "ping" };
+                // Send ping as a command array (empty array since ping doesn't need commands)
+                const pingMsg = { commands: [] };
                 serverWs.send(JSON.stringify(pingMsg));
                 console.log('Sent heartbeat ping to server');
             }
@@ -231,6 +234,15 @@ function connectToServer() {
    
     		if (message.type === 'status') {
     			updateSessionStatus(message.state);
+    			// Extract device index from session status if available
+    			if (message.state === 'ready' && message.deviceIndex !== undefined && message.deviceIndex !== null) {
+    				currentDeviceIndex = message.deviceIndex;
+    				console.log(`Device index set to: ${currentDeviceIndex}`);
+    			} else if (message.state === 'waiting_toy' || message.state === 'client_disconnected') {
+    				currentDeviceIndex = null;
+    				lastCommandedPosition = -1.0; // Reset position tracking
+    				console.log('Device index cleared');
+    			}
     		} else {
     			console.log('Received non-status message:', message);
     		}
@@ -440,31 +452,132 @@ function constructAndSendCommand() {
     currentSpeedElem.textContent = (limitedSpeed * 100).toFixed(1); // Update speed display here
 }
 
+// --- Buttplug Command Constructors ---
+const BUTTPLUG_MSG_ID = 1; // Fixed ID for commands
+const MIN_SAFETY_DURATION = 30; // Minimum duration in ms
+
+// Construct StopDeviceCmd JSON object
+function constructStopDeviceCmd(deviceIndex) {
+    const cmd = {
+        StopDeviceCmd: {
+            Id: BUTTPLUG_MSG_ID,
+            DeviceIndex: deviceIndex
+        }
+    };
+    return [cmd]; // Wrap in array as per Buttplug protocol
+}
+
+// Construct LinearCmd JSON object with velocity-aware duration calculation
+function constructLinearCmd(deviceIndex, targetPosition, speed, isFinal = false) {
+    const pos = Math.max(0.0, Math.min(1.0, targetPosition)); // Clamp position
+    
+    let duration;
+    const maxCalculatedDuration = 90; // Max duration in ms
+    const assumedMaxRawSpeed = 5.0; // Maximum physical speed (units per second) when speed=1.0
+    const minSpeedThreshold = 0.05; // Minimum speed to avoid extremely long durations
+    const finalCommandDuration = 150; // Fixed duration for final positioning commands
+    const endpointThreshold = 0.05; // 5% from either end
+    const endpointDuration = 200; // Fixed duration for endpoint movements
+    
+    // Handle Final Command
+    if (isFinal) {
+        duration = finalCommandDuration;
+        console.log(`Final command: Using fixed duration of ${duration}ms for precise positioning`);
+    } else if (pos < endpointThreshold || pos > (1.0 - endpointThreshold)) {
+        // Handle Endpoint Regions
+        duration = endpointDuration;
+        console.log(`Endpoint region detected (pos=${pos.toFixed(3)}): Using fixed duration of ${duration}ms`);
+    } else {
+        // Velocity-Aware Duration Calculation
+        let deltaPos = 0.0;
+        if (lastCommandedPosition >= 0.0) {
+            deltaPos = Math.abs(pos - lastCommandedPosition);
+        }
+        
+        // Handle special cases first
+        if (lastCommandedPosition < 0.0) {
+            // First command - no previous position
+            duration = MIN_SAFETY_DURATION;
+            console.log(`First command (no previous position), using min duration: ${duration}ms`);
+        } else if (deltaPos < 0.001) {
+            // Position hasn't changed meaningfully
+            duration = MIN_SAFETY_DURATION;
+            console.log(`Position unchanged (delta=${deltaPos.toFixed(4)}), using min duration: ${duration}ms`);
+        } else if (speed < minSpeedThreshold) {
+            // Speed too low - apply minimum speed threshold
+            const effectiveSpeed = minSpeedThreshold * assumedMaxRawSpeed;
+            const durationSeconds = deltaPos / effectiveSpeed;
+            duration = Math.floor(durationSeconds * 1000);
+            console.log(`Speed too low (${speed.toFixed(3)}), using minimum threshold. Delta=${deltaPos.toFixed(4)}, Duration=${duration}ms`);
+        } else {
+            // Normal case: Calculate duration based on displacement and speed
+            const effectiveSpeed = speed * assumedMaxRawSpeed;
+            const durationSeconds = deltaPos / effectiveSpeed;
+            duration = Math.floor(durationSeconds * 1000);
+            console.log(`Normal calculation: Delta=${deltaPos.toFixed(4)}, Speed=${speed.toFixed(3)}, Duration=${duration}ms`);
+        }
+        
+        // Apply safety boundaries
+        if (duration < MIN_SAFETY_DURATION) {
+            console.log(`Duration ${duration}ms below minimum, clamping to ${MIN_SAFETY_DURATION}ms`);
+            duration = MIN_SAFETY_DURATION;
+        } else if (duration > maxCalculatedDuration) {
+            console.log(`Duration ${duration}ms above maximum, clamping to ${maxCalculatedDuration}ms`);
+            duration = maxCalculatedDuration;
+        }
+    }
+    
+    const cmd = {
+        LinearCmd: {
+            Id: BUTTPLUG_MSG_ID,
+            DeviceIndex: deviceIndex,
+            Vectors: [{
+                Index: 0, // Assuming single linear actuator at index 0
+                Duration: duration,
+                Position: pos
+            }]
+        }
+    };
+    
+    // Update last commanded position after constructing command
+    lastCommandedPosition = pos;
+    
+    return [cmd]; // Wrap in array as per Buttplug protocol
+}
+
 // Helper function to send the actual control message
 function sendControlCommand(position, speed, isFinal = false) {
-     if (!serverWs || serverWs.readyState !== WebSocket.OPEN) {
+    if (!serverWs || serverWs.readyState !== WebSocket.OPEN) {
         console.warn('Cannot send command, WebSocket not open.');
         return;
     }
+    
+    // Check if we have a device index set
+    if (currentDeviceIndex === null) {
+        console.warn('Cannot send command, device index not set.');
+        return;
+    }
+    
     // Clamp position and speed just before sending
     const finalPos = Math.max(0.0, Math.min(1.0, position));
     const finalSpeed = Math.max(0.0, Math.min(1.0, speed));
-
+    
+    // Construct both StopDeviceCmd and LinearCmd
+    const stopCmd = constructStopDeviceCmd(currentDeviceIndex);
+    const linearCmd = constructLinearCmd(currentDeviceIndex, finalPos, finalSpeed, isFinal);
+    
+    // JSON.stringify both command objects
+    const stopCmdJson = JSON.stringify(stopCmd);
+    const linearCmdJson = JSON.stringify(linearCmd);
+    
+    // Package both strings into an array
     const message = {
-        type: "control",
-        position: finalPos,
-        speed: finalSpeed,
-        sampleIntervalMs: currentSampleIntervalMs // Send interval for server context
+        commands: [stopCmdJson, linearCmdJson]
     };
     
-    // Add isFinal flag if it's true
-    if (isFinal) {
-        message.isFinal = true;
-    }
-    
-    // Avoid excessive logging if sending frequently
-    // console.log('Constructed & Sending:', message);
+    // Send the message
     serverWs.send(JSON.stringify(message));
+    console.log(`Sent Stop-Then-Move commands for position: ${finalPos.toFixed(3)}, speed: ${finalSpeed.toFixed(3)}`);
 }
 
 
@@ -907,6 +1020,8 @@ function updateSessionStatus(state) {
         case 'ready':
             i18nKey = 'statusReady';
             cssClass = 'status-ready';
+            // Try to extract device index from the status message if provided
+            // This would require server-side changes to include deviceIndex in status messages
             break;
         case 'client_disconnected':
             i18nKey = 'statusClientDisconnected';

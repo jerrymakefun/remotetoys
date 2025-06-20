@@ -1,10 +1,7 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
-	"math"
 	"net/http"
 	"os"            // Added for file operations
 	"path/filepath" // Added for path joining
@@ -36,9 +33,10 @@ type Room struct {
 
 // StatusUpdateMessage defines the structure for status updates sent to clients/controllers.
 type StatusUpdateMessage struct {
-	Type    string `json:"type"`    // Always "status"
-	State   string `json:"state"`   // e.g., "waiting_client", "waiting_toy", "ready", "client_disconnected", "controller_disconnected", "controller_present", "waiting_controller"
-	Message string `json:"message"` // Optional: More descriptive message (currently unused)
+	Type        string  `json:"type"`         // Always "status"
+	State       string  `json:"state"`        // e.g., "waiting_client", "waiting_toy", "ready", "client_disconnected", "controller_disconnected", "controller_present", "waiting_controller"
+	Message     string  `json:"message"`      // Optional: More descriptive message (currently unused)
+	DeviceIndex *uint32 `json:"deviceIndex,omitempty"` // Optional: Device index when state is "ready"
 }
 
 // Global map to store active rooms, keyed by the unique key.
@@ -56,11 +54,7 @@ var upgrader = websocket.Upgrader{
 
 // ControlMessage represents messages from Controller (Precision Mode)
 type ControlMessage struct {
-	Type             string  `json:"type"`             // "control", "stop"
-	Position         float64 `json:"position"`         // 0.0 - 1.0
-	Speed            float64 `json:"speed"`            // 0.0 - 1.0 (Client calculated, ignored for duration)
-	SampleIntervalMs uint32  `json:"sampleIntervalMs"` // Client's sample interval
-	IsFinal          bool    `json:"isFinal,omitempty"` // True for final positioning command
+	Commands []string `json:"commands"` // Array of JSON-stringified Buttplug commands
 }
 
 // MessageFromClient defines messages received FROM the client/beikongduan
@@ -137,7 +131,11 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		}
 		// Send initial state to the new controller (outside lock if possible, but needs room state)
 		// Send it here for simplicity, before unlocking
-		room.sendStatusUpdate(currentClient, initialControllerState, "")
+		if initialControllerState == "ready" && room.clientDeviceIndex != nil {
+			room.sendStatusUpdateWithDevice(currentClient, initialControllerState, "", room.clientDeviceIndex)
+		} else {
+			room.sendStatusUpdate(currentClient, initialControllerState, "")
+		}
 
 		// Notify client (if connected) that controller is present
 		if room.client != nil {
@@ -258,74 +256,35 @@ func handleControllerMessages(controller *Client, room *Room) { // Added room pa
 			break
 		}
 
-		log.Printf("Key %s: Received from controller: %+v", room.key, msg)
+		log.Printf("Key %s: Received from controller with %d commands", room.key, len(msg.Commands))
 
-		var buttplugCmdJSON []byte
-		var constructErr error
-
-		// Get target device index and last position safely from the room
+		// Get target device index safely from the room
 		room.mu.RLock()
 		targetIndex := room.clientDeviceIndex
-		currentLastPos := room.lastCommandedPosition // Read last commanded position for this room
-		room.mu.RUnlock()
-
-		if targetIndex == nil {
-			log.Printf("Key %s: Command dropped: Client device index not set in this room.", room.key)
-			continue
-		}
-
-		switch msg.Type {
-		case "ping":
-			// Handle heartbeat ping
-			room.mu.Lock()
-			if room.controller == controller {
-				controller.lastPingTime = time.Now()
-				log.Printf("Key %s: Received ping from controller, updated lastPingTime", room.key)
-			}
-			room.mu.Unlock()
-			continue // Don't need to forward ping to client
-		case "control":
-			log.Printf("Key %s: Constructing LinearCmd for DeviceIndex %d: Pos=%.2f, Speed=%.2f, Interval=%dms, IsFinal=%v",
-				room.key, *targetIndex, msg.Position, msg.Speed, msg.SampleIntervalMs, msg.IsFinal)
-			// Pass interval, speed, last position, and isFinal flag to calculate Duration
-			buttplugCmdJSON, constructErr = constructLinearCmd(*targetIndex, msg.Position, msg.Speed, msg.SampleIntervalMs, currentLastPos, msg.IsFinal)
-			if constructErr != nil {
-				log.Printf("Key %s: Error constructing LinearCmd: %v", room.key, constructErr)
-				continue
-			}
-		case "stop":
-			log.Printf("Key %s: Constructing StopDeviceCmd for DeviceIndex %d", room.key, *targetIndex)
-			buttplugCmdJSON, constructErr = constructStopCmd(*targetIndex)
-			if constructErr != nil {
-				log.Printf("Key %s: Error constructing StopDeviceCmd: %v", room.key, constructErr)
-				continue
-			}
-		default:
-			log.Printf("Key %s: Unknown message type from controller: %s", room.key, msg.Type)
-			continue
-		}
-
-		// Forward the command to the client/beikongduan in the same room if connected
-		room.mu.RLock()
 		beikongduan := room.client // Get the client specific to this room
 		room.mu.RUnlock()
 
-		if beikongduan != nil && buttplugCmdJSON != nil {
-			// Lock the client's connection for writing (best practice, though Gorilla might handle concurrent writes)
-			// Note: If write contention becomes an issue, consider a dedicated write goroutine per client.
-			err = beikongduan.conn.WriteMessage(websocket.TextMessage, buttplugCmdJSON)
+		if targetIndex == nil {
+			log.Printf("Key %s: Commands dropped: Client device index not set in this room.", room.key)
+			continue
+		}
+
+		if beikongduan == nil {
+			log.Printf("Key %s: Commands dropped: Client/Beikongduan not connected in this room.", room.key)
+			continue
+		}
+
+		// Forward each command in the array to the client
+		for i, cmdJSON := range msg.Commands {
+			// The commands are already JSON-stringified, so we can send them directly
+			err = beikongduan.conn.WriteMessage(websocket.TextMessage, []byte(cmdJSON))
 			if err != nil {
-				log.Printf("Key %s: Error writing to client/beikongduan: %v", room.key, err)
+				log.Printf("Key %s: Error writing command %d to client/beikongduan: %v", room.key, i, err)
 				// Consider closing the client connection here if write fails repeatedly
+				break
 			} else {
-				log.Printf("Key %s: Forwarded command to client/beikongduan: %s", room.key, string(buttplugCmdJSON))
-				// Update last commanded position for this room AFTER successful send attempt
-				room.mu.Lock()
-				room.lastCommandedPosition = msg.Position
-				room.mu.Unlock()
+				log.Printf("Key %s: Forwarded command %d to client/beikongduan: %s", room.key, i, cmdJSON)
 			}
-		} else if beikongduan == nil {
-			log.Printf("Key %s: Command dropped: Client/Beikongduan not connected in this room.", room.key)
 		}
 	}
 }
@@ -378,7 +337,7 @@ func handleClientMessages(client *Client, room *Room) { // Added room parameter
 
 			if controller != nil {
 				if deviceSelected {
-					room.sendStatusUpdate(controller, "ready", "")
+					room.sendStatusUpdateWithDevice(controller, "ready", "", room.clientDeviceIndex)
 				} else {
 					room.sendStatusUpdate(controller, "waiting_toy", "")
 				}
@@ -394,14 +353,20 @@ func handleClientMessages(client *Client, room *Room) { // Added room parameter
 // NOTE: This method assumes the caller handles locking if necessary to read room state
 // before calling. It does NOT lock the room mutex itself.
 func (r *Room) sendStatusUpdate(targetClient *Client, state string, message string) {
+	r.sendStatusUpdateWithDevice(targetClient, state, message, nil)
+}
+
+// sendStatusUpdateWithDevice sends a status update message with optional device index
+func (r *Room) sendStatusUpdateWithDevice(targetClient *Client, state string, message string, deviceIndex *uint32) {
 	if targetClient == nil || targetClient.conn == nil {
 		// log.Printf("Key %s: Cannot send status update '%s', target client (%s) is nil or disconnected.", r.key, state, targetClient.Type)
 		return // Don't send if client is not connected or nil
 	}
 	statusMsg := StatusUpdateMessage{
-		Type:    "status",
-		State:   state,
-		Message: message, // Can be empty
+		Type:        "status",
+		State:       state,
+		Message:     message, // Can be empty
+		DeviceIndex: deviceIndex,
 	}
 
 	// It's generally safer to lock the specific connection for writing if the library doesn't guarantee it.
@@ -413,136 +378,14 @@ func (r *Room) sendStatusUpdate(targetClient *Client, state string, message stri
 		// Check for specific errors if needed (e.g., broken pipe)
 		log.Printf("Key %s: Error sending status update '%s' to %s: %v", r.key, state, targetClient.Type, err)
 	} else {
-		log.Printf("Key %s: Sent status update '%s' to %s", r.key, state, targetClient.Type)
-	}
-}
-
-// --- Buttplug Message Construction ---
-
-const (
-	ButtplugMsgID     uint   = 1  // Use a fixed ID for commands sent to the server
-	minSafetyDuration uint32 = 30 // Ensure duration is at least 30ms
-)
-
-type ButtplugLinearVector struct {
-	Index    uint32  `json:"Index"`
-	Duration uint32  `json:"Duration"`
-	Position float64 `json:"Position"`
-}
-
-type ButtplugLinearCmd struct {
-	Id          uint                   `json:"Id"`
-	DeviceIndex uint32                 `json:"DeviceIndex"`
-	Vectors     []ButtplugLinearVector `json:"Vectors"`
-}
-
-type ButtplugStopDeviceCmd struct {
-	Id          uint   `json:"Id"`
-	DeviceIndex uint32 `json:"DeviceIndex"`
-}
-
-// Helper function to wrap a command message in the Buttplug array format
-func wrapButtplugMessage(command interface{}) ([]byte, error) {
-	var cmdMap map[string]interface{}
-	switch v := command.(type) {
-	case ButtplugLinearCmd:
-		cmdMap = map[string]interface{}{"LinearCmd": v}
-	case ButtplugStopDeviceCmd:
-		cmdMap = map[string]interface{}{"StopDeviceCmd": v}
-	default:
-		return nil, fmt.Errorf("unknown buttplug command type: %T", command)
-	}
-	messageArray := []map[string]interface{}{cmdMap}
-	return json.Marshal(messageArray)
-}
-
-// constructLinearCmd creates a Buttplug LinearCmd JSON message, calculating duration based on speed and position change.
-func constructLinearCmd(deviceIndex uint32, targetPosition float64, speed float64, sampleIntervalMs uint32, lastCommandedPosition float64, isFinal bool) ([]byte, error) {
-	pos := math.Max(0.0, math.Min(1.0, targetPosition)) // Clamp position
-
-	var duration uint32
-	const maxCalculatedDuration uint32 = 90 // Max duration in ms (e.g., 3 * minSafetyDuration)
-	const assumedMaxRawSpeed float64 = 5.0  // Maximum physical speed (units per second) when speed=1.0
-	const minSpeedThreshold float64 = 0.05  // Minimum speed to avoid extremely long durations
-	const finalCommandDuration uint32 = 150 // Fixed duration for final positioning commands
-	const endpointThreshold float64 = 0.05  // 5% from either end
-	const endpointDuration uint32 = 200     // Fixed duration for endpoint movements
-
-	// --- Handle Final Command ---
-	if isFinal {
-		duration = finalCommandDuration
-		log.Printf("Final command: Using fixed duration of %dms for precise positioning", duration)
-		// Skip the rest of the velocity calculation
-	} else if pos < endpointThreshold || pos > (1.0 - endpointThreshold) {
-		// --- Handle Endpoint Regions ---
-		duration = endpointDuration
-		log.Printf("Endpoint region detected (pos=%.3f): Using fixed duration of %dms for stable positioning", pos, duration)
-		// Skip the rest of the velocity calculation
-	} else {
-		// --- Velocity-Aware Duration Calculation ---
-	// Calculate position displacement
-	deltaPos := 0.0
-	if lastCommandedPosition >= 0.0 {
-		deltaPos = math.Abs(pos - lastCommandedPosition)
-	}
-
-	// Handle special cases first
-	if lastCommandedPosition < 0.0 {
-		// First command - no previous position, use minimum duration
-		duration = minSafetyDuration
-		log.Printf("First command (no previous position), using min duration: %dms", duration)
-	} else if deltaPos < 0.001 {
-		// Position hasn't changed meaningfully
-		duration = minSafetyDuration
-		log.Printf("Position unchanged (delta=%.4f), using min duration: %dms", deltaPos, duration)
-	} else if speed < minSpeedThreshold {
-		// Speed too low - apply minimum speed threshold to avoid infinite duration
-		effectiveSpeed := minSpeedThreshold * assumedMaxRawSpeed
-		durationSeconds := deltaPos / effectiveSpeed
-		duration = uint32(durationSeconds * 1000)
-		log.Printf("Speed too low (%.3f), using minimum threshold. Delta=%.4f, Duration=%dms", speed, deltaPos, duration)
-	} else {
-		// Normal case: Calculate duration based on displacement and speed
-		// Duration (seconds) = Distance / (User Speed * Physical Speed Constant)
-		effectiveSpeed := speed * assumedMaxRawSpeed
-		durationSeconds := deltaPos / effectiveSpeed
-		duration = uint32(durationSeconds * 1000)
-		log.Printf("Normal calculation: Delta=%.4f, Speed=%.3f, Duration=%dms", deltaPos, speed, duration)
-	}
-
-		// Apply safety boundaries - ensure duration is within allowed range
-		if duration < minSafetyDuration {
-			log.Printf("Duration %dms below minimum, clamping to %dms", duration, minSafetyDuration)
-			duration = minSafetyDuration
-		} else if duration > maxCalculatedDuration {
-			log.Printf("Duration %dms above maximum, clamping to %dms", duration, maxCalculatedDuration)
-			duration = maxCalculatedDuration
+		if deviceIndex != nil {
+			log.Printf("Key %s: Sent status update '%s' to %s with device index %d", r.key, state, targetClient.Type, *deviceIndex)
+		} else {
+			log.Printf("Key %s: Sent status update '%s' to %s", r.key, state, targetClient.Type)
 		}
-		// --- End Velocity-Aware Duration Calculation ---
 	}
-
-	cmd := ButtplugLinearCmd{
-		Id:          ButtplugMsgID,
-		DeviceIndex: deviceIndex,
-		Vectors: []ButtplugLinearVector{
-			{
-				Index:    0, // Assuming single linear actuator at index 0
-				Duration: duration,
-				Position: pos,
-			},
-		},
-	}
-	return wrapButtplugMessage(cmd)
 }
 
-// constructStopCmd creates a Buttplug StopDeviceCmd JSON message
-func constructStopCmd(deviceIndex uint32) ([]byte, error) {
-	cmd := ButtplugStopDeviceCmd{
-		Id:          ButtplugMsgID,
-		DeviceIndex: deviceIndex,
-	}
-	return wrapButtplugMessage(cmd)
-}
 
 // heartbeatChecker periodically checks for stale connections and closes them
 func heartbeatChecker() {

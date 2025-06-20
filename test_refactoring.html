@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Refactoring</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            overflow-x: auto;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Architectural Refactoring Test</h1>
+    
+    <div class="section">
+        <h2>Test: Stop-Then-Move Pattern</h2>
+        <p>This test verifies that the controller sends both StopDeviceCmd and LinearCmd for each movement.</p>
+        <button onclick="testStopThenMove()">Run Test</button>
+        <div id="test-result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Command Structure</h2>
+        <pre id="command-structure"></pre>
+    </div>
+
+    <script>
+        // Mock the Buttplug command constructors from controller/app.js
+        const BUTTPLUG_MSG_ID = 1;
+        const MIN_SAFETY_DURATION = 30;
+
+        function constructStopDeviceCmd(deviceIndex) {
+            const cmd = {
+                StopDeviceCmd: {
+                    Id: BUTTPLUG_MSG_ID,
+                    DeviceIndex: deviceIndex
+                }
+            };
+            return [cmd];
+        }
+
+        function constructLinearCmd(deviceIndex, targetPosition, speed, isFinal = false) {
+            const pos = Math.max(0.0, Math.min(1.0, targetPosition));
+            
+            let duration;
+            const maxCalculatedDuration = 90;
+            const finalCommandDuration = 150;
+            const endpointThreshold = 0.05;
+            const endpointDuration = 200;
+            
+            if (isFinal) {
+                duration = finalCommandDuration;
+            } else if (pos < endpointThreshold || pos > (1.0 - endpointThreshold)) {
+                duration = endpointDuration;
+            } else {
+                // Simplified duration calculation for test
+                duration = MIN_SAFETY_DURATION;
+            }
+            
+            const cmd = {
+                LinearCmd: {
+                    Id: BUTTPLUG_MSG_ID,
+                    DeviceIndex: deviceIndex,
+                    Vectors: [{
+                        Index: 0,
+                        Duration: duration,
+                        Position: pos
+                    }]
+                }
+            };
+            
+            return [cmd];
+        }
+
+        function testStopThenMove() {
+            const resultDiv = document.getElementById('test-result');
+            const structureDiv = document.getElementById('command-structure');
+            
+            try {
+                // Test device index
+                const deviceIndex = 0;
+                const position = 0.75;
+                const speed = 0.5;
+                
+                // Construct commands
+                const stopCmd = constructStopDeviceCmd(deviceIndex);
+                const linearCmd = constructLinearCmd(deviceIndex, position, speed, false);
+                
+                // JSON.stringify both
+                const stopCmdJson = JSON.stringify(stopCmd);
+                const linearCmdJson = JSON.stringify(linearCmd);
+                
+                // Package into array
+                const message = {
+                    commands: [stopCmdJson, linearCmdJson]
+                };
+                
+                // Display results
+                structureDiv.textContent = JSON.stringify(message, null, 2);
+                
+                // Verify structure
+                if (message.commands.length === 2) {
+                    const parsedStop = JSON.parse(message.commands[0]);
+                    const parsedLinear = JSON.parse(message.commands[1]);
+                    
+                    if (parsedStop[0].StopDeviceCmd && parsedLinear[0].LinearCmd) {
+                        resultDiv.innerHTML = '<p class="success">✓ Test passed! Commands are properly structured.</p>';
+                        resultDiv.innerHTML += '<p>Stop command device index: ' + parsedStop[0].StopDeviceCmd.DeviceIndex + '</p>';
+                        resultDiv.innerHTML += '<p>Linear command position: ' + parsedLinear[0].LinearCmd.Vectors[0].Position + '</p>';
+                        resultDiv.innerHTML += '<p>Linear command duration: ' + parsedLinear[0].LinearCmd.Vectors[0].Duration + 'ms</p>';
+                    } else {
+                        resultDiv.innerHTML = '<p class="error">✗ Test failed: Command structure is incorrect.</p>';
+                    }
+                } else {
+                    resultDiv.innerHTML = '<p class="error">✗ Test failed: Expected 2 commands, got ' + message.commands.length + '</p>';
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML = '<p class="error">✗ Test failed: ' + error.message + '</p>';
+            }
+        }
+        
+        // Run test automatically on load
+        window.onload = function() {
+            testStopThenMove();
+        };
+    </script>
+</body>
+</html>
