@@ -454,11 +454,18 @@ func constructLinearCmd(deviceIndex uint32, targetPosition float64, speed float6
 	const assumedMaxRawSpeed float64 = 5.0  // Maximum physical speed (units per second) when speed=1.0
 	const minSpeedThreshold float64 = 0.05  // Minimum speed to avoid extremely long durations
 	const finalCommandDuration uint32 = 150 // Fixed duration for final positioning commands
+	const endpointThreshold float64 = 0.05  // 5% from either end
+	const endpointDuration uint32 = 200     // Fixed duration for endpoint movements
 
 	// --- Handle Final Command ---
 	if isFinal {
 		duration = finalCommandDuration
 		log.Printf("Final command: Using fixed duration of %dms for precise positioning", duration)
+		// Skip the rest of the velocity calculation
+	} else if pos < endpointThreshold || pos > (1.0 - endpointThreshold) {
+		// --- Handle Endpoint Regions ---
+		duration = endpointDuration
+		log.Printf("Endpoint region detected (pos=%.3f): Using fixed duration of %dms for stable positioning", pos, duration)
 		// Skip the rest of the velocity calculation
 	} else {
 		// --- Velocity-Aware Duration Calculation ---
