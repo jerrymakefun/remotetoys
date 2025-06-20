@@ -151,7 +151,6 @@ let isDragging = false; // Track if slider is being actively dragged
 let sendIntervalId = null; // Interval timer ID for SENDING commands
 let currentSampleIntervalMs = parseInt(sampleIntervalSlider.value, 10);
 let currentControlMode = 'slider';
-let currentRawPosition = 0.5; // Store the raw 0-1 position from the vertical slider
 let currentDeviceIndex = null; // Track current device index
 
 // --- Adaptive Command Scheduler State ---
@@ -162,12 +161,16 @@ let mainLoopFrameId = null; // ID for requestAnimationFrame
 let lastSentPosition = 0.5; // Track last sent position to detect meaningful changes
 let lastCommandedPosition = -1.0; // Track last commanded position for duration calculation
 
-// --- Dynamic Multi-Algorithm Fusion State ---
-let isSprinting = false; // Track if we're in high-speed sprint mode
-let sprintStartPosition = null; // Starting position of sprint
-let sprintStartTime = null; // Starting time of sprint
-const SPEED_THRESHOLD = 0.4; // 40% speed threshold for sprint detection
-const SPEED_SLOWDOWN_THRESHOLD = 0.2; // 20% speed threshold for sprint end detection
+// --- Physics-Based Virtual Toy State ---
+let virtualPosition = 0.5; // Current position of the virtual toy (0-1)
+let virtualVelocity = 0.0; // Current velocity of the virtual toy
+let targetPosition = 0.5; // Target position from user input (0-1)
+
+// --- Physics Constants ---
+const SPRING_CONSTANT = 0.1; // Spring stiffness - higher = tighter following
+const FRICTION_FACTOR = 0.85; // Velocity damping - lower = more sliding
+const MAX_VELOCITY = 0.1; // Maximum velocity limit
+const PHYSICS_DURATION = 50; // Fixed duration for physics-based commands (ms)
 
 // --- Reconnection State ---
 let reconnectAttempts = 0;
@@ -192,11 +195,7 @@ let minStrokeValue = 0.01111; // Default min stroke to 1.111%
 let maxStrokeValue = 0.99999; // Default max stroke to 99.999%
 let activeRangeHandle = null; // Track which handle is being dragged ('min' or 'max')
 
-// --- High Frequency Sampling & Smoothing ---
-const SAMPLE_BUFFER_SIZE = 5;
-let sampleBuffer = []; // Array of { timestamp: number, position: number }
-let highFreqSampleId = null; // ID for requestAnimationFrame or short interval
-const HIGH_FREQ_INTERVAL = 16; // ms, approx 60fps for fallback interval
+// High frequency sampling removed - physics model handles smoothing naturally
 
 // --- Server WebSocket Connection ---
 
@@ -318,142 +317,10 @@ function updateServerStatus(i18nKey, className, ...args) {
     serverStatusElem.className = `status ${className}`;
 }
 
-// --- High Frequency Sampling Loop ---
-function highFrequencySampler() {
-    if (!isDragging) {
-        stopHighFrequencySampler();
-        return;
-    }
-    const now = performance.now();
-    // currentPos is now updated via pointer events, use the stored value
-    const currentPos = currentRawPosition;
-
-    // Add to buffer, maintain size
-    sampleBuffer.push({ timestamp: now, position: currentPos });
-    if (sampleBuffer.length > SAMPLE_BUFFER_SIZE) {
-        sampleBuffer.shift(); // Remove oldest sample
-    }
-
-    // Update UI directly for responsiveness (Sleeve position and text)
-    updateSleevePosition(currentPos); // Update sleeve visual position
-    updatePositionDisplay(currentPos); // Update text display
+// High frequency sampling functions removed - physics model handles smoothing
 
 
-    // Schedule next sample
-    if (window.requestAnimationFrame) {
-        highFreqSampleId = requestAnimationFrame(highFrequencySampler);
-    } else {
-        highFreqSampleId = setTimeout(highFrequencySampler, HIGH_FREQ_INTERVAL);
-    }
-}
-
-function startHighFrequencySampler() {
-    stopHighFrequencySampler(); // Clear existing loop if any
-    sampleBuffer = []; // Clear buffer on start
-    console.log('Starting high frequency sampler');
-    // Add an initial sample immediately using the current raw position
-    sampleBuffer.push({ timestamp: performance.now(), position: currentRawPosition });
-    if (window.requestAnimationFrame) {
-        highFreqSampleId = requestAnimationFrame(highFrequencySampler);
-    } else {
-        highFreqSampleId = setTimeout(highFrequencySampler, HIGH_FREQ_INTERVAL);
-    }
-}
-
-function stopHighFrequencySampler() {
-    if (!highFreqSampleId) return;
-    console.log('Stopping high frequency sampler');
-    if (window.requestAnimationFrame) {
-        cancelAnimationFrame(highFreqSampleId);
-    } else {
-        clearTimeout(highFreqSampleId);
-    }
-    highFreqSampleId = null;
-}
-
-
-// --- Algorithm Engines ---
-
-// Micro-adjustment Engine - for low-speed, fine control
-function calculateMicroAdjustment(state) {
-    const { currentPos, lastPos, speed, deviceIndex } = state;
-    
-    // Calculate very short duration for immediate response
-    const duration = 30; // Fixed short duration for micro adjustments
-    
-    // Generate command ID
-    const commandId = nextButtplugId++;
-    
-    // Construct stop-then-move commands
-    const stopCmd = {
-        "StopDeviceCmd": {
-            "Id": commandId,
-            "DeviceIndex": deviceIndex
-        }
-    };
-    
-    const linearCmd = {
-        "LinearCmd": {
-            "Id": commandId,
-            "DeviceIndex": deviceIndex,
-            "Vectors": [{
-                "Index": 0,
-                "Duration": duration,
-                "Position": currentPos
-            }]
-        }
-    };
-    
-    return {
-        commandId,
-        commands: [JSON.stringify([stopCmd]), JSON.stringify([linearCmd])],
-        duration,
-        position: currentPos
-    };
-}
-
-// Sprint Engine - for high-speed, long-distance movements
-function calculateSprint(startPosition, endPosition, deviceIndex) {
-    const distance = Math.abs(endPosition - startPosition);
-    
-    // Calculate longer duration to cover the entire distance smoothly
-    // Longer distances get proportionally longer durations
-    const baseDuration = 100; // Base duration in ms
-    const durationPerUnit = 500; // Additional ms per unit of distance
-    const duration = Math.floor(baseDuration + (distance * durationPerUnit));
-    const clampedDuration = Math.min(duration, 1000); // Cap at 1 second
-    
-    // Generate command ID
-    const commandId = nextButtplugId++;
-    
-    // Construct stop-then-move commands
-    const stopCmd = {
-        "StopDeviceCmd": {
-            "Id": commandId,
-            "DeviceIndex": deviceIndex
-        }
-    };
-    
-    const linearCmd = {
-        "LinearCmd": {
-            "Id": commandId,
-            "DeviceIndex": deviceIndex,
-            "Vectors": [{
-                "Index": 0,
-                "Duration": clampedDuration,
-                "Position": endPosition
-            }]
-        }
-    };
-    
-    return {
-        commandId,
-        commands: [JSON.stringify([stopCmd]), JSON.stringify([linearCmd])],
-        duration: clampedDuration,
-        position: endPosition,
-        distance
-    };
-}
+// Algorithm engines removed - physics model handles all movement
 
 // --- Main Control Loop Management ---
 function startMainControlLoop() {
@@ -469,7 +336,7 @@ function stopMainControlLoop() {
     mainLoopFrameId = null;
 }
 
-// Main control loop using requestAnimationFrame
+// Main control loop - Physics simulation engine
 function mainControlLoop() {
     // Schedule next frame
     mainLoopFrameId = requestAnimationFrame(mainControlLoop);
@@ -483,155 +350,92 @@ function mainControlLoop() {
         return;
     }
     
-    // Get current position with stroke limits applied
+    // Step 1: Calculate spring force
+    // Force is proportional to the distance between virtual toy and target
+    const force = (targetPosition - virtualPosition) * SPRING_CONSTANT;
+    
+    // Step 2: Update velocity based on force
+    virtualVelocity += force;
+    
+    // Step 3: Apply friction to naturally slow down
+    virtualVelocity *= FRICTION_FACTOR;
+    
+    // Step 4: Limit maximum velocity
+    if (virtualVelocity > MAX_VELOCITY) {
+        virtualVelocity = MAX_VELOCITY;
+    } else if (virtualVelocity < -MAX_VELOCITY) {
+        virtualVelocity = -MAX_VELOCITY;
+    }
+    
+    // Step 5: Update virtual position based on velocity
+    virtualPosition += virtualVelocity;
+    
+    // Step 6: Clamp position to valid range
+    virtualPosition = Math.max(0, Math.min(1, virtualPosition));
+    
+    // Step 7: Apply stroke limits to get final position
     const minStrokeLimit = minStrokeValue;
     const maxStrokeLimit = maxStrokeValue;
-    const limitedPos = minStrokeLimit + currentRawPosition * (maxStrokeLimit - minStrokeLimit);
+    const finalPosition = minStrokeLimit + virtualPosition * (maxStrokeLimit - minStrokeLimit);
     
-    // Calculate current speed
-    let calculatedSpeed = 0.0;
+    // Step 8: Generate and send command based on virtual toy position
+    const commandId = nextButtplugId++;
     
-    if (sampleBuffer.length >= 2) {
-        const latestSample = sampleBuffer[sampleBuffer.length - 1];
-        const oldestSample = sampleBuffer[0];
-        const timeDiffSeconds = (latestSample.timestamp - oldestSample.timestamp) / 1000.0;
-        
-        if (timeDiffSeconds > 0.005) {
-            const posDiff = Math.abs(latestSample.position - oldestSample.position);
-            const rawSpeed = posDiff / timeDiffSeconds;
-            
-            // Normalize speed
-            const assumedMaxRawSpeed = 5.0;
-            calculatedSpeed = Math.min(1.0, rawSpeed / assumedMaxRawSpeed);
-            
-            // Apply max speed limit
-            const maxSpeedLimit = maxSpeedSlider.value / 100.0;
-            calculatedSpeed = calculatedSpeed * maxSpeedLimit;
+    // Construct stop-then-move commands
+    const stopCmd = {
+        "StopDeviceCmd": {
+            "Id": commandId,
+            "DeviceIndex": currentDeviceIndex
         }
-    }
+    };
     
-    // State machine decision logic
-    if (!isSprinting) {
-        // Not currently sprinting
-        if (calculatedSpeed < SPEED_THRESHOLD) {
-            // Low speed - use micro adjustment engine
-            // Check for meaningful position change
-            const positionChangeThreshold = 0.005;
-            if (Math.abs(limitedPos - lastSentPosition) < positionChangeThreshold) {
-                // Update UI but don't send command
-                updateUI(limitedPos, calculatedSpeed, null);
-                return;
-            }
-            
-            const state = {
-                currentPos: limitedPos,
-                lastPos: lastSentPosition,
-                speed: calculatedSpeed,
-                deviceIndex: currentDeviceIndex
-            };
-            
-            const result = calculateMicroAdjustment(state);
-            
-            // Send the command
-            const message = {
-                commands: result.commands
-            };
-            
-            serverWs.send(JSON.stringify(message));
-            console.log(`[Micro] Sent command ${result.commandId}: pos=${result.position.toFixed(3)}, speed=${calculatedSpeed.toFixed(3)}, duration=${result.duration}ms`);
-            
-            // Update state
-            lastSentPosition = result.position;
-            lastCommandedPosition = result.position;
-            lastSentCommandId = result.commandId;
-            
-            // Update UI
-            updateUI(limitedPos, calculatedSpeed, {
-                mode: 'Micro',
-                duration: result.duration
-            });
-            
-        } else {
-            // High speed detected - enter sprint mode
-            isSprinting = true;
-            sprintStartPosition = limitedPos;
-            sprintStartTime = performance.now();
-            console.log(`Sprint started at position ${sprintStartPosition.toFixed(3)}`);
-            
-            // Update UI to show sprint mode
-            updateUI(limitedPos, calculatedSpeed, {
-                mode: 'Sprint (Recording)',
-                duration: '-'
-            });
+    const linearCmd = {
+        "LinearCmd": {
+            "Id": commandId,
+            "DeviceIndex": currentDeviceIndex,
+            "Vectors": [{
+                "Index": 0,
+                "Duration": PHYSICS_DURATION,
+                "Position": finalPosition
+            }]
         }
-    } else {
-        // Currently in sprint mode
-        // Check for sprint end conditions
-        if (calculatedSpeed < SPEED_SLOWDOWN_THRESHOLD || !isDragging) {
-            // Sprint ending - send the sprint command
-            const sprintEndPosition = limitedPos;
-            const sprintDuration = performance.now() - sprintStartTime;
-            
-            console.log(`Sprint ending: start=${sprintStartPosition.toFixed(3)}, end=${sprintEndPosition.toFixed(3)}, duration=${sprintDuration.toFixed(0)}ms`);
-            
-            const result = calculateSprint(sprintStartPosition, sprintEndPosition, currentDeviceIndex);
-            
-            // Send the sprint command
-            const message = {
-                commands: result.commands
-            };
-            
-            serverWs.send(JSON.stringify(message));
-            console.log(`[Sprint] Sent command ${result.commandId}: distance=${result.distance.toFixed(3)}, duration=${result.duration}ms`);
-            
-            // Update state
-            lastSentPosition = result.position;
-            lastCommandedPosition = result.position;
-            lastSentCommandId = result.commandId;
-            
-            // Reset sprint mode
-            isSprinting = false;
-            sprintStartPosition = null;
-            sprintStartTime = null;
-            
-            // Update UI
-            updateUI(limitedPos, calculatedSpeed, {
-                mode: 'Sprint (Sent)',
-                duration: result.duration
-            });
-        } else {
-            // Still sprinting - just update UI
-            updateUI(limitedPos, calculatedSpeed, {
-                mode: 'Sprint (Recording)',
-                duration: '-'
-            });
-        }
-    }
+    };
+    
+    // Send commands
+    const message = {
+        commands: [JSON.stringify([stopCmd]), JSON.stringify([linearCmd])]
+    };
+    
+    serverWs.send(JSON.stringify(message));
+    console.log(`[Physics] Sent command ${commandId}: pos=${finalPosition.toFixed(3)}, vel=${virtualVelocity.toFixed(4)}, duration=${PHYSICS_DURATION}ms`);
+    
+    // Update state
+    lastSentPosition = finalPosition;
+    lastCommandedPosition = finalPosition;
+    lastSentCommandId = commandId;
+    
+    // Update UI
+    updatePhysicsUI(finalPosition, virtualVelocity, force);
 }
 
-// Helper function to update UI
-function updateUI(position, speed, commandInfo) {
+// Helper function to update UI for physics model
+function updatePhysicsUI(position, velocity, force) {
     // Update diagnostic panel
-    if (diagRawPositionElem) diagRawPositionElem.textContent = currentRawPosition.toFixed(3);
-    if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = (speed * 100).toFixed(1);
+    if (diagRawPositionElem) diagRawPositionElem.textContent = targetPosition.toFixed(3);
+    if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = (Math.abs(velocity) * 100).toFixed(1);
     if (diagSentPositionElem) diagSentPositionElem.textContent = position.toFixed(3);
+    if (diagSentDurationElem) diagSentDurationElem.textContent = PHYSICS_DURATION + ' ms';
     
-    if (commandInfo) {
-        if (diagSentDurationElem) diagSentDurationElem.textContent = commandInfo.duration === '-' ? '-' : commandInfo.duration + ' ms';
-        if (diagSampleIntervalElem) {
-            diagSampleIntervalElem.textContent = commandInfo.mode;
-            // Add visual feedback for mode
-            if (commandInfo.mode.includes('Micro')) {
-                diagSampleIntervalElem.style.color = '#28a745'; // Green for micro
-            } else if (commandInfo.mode.includes('Sprint')) {
-                diagSampleIntervalElem.style.color = commandInfo.mode.includes('Recording') ? '#ffc107' : '#dc3545'; // Yellow for recording, red for sent
-            }
-            diagSampleIntervalElem.style.fontWeight = 'bold';
-        }
+    // Show physics state in sample interval field
+    if (diagSampleIntervalElem) {
+        const physicsInfo = `F:${force.toFixed(3)} V:${velocity.toFixed(3)}`;
+        diagSampleIntervalElem.textContent = physicsInfo;
+        diagSampleIntervalElem.style.color = '#007bff'; // Blue for physics
+        diagSampleIntervalElem.style.fontWeight = 'bold';
     }
     
-    // Update speed display
-    currentSpeedElem.textContent = (speed * 100).toFixed(1);
+    // Update speed display based on velocity
+    currentSpeedElem.textContent = (Math.abs(velocity) * 100).toFixed(1);
 }
 
 // Removed Buttplug command constructors - no longer needed in state sync model
@@ -683,21 +487,26 @@ verticalSliderContainer.addEventListener('pointerdown', (e) => {
     verticalSliderContainer.setPointerCapture(e.pointerId); // Capture pointer events for this element
     console.log('Pointer Down - Dragging Start');
 
-    // Calculate and store initial position immediately
-    currentRawPosition = calculatePositionFromEvent(e);
-    console.log(`Initial Raw Position: ${currentRawPosition.toFixed(3)}`);
+    // Update target position for physics simulation
+    targetPosition = calculatePositionFromEvent(e);
+    console.log(`Target Position: ${targetPosition.toFixed(3)}`);
+    
+    // Update UI immediately
+    updateSleevePosition(targetPosition);
+    updatePositionDisplay(targetPosition);
 
-    startHighFrequencySampler(); // Start high-frequency internal sampling
-    startMainControlLoop(); // Start the main control loop
+    startMainControlLoop(); // Start the physics simulation loop
 });
 
 verticalSliderContainer.addEventListener('pointermove', (e) => {
     if (!isDragging || currentControlMode !== 'slider') return;
 
-    // Calculate and store current position
-    currentRawPosition = calculatePositionFromEvent(e);
-
-    // High frequency sampler will pick up currentRawPosition and update UI/buffer
+    // Update target position for physics simulation
+    targetPosition = calculatePositionFromEvent(e);
+    
+    // Update UI immediately to show user input
+    updateSleevePosition(targetPosition);
+    updatePositionDisplay(targetPosition);
 });
 
 verticalSliderContainer.addEventListener('pointerup', (e) => {
@@ -706,59 +515,9 @@ verticalSliderContainer.addEventListener('pointerup', (e) => {
     isDragging = false;
     verticalSliderContainer.releasePointerCapture(e.pointerId); // Release pointer capture
     console.log('Pointer Up - Dragging Stop');
-    stopHighFrequencySampler(); // Stop high-frequency internal sampling
     
-    // Don't stop the main control loop - let it continue to handle any pending commands
-    // It will naturally stop sending when position stops changing
-
-    // Ensure UI reflects the final state
-    updateSleevePosition(currentRawPosition);
-    updatePositionDisplay(currentRawPosition);
-    
-    // Check if we're currently in sprint mode
-    if (isSprinting && serverWs && serverWs.readyState === WebSocket.OPEN && currentDeviceIndex !== null) {
-        // User lifted finger during sprint - send the sprint command immediately
-        const minSL = minStrokeValue;
-        const maxSL = maxStrokeValue;
-        const sprintEndPosition = minSL + currentRawPosition * (maxSL - minSL);
-        const sprintDuration = performance.now() - sprintStartTime;
-        
-        console.log(`Sprint ending (pointerup): start=${sprintStartPosition.toFixed(3)}, end=${sprintEndPosition.toFixed(3)}, duration=${sprintDuration.toFixed(0)}ms`);
-        
-        const result = calculateSprint(sprintStartPosition, sprintEndPosition, currentDeviceIndex);
-        
-        // Send the sprint command
-        const message = {
-            commands: result.commands
-        };
-        
-        serverWs.send(JSON.stringify(message));
-        console.log(`[Sprint] Sent command ${result.commandId} on pointerup: distance=${result.distance.toFixed(3)}, duration=${result.duration}ms`);
-        
-        // Update state
-        lastSentPosition = result.position;
-        lastCommandedPosition = result.position;
-        lastSentCommandId = result.commandId;
-        
-        // Reset sprint mode
-        isSprinting = false;
-        sprintStartPosition = null;
-        sprintStartTime = null;
-        
-        // Update UI to show sprint was sent
-        updateUI(sprintEndPosition, 0, {
-            mode: 'Sprint (Sent)',
-            duration: result.duration
-        });
-    } else {
-        // Normal pointerup - not in sprint mode
-        const minSL = minStrokeValue;
-        const maxSL = maxStrokeValue;
-        const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
-        
-        // Force one last update by changing lastSentPosition
-        lastSentPosition = -1;
-    }
+    // Don't stop the main control loop - let physics naturally come to rest
+    // The virtual toy will smoothly decelerate due to friction when target=current
     
     speedWarningElem.textContent = '';
 });
@@ -781,11 +540,6 @@ verticalSliderContainer.addEventListener('pointerleave', (e) => {
              console.error("Error dispatching pointerup from pointerleave:", err);
              // Fallback safety stop if dispatch fails
              isDragging = false;
-             stopHighFrequencySampler();
-             
-             // Force final position update
-             lastSentPosition = -1;
-             
              speedWarningElem.textContent = '';
          }
     }
@@ -820,9 +574,6 @@ function handleModeChange() {
         // Stop everything if switching away from slider mode while dragging
         if (isDragging) {
             isDragging = false; // Force stop dragging state
-            stopHighFrequencySampler();
-            // Force final position update
-            lastSentPosition = -1;
             speedWarningElem.textContent = '';
         }
         // startMotionControl(); // Placeholder
