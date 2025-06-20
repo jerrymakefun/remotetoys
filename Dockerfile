@@ -34,6 +34,9 @@ COPY --from=builder /webrtc_server .
 # 注意这里的路径，Dockerfile 在 GO/ 目录下，所以 client 和 controller 是相对路径
 COPY client/ ./client/
 COPY controller/ ./controller/
+COPY locales/ ./locales/
+COPY index.html .
+COPY style.css .
 
 # 暴露应用运行的端口
 EXPOSE 8080
