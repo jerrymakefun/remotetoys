@@ -130,6 +130,32 @@ Once the image is successfully built, you can run it with a single command.
 *   **Stop the container**: `docker stop my-webrtc-app`
 *   **Restart the container**: `docker start my-webrtc-app`
 
+## Updating the Application
+
+To update your running application with the latest code from GitHub, follow these steps on your server.
+
+1.  **Navigate to the project directory and pull the latest changes**:
+    ```bash
+    cd remotetoys/GO/
+    git pull
+    ```
+
+2.  **Rebuild the Docker image with the new code**:
+    ```bash
+    docker build -t webrtc-server .
+    ```
+
+3.  **Stop and remove the old container**:
+    ```bash
+    docker stop my-webrtc-app
+    docker rm my-webrtc-app
+    ```
+
+4.  **Start a new container with the updated image**:
+    ```bash
+    docker run -d -p 8080:8080 --restart always --name my-webrtc-app webrtc-server
+    ```
+Your application is now running with the latest version.
 ---
 
 <details>
