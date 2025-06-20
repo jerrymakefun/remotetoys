@@ -450,50 +450,49 @@ func constructLinearCmd(deviceIndex uint32, targetPosition float64, speed float6
 
 	var duration uint32
 	const maxCalculatedDuration uint32 = 90 // Max duration in ms (e.g., 3 * minSafetyDuration)
+	const assumedMaxRawSpeed float64 = 5.0  // Maximum physical speed (units per second) when speed=1.0
+	const minSpeedThreshold float64 = 0.05  // Minimum speed to avoid extremely long durations
 
-	// --- Simplified Duration Calculation with Strict Upper Bound ---
-	if speed > 0.001 && lastCommandedPosition >= 0.0 { // Calculate only if moving and know last pos
-		deltaPos := math.Abs(pos - lastCommandedPosition)
-		if deltaPos > 0.001 { // Only calculate if position actually changed
-			// De-normalize speed (controller uses assumedMaxRawSpeed = 5.0)
-			rawSpeed := speed * 5.0
-			if rawSpeed > 0.01 { // Avoid division by zero/very small numbers
-				durationSeconds := deltaPos / rawSpeed
-				calculatedDuration := uint32(durationSeconds * 1000)
+	// --- Velocity-Aware Duration Calculation ---
+	// Calculate position displacement
+	deltaPos := 0.0
+	if lastCommandedPosition >= 0.0 {
+		deltaPos = math.Abs(pos - lastCommandedPosition)
+	}
 
-				// Clamp duration: minimum safety, STRICT maximum
-				if calculatedDuration < minSafetyDuration {
-					duration = minSafetyDuration
-				} else if calculatedDuration > maxCalculatedDuration {
-					duration = maxCalculatedDuration // Apply strict upper limit
-				} else {
-					duration = calculatedDuration
-				}
-				// log.Printf("Speed %.2f, Delta %.4f, CalcDur %dms -> Used %dms", speed, deltaPos, calculatedDuration, duration)
-			} else {
-				// Raw speed too low, use a default short duration
-				duration = minSafetyDuration
-				// log.Printf("Speed %.2f, Delta %.4f, RawSpeed too low, using min %dms", speed, deltaPos, duration)
-			}
-		} else {
-			// Position didn't change, use a default short duration
-			duration = minSafetyDuration
-			// log.Printf("Speed %.2f, Delta %.4f, No pos change, using min %dms", speed, deltaPos, duration)
-		}
+	// Handle special cases first
+	if lastCommandedPosition < 0.0 {
+		// First command - no previous position, use minimum duration
+		duration = minSafetyDuration
+		log.Printf("First command (no previous position), using min duration: %dms", duration)
+	} else if deltaPos < 0.001 {
+		// Position hasn't changed meaningfully
+		duration = minSafetyDuration
+		log.Printf("Position unchanged (delta=%.4f), using min duration: %dms", deltaPos, duration)
+	} else if speed < minSpeedThreshold {
+		// Speed too low - apply minimum speed threshold to avoid infinite duration
+		effectiveSpeed := minSpeedThreshold * assumedMaxRawSpeed
+		durationSeconds := deltaPos / effectiveSpeed
+		duration = uint32(durationSeconds * 1000)
+		log.Printf("Speed too low (%.3f), using minimum threshold. Delta=%.4f, Duration=%dms", speed, deltaPos, duration)
 	} else {
-		// Not moving or unknown last position, use a default short duration
-		duration = minSafetyDuration
-		// log.Printf("Speed %.2f or LastPos %.2f invalid, using min %dms", speed, lastCommandedPosition, duration)
+		// Normal case: Calculate duration based on displacement and speed
+		// Duration (seconds) = Distance / (User Speed * Physical Speed Constant)
+		effectiveSpeed := speed * assumedMaxRawSpeed
+		durationSeconds := deltaPos / effectiveSpeed
+		duration = uint32(durationSeconds * 1000)
+		log.Printf("Normal calculation: Delta=%.4f, Speed=%.3f, Duration=%dms", deltaPos, speed, duration)
 	}
 
-	// Final safety check (redundant but safe)
+	// Apply safety boundaries - ensure duration is within allowed range
 	if duration < minSafetyDuration {
+		log.Printf("Duration %dms below minimum, clamping to %dms", duration, minSafetyDuration)
 		duration = minSafetyDuration
-	}
-	if duration > maxCalculatedDuration { // Ensure upper bound is respected
+	} else if duration > maxCalculatedDuration {
+		log.Printf("Duration %dms above maximum, clamping to %dms", duration, maxCalculatedDuration)
 		duration = maxCalculatedDuration
 	}
-	// --- End Simplified Duration Calculation ---
+	// --- End Velocity-Aware Duration Calculation ---
 
 	cmd := ButtplugLinearCmd{
 		Id:          ButtplugMsgID,
