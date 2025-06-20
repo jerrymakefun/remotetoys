@@ -32,6 +32,7 @@
   "statusControllerDisconnected": "Controller disconnected",
   "statusErrorServer": "Server connection error",
   "statusDisconnectedServer": "Server connection lost",
+  "statusReconnecting": "Reconnecting... (attempt %s/%s)",
   "statusErrorIntiface": "Intiface connection error",
   "statusDisconnectedIntiface": "Intiface connection lost"
 }

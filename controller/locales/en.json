@@ -22,6 +22,7 @@
   "statusConnected": "Connected",
   "statusError": "Error",
   "statusDisconnectedJs": "Disconnected",
+  "statusReconnecting": "Reconnecting... (attempt %s/%s)",
   "warningSpeedTooFast": "Speed too fast, may not respond accurately!",
   "switchToEnglish": "Switch to English",
   "switchToChinese": "切换到中文"

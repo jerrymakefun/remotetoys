@@ -32,6 +32,7 @@
   "statusControllerDisconnected": "控制端已断开",
   "statusErrorServer": "服务器连接错误",
   "statusDisconnectedServer": "服务器连接已断开",
+  "statusReconnecting": "正在重新连接... (第 %s/%s 次)",
   "statusErrorIntiface": "Intiface 连接错误",
   "statusDisconnectedIntiface": "Intiface 连接已断开"
 }

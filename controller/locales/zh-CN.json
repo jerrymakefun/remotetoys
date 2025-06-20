@@ -22,6 +22,7 @@
   "statusConnected": "已连接",
   "statusError": "错误",
   "statusDisconnectedJs": "已断开",
+  "statusReconnecting": "正在重新连接... (第 %s/%s 次)",
   "warningSpeedTooFast": "速度过快，可能无法精确响应!",
   "switchToEnglish": "Switch to English",
   "switchToChinese": "切换到中文"

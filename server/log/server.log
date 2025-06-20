@@ -955,3 +955,22 @@
 2025/06/20 08:14:28 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
 2025/06/20 08:14:28 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
 2025/06/20 08:14:28 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 10:22:57 Key mc4236xvows0ulcojw: Controller connection closed.
+2025/06/20 10:22:57 Key mc4236xvows0ulcojw: Exiting handleControllerMessages loop.
+2025/06/20 10:22:57 Key mc4236xvows0ulcojw: Controller disconnected
+2025/06/20 10:22:57 Key mc4236xvows0ulcojw: Client/Beikongduan connection closed.
+2025/06/20 10:22:57 Key mc4236xvows0ulcojw: Exiting handleClientMessages loop.
+2025/06/20 10:22:57 Key mc4236xvows0ulcojw: Client/Beikongduan disconnected
+2025/06/20 10:22:57 Key mc4236xvows0ulcojw: Room is empty, removing.
+2025/06/20 10:24:45 Client Connected: Type=client, Key=mc46srrncwky3gip977
+2025/06/20 10:24:45 Creating new room for key: mc46srrncwky3gip977
+2025/06/20 10:24:58 Key mc46srrncwky3gip977: Client/Beikongduan connection closed.
+2025/06/20 10:24:58 Key mc46srrncwky3gip977: Exiting handleClientMessages loop.
+2025/06/20 10:24:58 Key mc46srrncwky3gip977: Client/Beikongduan disconnected
+2025/06/20 10:24:58 Key mc46srrncwky3gip977: Room is empty, removing.
+2025/06/20 10:25:36 Client Connected: Type=client, Key=mc46srrncwky3gip977
+2025/06/20 10:25:36 Creating new room for key: mc46srrncwky3gip977
+2025/06/20 10:26:46 Key mc46srrncwky3gip977: Client/Beikongduan connection closed.
+2025/06/20 10:26:46 Key mc46srrncwky3gip977: Exiting handleClientMessages loop.
+2025/06/20 10:26:46 Key mc46srrncwky3gip977: Client/Beikongduan disconnected
+2025/06/20 10:26:46 Key mc46srrncwky3gip977: Room is empty, removing.

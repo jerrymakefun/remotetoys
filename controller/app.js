@@ -146,6 +146,13 @@ let currentSampleIntervalMs = parseInt(sampleIntervalSlider.value, 10);
 let currentControlMode = 'slider';
 let currentRawPosition = 0.5; // Store the raw 0-1 position from the vertical slider
 
+// --- Reconnection State ---
+let reconnectAttempts = 0;
+let reconnectTimeoutId = null;
+const maxReconnectAttempts = 10;
+const maxReconnectInterval = 30000; // 30 seconds
+let shouldReconnect = true; // Flag to control reconnection
+
 // --- Custom Range Slider State ---
 const rangeContainer = document.querySelector('.range-slider-container');
 const rangeMinHandle = document.getElementById('range-handle-min');
@@ -190,6 +197,12 @@ function connectToServer() {
     serverWs.onopen = () => {
         updateServerStatus('statusConnected', 'connected'); // Use key
         console.log('Connected to server');
+        // Reset reconnection state on successful connection
+        reconnectAttempts = 0;
+        if (reconnectTimeoutId) {
+            clearTimeout(reconnectTimeoutId);
+            reconnectTimeoutId = null;
+        }
     };
 
     serverWs.onmessage = (event) => {
@@ -214,10 +227,26 @@ function connectToServer() {
 
     serverWs.onclose = (event) => {
         console.log('Disconnected from server:', event.code, event.reason);
-        updateServerStatus('statusDisconnectedJs', 'disconnected'); // Use key
         serverWs = null;
-        // Optional: Attempt to reconnect
-        // setTimeout(connectToServer, 5000);
+        
+        // Implement auto-reconnect with exponential backoff
+        if (shouldReconnect && reconnectAttempts < maxReconnectAttempts) {
+            reconnectAttempts++;
+            const delay = Math.min(maxReconnectInterval, Math.pow(2, reconnectAttempts - 1) * 1000);
+            
+            console.log(`Attempting to reconnect (attempt ${reconnectAttempts}/${maxReconnectAttempts}) in ${delay}ms...`);
+            updateServerStatus('statusReconnecting', 'connecting', reconnectAttempts, maxReconnectAttempts);
+            
+            reconnectTimeoutId = setTimeout(() => {
+                console.log(`Reconnect attempt ${reconnectAttempts}...`);
+                connectToServer();
+            }, delay);
+        } else {
+            updateServerStatus('statusDisconnectedJs', 'disconnected');
+            if (reconnectAttempts >= maxReconnectAttempts) {
+                console.log('Max reconnection attempts reached. Please refresh the page.');
+            }
+        }
     };
 }
 
