@@ -19,9 +19,10 @@
 </head>
 <body>
     <h1 data-i18n="mainHeading">被控端</h1>
-    <!-- Unified Status Indicator -->
+    <!-- Separated Status Indicators -->
     <div style="text-align: center; margin-bottom: 1em;">
-    	<span id="client-status" class="status disconnected" data-i18n="statusConnectingServer">正在连接服务器...</span>
+    	<p><span data-i18n="serverStatusLabel">服务器连接状态:</span> <span id="server-status" class="status disconnected">...</span></p>
+    	<p><span data-i18n="sessionStatusLabel">会话状态:</span> <span id="session-status" class="status disconnected">...</span></p>
     </div>
    
     <!-- Share Link Section (remains) -->

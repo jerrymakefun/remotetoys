@@ -105,9 +105,8 @@ const i18n = {
 // --- End i18n Implementation ---
 
 
-const clientStatusElem = document.getElementById('client-status'); // NEW: Unified status element
-// const serverStatusElem = document.getElementById('server-status'); // REMOVED
-// const intifaceStatusElem = document.getElementById('intiface-status'); // REMOVED
+const serverStatusElem = document.getElementById('server-status');
+const sessionStatusElem = document.getElementById('session-status');
 const intifaceUrlInput = document.getElementById('intiface-url');
 const connectIntifaceBtn = document.getElementById('connect-intiface');
 const shareSection = document.getElementById('share-section'); // 新增
@@ -131,7 +130,7 @@ function connectToServer() {
     if (!key) {
         const errorMsg = i18n.t('errorKeyMissing');
         console.error(errorMsg);
-        updateClientStatus('errorKeyMissing', 'disconnected'); // Use new status function
+        updateServerStatus('errorKeyMissing', 'disconnected');
         alert(i18n.t('alertKeyMissing'));
         return; // Stop connection attempt
        }
@@ -140,7 +139,7 @@ function connectToServer() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const serverUrl = `${protocol}//${window.location.host}/ws?type=client&key=${encodeURIComponent(key)}`;
     console.log(`Connecting to: ${serverUrl}`); // Log the full URL for debugging
-    updateClientStatus('statusConnectingServer', 'connecting'); // Use new status function and key
+    updateServerStatus('statusConnectingServer', 'connecting');
    
     // 构建控制端分享链接
     controllerShareUrl = `${window.location.origin}/controller/index.html?key=${encodeURIComponent(key)}`;
@@ -150,7 +149,8 @@ function connectToServer() {
 
     serverWs.onopen = () => {
     	// Server connected, now waiting for controller unless server tells us otherwise
-    	updateClientStatus('statusWaitingController', 'connecting'); // Use new status function and key
+    	updateServerStatus('statusConnected', 'connected');
+    	updateSessionStatus('statusWaitingController', 'connecting');
     	console.log('Connected to server');
     	// 连接成功后显示分享按钮区域
     	if (shareSection) {
@@ -168,10 +168,10 @@ function connectToServer() {
     			switch (message.state) {
     				case 'controller_present':
     					// Only update if we are currently waiting for controller
-    					if (clientStatusElem.textContent === i18n.t('statusWaitingController')) {
+    					if (sessionStatusElem.textContent === i18n.t('statusWaitingController')) {
     						// If Intiface isn't connected yet, prompt to connect
     						if (!intifaceWs || intifaceWs.readyState !== WebSocket.OPEN) {
-    							updateClientStatus('statusConnectIntifacePrompt', 'connecting');
+    							updateSessionStatus('statusConnectIntifacePrompt', 'connecting');
     						} else {
     							// If Intiface IS connected, but no device ready, show scanning/no device
     							// The Intiface connection logic will handle the specific status
@@ -180,7 +180,7 @@ function connectToServer() {
     					break;
     				case 'controller_disconnected':
     					// Controller left, go back to waiting (if server is still up)
-    					updateClientStatus('statusControllerDisconnected', 'disconnected');
+    					updateSessionStatus('statusControllerDisconnected', 'disconnected');
     					// Maybe revert to 'statusWaitingController' after a delay? Or just show disconnected.
     					break;
     				// Add other server-sent statuses if needed
@@ -209,12 +209,12 @@ function connectToServer() {
    
     serverWs.onerror = (error) => {
     	console.error('Server WebSocket error:', error);
-    	updateClientStatus('statusErrorServer', 'disconnected'); // Use new key
+    	updateServerStatus('statusErrorServer', 'disconnected');
     };
    
     serverWs.onclose = (event) => {
     	console.log('Disconnected from server:', event.code, event.reason);
-    	updateClientStatus('statusDisconnectedServer', 'disconnected'); // Use new key
+    	updateServerStatus('statusDisconnectedServer', 'disconnected');
     	serverWs = null;
     	// Optional: Attempt to reconnect after a delay
     	// setTimeout(connectToServer, 5000);
@@ -222,14 +222,17 @@ function connectToServer() {
    }
    
    
-   // --- Unified Client Status Update ---
-   function updateClientStatus(i18nKey, className, ...args) {
-    if (!clientStatusElem) return;
-    clientStatusElem.textContent = i18n.t(i18nKey, ...args);
-    // Remove old classes before adding the new one
-    clientStatusElem.classList.remove('connected', 'disconnected', 'connecting');
-    clientStatusElem.classList.add(className);
-    console.log(`Client status updated: ${i18nKey} (${className})`);
+   // --- Separated Status Update Functions ---
+   function updateServerStatus(i18nKey, className, ...args) {
+    if (!serverStatusElem) return;
+    serverStatusElem.textContent = i18n.t(i18nKey, ...args);
+    serverStatusElem.className = `status ${className}`;
+   }
+
+   function updateSessionStatus(i18nKey, className, ...args) {
+    if (!sessionStatusElem) return;
+    sessionStatusElem.textContent = i18n.t(i18nKey, ...args);
+    sessionStatusElem.className = `status ${className}`;
    }
    
    
@@ -247,7 +250,7 @@ function connectToIntiface() {
         return;
     }
 
-    updateClientStatus('statusConnectingIntiface', 'connecting'); // Use new function and key
+    updateSessionStatus('statusConnectingIntiface', 'connecting');
     console.log(`Attempting to connect to Intiface at ${intifaceUrl}`);
    
     intifaceWs = new WebSocket(intifaceUrl);
@@ -271,7 +274,7 @@ function connectToIntiface() {
             console.log('Sent RequestServerInfo handshake to Intiface:', JSON.stringify(handshakeMsg));
         } catch (e) {
             console.error("Error sending handshake:", e);
-            updateClientStatus('intifaceHandshakeFailed', 'disconnected'); // Use new function and key
+            updateSessionStatus('intifaceHandshakeFailed', 'disconnected');
             intifaceWs.close();
            }
            // ---------------------------------
@@ -292,7 +295,7 @@ function connectToIntiface() {
                     console.log(`Intiface ServerInfo: Name=${msgContainer.ServerInfo.ServerName}, Version=${msgContainer.ServerInfo.MessageVersion}`);
                     // Request Device List after getting ServerInfo
                     console.log("Requesting Device List from Intiface...");
-                    updateClientStatus('statusScanningDevices', 'connecting'); // Update status while scanning
+                    updateSessionStatus('statusScanningDevices', 'connecting');
                     const requestListMsg = [{ "RequestDeviceList": { "Id": nextButtplugId++ } }];
                     sendToIntiface(requestListMsg);
                
@@ -320,7 +323,7 @@ function connectToIntiface() {
                         targetDeviceIndex = null;
                         // Notify server that the device is gone
                         sendDeviceIndexToServer(null);
-                        updateClientStatus('statusIntifaceStatusTargetRemoved', 'disconnected'); // Use new function and key
+                        updateSessionStatus('statusIntifaceStatusTargetRemoved', 'disconnected');
                        }
                        // TODO: Update UI to remove device
                 }
@@ -333,13 +336,13 @@ function connectToIntiface() {
 
     intifaceWs.onerror = (error) => {
         console.error('Intiface WebSocket error:', error);
-        updateClientStatus('statusErrorIntiface', 'disconnected'); // Use new key
+        updateSessionStatus('statusErrorIntiface', 'disconnected');
        };
       
        intifaceWs.onclose = (event) => {
         console.log('Disconnected from Intiface:', event.code, event.reason);
         // Only update status if it wasn't already set to target removed or no device found etc.
-        const currentStatusText = clientStatusElem.textContent;
+        const currentStatusText = sessionStatusElem.textContent;
         const knownEndStates = [
         	i18n.t('statusIntifaceStatusTargetRemoved'),
         	i18n.t('statusNoDevice'),
@@ -348,7 +351,7 @@ function connectToIntiface() {
                   i18n.t('statusErrorServer')
         ];
         if (!knownEndStates.includes(currentStatusText)) {
-        	 updateClientStatus('statusDisconnectedIntiface', 'disconnected'); // Use new key
+        	 updateSessionStatus('statusDisconnectedIntiface', 'disconnected');
         }
         intifaceWs = null;
        };
@@ -389,7 +392,7 @@ function processDeviceList(devices) {
          if (foundDevice) {
              targetDeviceIndex = foundDevice.DeviceIndex;
              console.log(`Target device found: Name=${foundDevice.DeviceName}, Index=${targetDeviceIndex}`);
-             updateClientStatus('statusDeviceReady', 'connected'); // Use new function and key
+             updateSessionStatus('statusDeviceReady', 'connected');
              // Notify our Go server about the device index
              sendDeviceIndexToServer(targetDeviceIndex);
             }
@@ -397,7 +400,7 @@ function processDeviceList(devices) {
 
      if (targetDeviceIndex === null) {
          console.warn("No suitable target device found in the list.");
-         updateClientStatus('statusNoDevice', 'disconnected'); // Use new function and key
+         updateSessionStatus('statusNoDevice', 'disconnected');
         }
         }
        
@@ -512,6 +515,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 7. Connect to server
     connectToServer();
+    updateSessionStatus('statusAwaitingSession', 'disconnected'); // 设置初始会话状态
 
     // Optional: Auto-connect Intiface logic remains unchanged
     // if (intifaceUrlInput.value === 'ws://localhost:12345') {
