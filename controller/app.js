@@ -413,7 +413,7 @@ function constructAndSendCommand() {
 }
 
 // Helper function to send the actual control message
-function sendControlCommand(position, speed) {
+function sendControlCommand(position, speed, isFinal = false) {
      if (!serverWs || serverWs.readyState !== WebSocket.OPEN) {
         console.warn('Cannot send command, WebSocket not open.');
         return;
@@ -428,6 +428,12 @@ function sendControlCommand(position, speed) {
         speed: finalSpeed,
         sampleIntervalMs: currentSampleIntervalMs // Send interval for server context
     };
+    
+    // Add isFinal flag if it's true
+    if (isFinal) {
+        message.isFinal = true;
+    }
+    
     // Avoid excessive logging if sending frequently
     // console.log('Constructed & Sending:', message);
     serverWs.send(JSON.stringify(message));
@@ -512,11 +518,16 @@ verticalSliderContainer.addEventListener('pointerup', (e) => {
     updateSleevePosition(currentRawPosition);
     updatePositionDisplay(currentRawPosition);
 
+    // Send final positioning command with low speed for precise arrival
+    const minSL = minStrokeValue;
+    const maxSL = maxStrokeValue;
+    const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
+    const finalSpeed = 0.1; // Low speed for precise positioning
+    sendControlCommand(finalPosition, finalSpeed, true); // Send with isFinal=true
+    
     // Update UI speed display
     currentSpeedElem.textContent = (0.0).toFixed(1); // Show 0 speed immediately on UI
     speedWarningElem.textContent = ''; // Clear warning on pointer up
-    // No final command needed as per PLAN.md (let it finish last command)
-    // ------------------------------------
 });
 
 verticalSliderContainer.addEventListener('pointerleave', (e) => {
@@ -539,10 +550,11 @@ verticalSliderContainer.addEventListener('pointerleave', (e) => {
              isDragging = false;
              stopSendCommandInterval();
              stopHighFrequencySampler();
-             // Send a stop command as a safety measure, using the last known raw position
+             // Send final positioning command, using the last known raw position
              const minSL = minStrokeValue;
              const maxSL = maxStrokeValue;
-             sendControlCommand(minSL + currentRawPosition * (maxSL - minSL), 0);
+             const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
+             sendControlCommand(finalPosition, 0.1, true); // Send with isFinal=true
              // Update UI
              currentSpeedElem.textContent = (0.0).toFixed(1);
              speedWarningElem.textContent = '';
@@ -586,10 +598,11 @@ function handleModeChange() {
             isDragging = false; // Force stop dragging state
             stopSendCommandInterval();
             stopHighFrequencySampler();
-            // Send a stop command, using the last known raw position
+            // Send final positioning command, using the last known raw position
             const minSL = minStrokeValue;
             const maxSL = maxStrokeValue;
-            sendControlCommand(minSL + currentRawPosition * (maxSL - minSL), 0);
+            const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
+            sendControlCommand(finalPosition, 0.1, true); // Send with isFinal=true
             // Update UI
              currentSpeedElem.textContent = (0.0).toFixed(1);
              speedWarningElem.textContent = '';

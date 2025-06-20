@@ -58,6 +58,7 @@ type ControlMessage struct {
 	Position         float64 `json:"position"`         // 0.0 - 1.0
 	Speed            float64 `json:"speed"`            // 0.0 - 1.0 (Client calculated, ignored for duration)
 	SampleIntervalMs uint32  `json:"sampleIntervalMs"` // Client's sample interval
+	IsFinal          bool    `json:"isFinal,omitempty"` // True for final positioning command
 }
 
 // MessageFromClient defines messages received FROM the client/beikongduan
@@ -273,10 +274,10 @@ func handleControllerMessages(controller *Client, room *Room) { // Added room pa
 
 		switch msg.Type {
 		case "control":
-			log.Printf("Key %s: Constructing LinearCmd for DeviceIndex %d: Pos=%.2f, Speed=%.2f, Interval=%dms",
-				room.key, *targetIndex, msg.Position, msg.Speed, msg.SampleIntervalMs)
-			// Pass interval, speed, and last position to calculate Duration
-			buttplugCmdJSON, constructErr = constructLinearCmd(*targetIndex, msg.Position, msg.Speed, msg.SampleIntervalMs, currentLastPos)
+			log.Printf("Key %s: Constructing LinearCmd for DeviceIndex %d: Pos=%.2f, Speed=%.2f, Interval=%dms, IsFinal=%v",
+				room.key, *targetIndex, msg.Position, msg.Speed, msg.SampleIntervalMs, msg.IsFinal)
+			// Pass interval, speed, last position, and isFinal flag to calculate Duration
+			buttplugCmdJSON, constructErr = constructLinearCmd(*targetIndex, msg.Position, msg.Speed, msg.SampleIntervalMs, currentLastPos, msg.IsFinal)
 			if constructErr != nil {
 				log.Printf("Key %s: Error constructing LinearCmd: %v", room.key, constructErr)
 				continue
@@ -445,15 +446,22 @@ func wrapButtplugMessage(command interface{}) ([]byte, error) {
 }
 
 // constructLinearCmd creates a Buttplug LinearCmd JSON message, calculating duration based on speed and position change.
-func constructLinearCmd(deviceIndex uint32, targetPosition float64, speed float64, sampleIntervalMs uint32, lastCommandedPosition float64) ([]byte, error) {
+func constructLinearCmd(deviceIndex uint32, targetPosition float64, speed float64, sampleIntervalMs uint32, lastCommandedPosition float64, isFinal bool) ([]byte, error) {
 	pos := math.Max(0.0, math.Min(1.0, targetPosition)) // Clamp position
 
 	var duration uint32
 	const maxCalculatedDuration uint32 = 90 // Max duration in ms (e.g., 3 * minSafetyDuration)
 	const assumedMaxRawSpeed float64 = 5.0  // Maximum physical speed (units per second) when speed=1.0
 	const minSpeedThreshold float64 = 0.05  // Minimum speed to avoid extremely long durations
+	const finalCommandDuration uint32 = 150 // Fixed duration for final positioning commands
 
-	// --- Velocity-Aware Duration Calculation ---
+	// --- Handle Final Command ---
+	if isFinal {
+		duration = finalCommandDuration
+		log.Printf("Final command: Using fixed duration of %dms for precise positioning", duration)
+		// Skip the rest of the velocity calculation
+	} else {
+		// --- Velocity-Aware Duration Calculation ---
 	// Calculate position displacement
 	deltaPos := 0.0
 	if lastCommandedPosition >= 0.0 {
@@ -484,15 +492,16 @@ func constructLinearCmd(deviceIndex uint32, targetPosition float64, speed float6
 		log.Printf("Normal calculation: Delta=%.4f, Speed=%.3f, Duration=%dms", deltaPos, speed, duration)
 	}
 
-	// Apply safety boundaries - ensure duration is within allowed range
-	if duration < minSafetyDuration {
-		log.Printf("Duration %dms below minimum, clamping to %dms", duration, minSafetyDuration)
-		duration = minSafetyDuration
-	} else if duration > maxCalculatedDuration {
-		log.Printf("Duration %dms above maximum, clamping to %dms", duration, maxCalculatedDuration)
-		duration = maxCalculatedDuration
+		// Apply safety boundaries - ensure duration is within allowed range
+		if duration < minSafetyDuration {
+			log.Printf("Duration %dms below minimum, clamping to %dms", duration, minSafetyDuration)
+			duration = minSafetyDuration
+		} else if duration > maxCalculatedDuration {
+			log.Printf("Duration %dms above maximum, clamping to %dms", duration, maxCalculatedDuration)
+			duration = maxCalculatedDuration
+		}
+		// --- End Velocity-Aware Duration Calculation ---
 	}
-	// --- End Velocity-Aware Duration Calculation ---
 
 	cmd := ButtplugLinearCmd{
 		Id:          ButtplugMsgID,
