@@ -6,8 +6,7 @@ import (
 	"log"
 	"math"
 	"net/http"
-	"os"            // Added for file operations
-	"path/filepath" // Added for path joining
+	"os" // For stdout
 	"sync"
 	"time"
 
@@ -687,7 +686,7 @@ func main() {
 
 	// Start server
 	log.Println("HTTP server starting on :8080, serving /ws, /style.css, /locales/, /controller/, /client/, and / for index.html")
-	err = http.ListenAndServe(":8080", nil) // Use = instead of := because err is already declared
+	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe Error: ", err)
 	}
