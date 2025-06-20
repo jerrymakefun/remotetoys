@@ -76,10 +76,10 @@ if [ -n "${1-}" ]; then
     fi
 
 else
-    log_info "No commit hash provided. Pulling latest changes from master."
-    # Ensure we are on the master branch before pulling
-    git checkout master
-    git pull origin master
+    log_info "No commit hash provided. Pulling latest changes from dev."
+    # Ensure we are on the dev branch before pulling
+    git checkout dev
+    git pull origin dev
     log_success "Git pull complete."
 fi
 
