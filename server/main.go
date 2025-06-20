@@ -9,14 +9,16 @@ import (
 	"os"            // Added for file operations
 	"path/filepath" // Added for path joining
 	"sync"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
 
 // Client represents a single websocket connection along with its type.
 type Client struct {
-	conn *websocket.Conn
-	Type string // "controller" or "client"
+	conn         *websocket.Conn
+	Type         string    // "controller" or "client"
+	lastPingTime time.Time // Track last heartbeat time
 }
 
 // Room represents a single session identified by a key.
@@ -93,7 +95,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	}
 	defer ws.Close()
 
-	currentClient := &Client{conn: ws, Type: clientType}
+	currentClient := &Client{conn: ws, Type: clientType, lastPingTime: time.Now()}
 	log.Printf("Client Connected: Type=%s, Key=%s", clientType, key)
 
 	// Find or create room
@@ -273,6 +275,15 @@ func handleControllerMessages(controller *Client, room *Room) { // Added room pa
 		}
 
 		switch msg.Type {
+		case "ping":
+			// Handle heartbeat ping
+			room.mu.Lock()
+			if room.controller == controller {
+				controller.lastPingTime = time.Now()
+				log.Printf("Key %s: Received ping from controller, updated lastPingTime", room.key)
+			}
+			room.mu.Unlock()
+			continue // Don't need to forward ping to client
 		case "control":
 			log.Printf("Key %s: Constructing LinearCmd for DeviceIndex %d: Pos=%.2f, Speed=%.2f, Interval=%dms, IsFinal=%v",
 				room.key, *targetIndex, msg.Position, msg.Speed, msg.SampleIntervalMs, msg.IsFinal)
@@ -533,6 +544,39 @@ func constructStopCmd(deviceIndex uint32) ([]byte, error) {
 	return wrapButtplugMessage(cmd)
 }
 
+// heartbeatChecker periodically checks for stale connections and closes them
+func heartbeatChecker() {
+	const checkInterval = 15 * time.Second
+	const timeout = 30 * time.Second
+	
+	for {
+		time.Sleep(checkInterval)
+		
+		roomsMu.RLock()
+		roomsCopy := make([]*Room, 0, len(rooms))
+		for _, room := range rooms {
+			roomsCopy = append(roomsCopy, room)
+		}
+		roomsMu.RUnlock()
+		
+		// Check each room without holding the global lock
+		for _, room := range roomsCopy {
+			room.mu.Lock()
+			
+			// Check controller heartbeat
+			if room.controller != nil && room.controllerConnected {
+				if time.Since(room.controller.lastPingTime) > timeout {
+					log.Printf("Key %s: Controller heartbeat timeout, closing connection", room.key)
+					room.controller.conn.Close()
+					// The defer in handleConnections will handle cleanup
+				}
+			}
+			
+			room.mu.Unlock()
+		}
+	}
+}
+
 // --- Main Function ---
 
 func main() {
@@ -558,6 +602,9 @@ func main() {
 	log.SetOutput(logFile) // Redirect standard log output to the file
 	log.Println("--- Server Started: Logging redirected to file ---")
 	// --- End Log Setup ---
+
+	// Start heartbeat checker goroutine
+	go heartbeatChecker()
 
 	// WebSocket handler
 	http.HandleFunc("/ws", handleConnections)

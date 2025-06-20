@@ -153,6 +153,9 @@ const maxReconnectAttempts = 10;
 const maxReconnectInterval = 30000; // 30 seconds
 let shouldReconnect = true; // Flag to control reconnection
 
+// --- Heartbeat State ---
+let heartbeatIntervalId = null;
+
 // --- Custom Range Slider State ---
 const rangeContainer = document.querySelector('.range-slider-container');
 const rangeMinHandle = document.getElementById('range-handle-min');
@@ -203,6 +206,18 @@ function connectToServer() {
             clearTimeout(reconnectTimeoutId);
             reconnectTimeoutId = null;
         }
+        
+        // Start heartbeat
+        if (heartbeatIntervalId) {
+            clearInterval(heartbeatIntervalId);
+        }
+        heartbeatIntervalId = setInterval(() => {
+            if (serverWs && serverWs.readyState === WebSocket.OPEN) {
+                const pingMsg = { type: "ping" };
+                serverWs.send(JSON.stringify(pingMsg));
+                console.log('Sent heartbeat ping to server');
+            }
+        }, 10000); // Send ping every 10 seconds
     };
 
     serverWs.onmessage = (event) => {
@@ -228,6 +243,12 @@ function connectToServer() {
     serverWs.onclose = (event) => {
         console.log('Disconnected from server:', event.code, event.reason);
         serverWs = null;
+        
+        // Clear heartbeat interval
+        if (heartbeatIntervalId) {
+            clearInterval(heartbeatIntervalId);
+            heartbeatIntervalId = null;
+        }
         
         // Implement auto-reconnect with exponential backoff
         if (shouldReconnect && reconnectAttempts < maxReconnectAttempts) {
