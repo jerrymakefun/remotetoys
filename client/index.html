@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="pageTitle">被控端 - WebToy Controller</title>
+    <script>
+      // Define a cache-busting variable using the current timestamp.
+      const CACHE_BUSTER = new Date().getTime();
+    </script>
     <style>
         body { font-family: sans-serif; padding: 1em; background-color: #f0f0f0; }
         .status { margin-bottom: 0.5em; padding: 0.5em; border-radius: 4px; }
@@ -34,7 +38,10 @@
     	<!-- Intiface status text is now handled by the unified client-status -->
     </div>
    
-    <script src="app.js"></script>
+    <script>
+      // Dynamically write the script tag with the cache-busting query string.
+      document.write(`<script src="app.js?v=${CACHE_BUSTER}"><\/script>`);
+    </script>
 
     <!-- Language Switch Buttons -->
     <div style="text-align: left; margin-top: 20px; padding-bottom: 10px;">

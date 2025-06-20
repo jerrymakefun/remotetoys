@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title data-i18n="pageTitle">操控端 - WebToy Controller</title>
+    <script>
+      // Define a cache-busting variable using the current timestamp.
+      const CACHE_BUSTER = new Date().getTime();
+    </script>
     <style>
         /* Basic styles */
         body {
@@ -319,7 +323,10 @@
         </div> <!-- End settings-content -->
     </div> <!-- End settings-panel -->
 
-    <script src="app.js"></script>
+    <script>
+      // Dynamically write the script tag with the cache-busting query string.
+      document.write(`<script src="app.js?v=${CACHE_BUSTER}"><\/script>`);
+    </script>
 
     <!-- Language Switch Buttons -->
     <div style="text-align: center; margin-top: 20px; padding-bottom: 10px;">
