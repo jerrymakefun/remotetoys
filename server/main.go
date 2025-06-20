@@ -549,17 +549,17 @@ func main() {
 
 	// Serve style.css from the root directory
 	http.HandleFunc("/style.css", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "../style.css")
+		http.ServeFile(w, r, "./style.css")
 	})
 
 	// Serve files from the locales directory
-	localesFS := http.FileServer(http.Dir("../locales"))
+	localesFS := http.FileServer(http.Dir("./locales"))
 	http.Handle("/locales/", http.StripPrefix("/locales/", localesFS))
 
 	// Static file serving for controller and client apps (Keep these)
-	controllerFS := http.FileServer(http.Dir("../controller"))
+	controllerFS := http.FileServer(http.Dir("./controller"))
 	http.Handle("/controller/", http.StripPrefix("/controller/", controllerFS))
-	clientFS := http.FileServer(http.Dir("../client"))
+	clientFS := http.FileServer(http.Dir("./client"))
 	http.Handle("/client/", http.StripPrefix("/client/", clientFS))
 
 	// Serve index.html at the root (Keep this)
@@ -569,8 +569,8 @@ func main() {
 			http.NotFound(w, r)
 			return
 		}
-		// Serve the index.html file from the parent directory
-		http.ServeFile(w, r, "../index.html")
+		// Serve the index.html file from the current directory
+		http.ServeFile(w, r, "./index.html")
 	})
 
 	// Start server
