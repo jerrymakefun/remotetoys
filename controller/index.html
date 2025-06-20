@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title data-i18n="pageTitle">操控端 - WebToy Controller</title>
+    <style>
+        /* Basic styles */
+        body {
+            font-family: sans-serif;
+            padding: 1em;
+            background-color: #f4f4f9;
+            touch-action: none; /* Prevent default touch actions like scrolling */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            box-sizing: border-box;
+            position: relative; /* Needed for absolute positioning of settings button */
+            padding-top: 50px; /* Add padding to prevent overlap with settings button */
+        }
+        h1 { text-align: center; width: 100%; margin-top: 0; /* Adjust margin */ }
+        h2 { text-align: center; width: 100%; }
+        .status-container { text-align: center; margin-bottom: 1em; width: 100%; } /* Center status */
+        .status { padding: 0.5em; border-radius: 4px; display: inline-block; }
+        .connected { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .disconnected { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .connecting { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .control-area { margin-top: 15px; text-align: center; width: 100%; max-width: 400px; /* Limit width for better vertical layout */ }
+
+        /* --- Settings Button --- */
+        #settings-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px; /* Adjust size */
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+            z-index: 100; /* Ensure it's above other content */
+        }
+        /* Hide settings button when panel is visible */
+        #settings-panel.visible + #settings-button { /* This selector might not work reliably, let's adjust JS instead */
+             /* display: none; */ /* Reverted - Will handle in JS */
+        }
+
+
+        /* --- Settings Panel --- */
+        #settings-panel {
+            display: none; /* Hidden by default */
+            position: fixed; /* Or absolute, depending on desired behavior */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(244, 244, 249, 0.95); /* Slightly transparent background */
+            z-index: 90; /* Below button but above main content */
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto; /* Allow scrolling if content overflows */
+            /* display: flex; <-- REMOVED: This was overriding display: none */
+            flex-direction: column;
+            align-items: center;
+        }
+        #settings-panel.visible {
+            display: flex; /* Show when class is added */
+        }
+        #close-settings-button {
+             position: absolute;
+             top: 10px;
+             right: 10px;
+             font-size: 24px;
+             cursor: pointer;
+             background: none;
+             border: none;
+             padding: 5px;
+        }
+
+
+        /* --- Vertical Cylinder/Sleeve Slider --- */
+        #vertical-slider-container {
+            position: relative;
+            width: 80px; /* Width of the interactive area */
+            height: 300px; /* Height of the interactive area */
+            margin: 10px auto; /* Reduced margin */
+            cursor: pointer;
+            touch-action: none; /* Ensure touch events are captured */
+            background-color: #eee; /* Optional: background for the container */
+            border-radius: 40px; /* Rounded container */
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* Align cylinder to bottom */
+            /* overflow: hidden; */ /* REMOVED: Allow glans and sleeve to overflow */
+            margin-top: 30px; /* Increased top margin for glans */
+            margin-bottom: 10px; /* Add some bottom margin */
+        }
+
+        #cylinder {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px; /* Width of the main shaft */
+            height: 100%; /* Full height of the container */
+            background: linear-gradient(to bottom, #fcc9c9, #f7a8a8); /* Pinkish gradient */
+            border-radius: 25px / 10px; /* More elliptical bottom */
+             border-top-left-radius: 25px; /* Keep top rounded */
+             border-top-right-radius: 25px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+        /* Add pseudo-element for the glans */
+        #cylinder::before {
+            content: '';
+            position: absolute;
+            top: -15px; /* Position above the main cylinder */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px; /* Slightly wider */
+            height: 40px; /* Height of the glans */
+            background: linear-gradient(to bottom, #f7a8a8, #f58c8c); /* Slightly darker pink */
+            border-radius: 30px / 25px; /* Elliptical shape */
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+
+
+        #sleeve {
+            position: absolute;
+            bottom: 50%; /* Initial position, will be updated by JS */
+            left: 50%;
+            transform: translateX(-50%);
+            box-sizing: border-box;
+            pointer-events: none; /* Sleeve itself doesn't capture events */
+            z-index: 10;
+            transition: background-color 0.2s, border 0.2s, width 0.2s, height 0.2s, border-radius 0.2s; /* Smooth transitions */
+        }
+
+        /* Default Sleeve Style (Original) */
+        .sleeve-style-default {
+            width: 70px;
+            height: 60px;
+            background-color: rgba(0, 123, 255, 0.7);
+            border: 2px solid #0056b3;
+            border-radius: 15px;
+        }
+
+        /* Cup Sleeve Style (Non-through) */
+        .sleeve-style-cup {
+            width: 75px; /* Slightly wider */
+            height: 340px; /* Further increased height to ensure glans coverage */
+            background: linear-gradient(to bottom, #e0e0e0, #c0c0c0); /* Lighter grey gradient */
+            border: 2px solid #777;
+            /* Make bottom flatter with rounded corners */
+            border-bottom-left-radius: 20px; /* Smaller radius for flatter bottom */
+            border-bottom-right-radius: 20px; /* Smaller radius for flatter bottom */
+            /* Top opening */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            /* Inner shadow to simulate depth */
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2),
+                        inset 0 -5px 15px rgba(0, 0, 0, 0.1); /* Add top inner shadow */
+        }
+        /* Transparency style for cup */
+        .sleeve-style-cup.sleeve-transparent {
+             background: linear-gradient(to bottom, rgba(224, 224, 224, 0.6), rgba(192, 192, 192, 0.6)); /* Semi-transparent gradient */
+             border-color: rgba(119, 119, 119, 0.6); /* Semi-transparent border */
+             box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1), /* Reduce shadow intensity slightly */
+                         inset 0 -5px 15px rgba(0, 0, 0, 0.05);
+        }
+        /* --- End Vertical Cylinder/Sleeve Slider --- */
+
+
+        /* Styles for limits and mode inside the panel */
+        .settings-content { /* New wrapper for panel content */
+             width: 100%;
+             max-width: 400px;
+             margin-top: 40px; /* Space below close button */
+        }
+        .limits { margin-top: 0; width: 100%; } /* Remove top margin */
+        .limits > div { margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; } /* Stack label and control vertically */
+        .limits label { margin-bottom: 5px; font-weight: bold; }
+        .limits input[type=range] { width: 80%; max-width: 250px; } /* Adjust width */
+        .limits span { display: inline-block; min-width: 40px; text-align: center; margin-top: 3px; }
+
+        /* Mode selection inside panel */
+        .mode-selection-panel { margin-top: 20px; text-align: center; }
+
+        /* Style selection inside panel */
+        .style-selection-panel { margin-top: 20px; text-align: center; }
+        .style-selection-panel label { margin: 0 5px 0 2px; } /* Adjust label margin */
+        .style-selection-panel .radio-group { margin-bottom: 10px; } /* Group radios */
+        .style-selection-panel .checkbox-group { margin-top: 5px; } /* Group checkbox */
+
+
+        #info { margin-top: 10px; font-size: 0.9em; color: #555; text-align: center; width: 100%; }
+        #speed-warning { color: red; font-weight: bold; margin-top: 5px; min-height: 1.2em; /* Reserve space */ }
+
+        /* --- Custom Range Slider Styles (Adjusted for Vertical Layout) --- */
+        .range-slider-container {
+            position: relative;
+            width: 80%;
+            max-width: 250px; /* Adjust width */
+            height: 40px;
+            margin: 5px auto 15px auto; /* Adjust margins */
+            padding-top: 15px;
+            box-sizing: border-box;
+        }
+        .range-track, .range-selected {
+            position: absolute;
+            height: 6px;
+            border-radius: 3px;
+            left: 0;
+            width: 100%;
+            bottom: 10px; /* Position track at the bottom */
+        }
+        .range-track {
+            background-color: #ddd;
+        }
+        .range-selected {
+            background-color: #007bff;
+            z-index: 1;
+        }
+        .range-handle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #0056b3;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2;
+            bottom: 0px; /* Align handle bottom with track bottom */
+            transform: translateX(-50%); /* Center handle */
+            touch-action: none; /* Prevent scrolling on touch */
+        }
+        .range-values {
+            text-align: center;
+            margin-top: 0px; /* Reduced top margin */
+            font-size: 0.9em;
+            color: #333;
+        }
+        /* --- End Custom Range Slider Styles --- */
+    </style>
+</head>
+<body>
+    <button id="settings-button">⚙️</button> <!-- Settings Button -->
+
+    <h1 data-i18n="mainHeading">操控端</h1>
+    <div class="status-container"><span data-i18n="serverStatusLabel">服务器连接状态:</span> <span id="server-status" class="status disconnected" data-i18n="statusDisconnected">未连接</span></div>
+<!-- New Session Status Indicator -->
+    <div class="status-container">
+        <span data-i18n="sessionStatusLabel">会话状态:</span>
+        <span id="session-status" class="status status-waiting" data-i18n="statusWaitingClient">等待被控端连接...</span>
+    </div>
+
+    <div class="control-area">
+        <!-- Vertical Slider remains in main view -->
+        <div id="vertical-slider-container">
+            <div id="cylinder"></div>
+            <div id="sleeve"></div>
+        </div>
+        <!-- Info Display remains in main view -->
+        <div id="info">
+            <div><span data-i18n="currentStrokeLabel">当前行程:</span> <span id="current-pos">50.0</span>%</div>
+            <div><span data-i18n="estimatedSpeedLabel">估算速度:</span> <span id="current-speed">0.0</span>%</div>
+            <div id="speed-warning"></div>
+        </div>
+    </div>
+
+    <!-- Settings Panel (Initially Hidden) -->
+    <div id="settings-panel">
+         <button id="close-settings-button">❌</button> <!-- Close Button -->
+         <div class="settings-content"> <!-- Wrapper for panel content -->
+            <div class="limits"> <!-- Moved Limits inside panel -->
+                <h2 data-i18n="settingsTitle">限制设置</h2>
+                <div>
+                    <label for="max-speed" data-i18n="maxSpeedLabel">最大速度 (<span id="max-speed-val">100</span>%)</label>
+                    <input type="range" id="max-speed" min="0" max="100" value="100">
+                </div>
+                <div>
+                    <label data-i18n="strokeRangeLabel">行程范围 (<span id="range-value-min">1</span>% - <span id="range-value-max">99</span>%)</label>
+                    <div class="range-slider-container">
+                        <div class="range-track"></div>
+                        <div class="range-selected" id="range-selected-stroke"></div>
+                        <div class="range-handle" id="range-handle-min"></div>
+                        <div class="range-handle" id="range-handle-max"></div>
+                    </div>
+                    <!-- Values moved to label -->
+                </div>
+                 <div>
+                    <label for="sample-interval" data-i18n="intervalLabel">指令间隔 (<span id="sample-interval-val">100</span> ms)</label>
+                    <input type="range" id="sample-interval" min="30" max="500" value="100">
+                </div>
+            </div>
+
+            </div>
+
+             <div class="style-selection-panel"> <!-- Style Selection -->
+                <h2 data-i18n="styleTitle">滑块样式</h2>
+                <div class="radio-group">
+                    <input type="radio" id="style-default" name="sleeve-style" value="default"> <!-- Removed checked -->
+                    <label for="style-default" data-i18n="styleDefault">默认套筒</label>
+                    <input type="radio" id="style-cup" name="sleeve-style" value="cup" checked> <!-- Added checked -->
+                    <label for="style-cup" data-i18n="styleCup">飞机杯</label>
+                </div>
+                 <div class="checkbox-group"> <!-- Checkbox for transparency -->
+                     <input type="checkbox" id="cup-transparency" checked>
+                     <label for="cup-transparency" data-i18n="styleCupTransparent">飞机杯半透明</label>
+                 </div>
+            </div>
+
+             <div class="mode-selection-panel"> <!-- Mode Selection -->
+                <h2 data-i18n="modeTitle">控制模式</h2>
+                <input type="radio" id="mode-slider" name="control-mode" value="slider" checked>
+                <label for="mode-slider" data-i18n="modeSlider">手动控制</label>
+                <br> <!-- Add line break for better spacing on mobile -->
+                <input type="radio" id="mode-motion" name="control-mode" value="motion" disabled> <!-- Disable motion for now -->
+                <label for="mode-motion" data-i18n="modeMotion">体感 (待实现)</label>
+            </div>
+        </div> <!-- End settings-content -->
+    </div> <!-- End settings-panel -->
+
+    <script src="app.js"></script>
+
+    <!-- Language Switch Buttons -->
+    <div style="text-align: center; margin-top: 20px; padding-bottom: 10px;">
+        <button id="lang-switch-en" data-i18n="switchToEnglish">Switch to English</button>
+        <button id="lang-switch-zh" data-i18n="switchToChinese">切换到中文</button>
+    </div>
+</body>
+</html>

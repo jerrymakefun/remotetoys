@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitle">创建控制房间</title>
+    <link rel="stylesheet" href="/style.css"> <!-- Link the external CSS -->
+</head>
+<body>
+    <div class="container"> <!-- Add container for centering and styling -->
+        <h1 data-i18n="mainHeading">创建新的控制房间</h1>
+
+        <button id="createRoomBtn" data-i18n="createRoomButton">创建房间</button>
+
+        <div id="roomInfo" class="room-info hidden"> <!-- Use new class -->
+            <h2 data-i18n="roomInfoHeading">房间信息</h2>
+            <p><strong data-i18n="roomKeyLabel">房间 Key:</strong> <code><span id="roomKey"></span></code></p> <!-- Use code tag for key -->
+
+            <div class="link-area">
+                <p>
+                    <strong data-i18n="controllerLinkLabel">控制端链接:</strong>
+                    <span id="controllerLink"></span>
+                    <button class="copy-btn" data-link-id="controllerLink" data-i18n="copyLinkButton">复制链接</button>
+                    <span class="copy-status" data-status-for="controllerLink"></span> <!-- Status indicator -->
+                </p>
+            </div>
+
+            <div class="link-area">
+                <p>
+                    <strong data-i18n="clientLinkLabel">被控端链接:</strong>
+                    <span id="clientLink"></span>
+                    <button class="copy-btn" data-link-id="clientLink" data-i18n="copyLinkButton">复制链接</button>
+                    <span class="copy-status" data-status-for="clientLink"></span> <!-- Status indicator -->
+                </p>
+            </div>
+        </div>
+
+         <!-- Language Switch Buttons -->
+        <div class="language-switcher">
+            <button id="lang-switch-en" data-i18n="switchToEnglish">Switch to English</button>
+            <button id="lang-switch-zh" data-i18n="switchToChinese">切换到中文</button>
+        </div>
+    </div> <!-- End container -->
+
+    <script>
+        const createRoomBtn = document.getElementById('createRoomBtn');
+        const roomInfoDiv = document.getElementById('roomInfo');
+        const roomKeySpan = document.getElementById('roomKey');
+        const controllerLinkSpan = document.getElementById('controllerLink');
+        const clientLinkSpan = document.getElementById('clientLink');
+        const copyButtons = document.querySelectorAll('.copy-btn');
+
+        createRoomBtn.addEventListener('click', () => {
+            createRoomBtn.disabled = true; // Disable button
+            // Use a dedicated i18n key for the loading state
+            createRoomBtn.textContent = i18n.t('creatingRoomStatus');
+
+            // Simulate async operation (replace with actual if needed)
+            setTimeout(() => {
+                // 生成唯一的 Key
+                const key = Date.now().toString(36) + Math.random().toString(36).substring(2);
+
+                // 显示 Key
+                roomKeySpan.textContent = key;
+
+                // 构建链接
+                const baseUrl = window.location.origin;
+                const controllerUrl = `${baseUrl}/controller/index.html?key=${key}`;
+                const clientUrl = `${baseUrl}/client/index.html?key=${key}`;
+
+                // 清空现有的文本内容
+                controllerLinkSpan.innerHTML = '';
+                clientLinkSpan.innerHTML = '';
+
+                // 创建并显示控制端链接
+                const controllerAnchor = document.createElement('a');
+                controllerAnchor.href = controllerUrl;
+                controllerAnchor.textContent = controllerUrl;
+                controllerAnchor.target = '_blank'; // 在新标签页打开
+                controllerLinkSpan.appendChild(controllerAnchor);
+
+                // 创建并显示被控端链接
+                const clientAnchor = document.createElement('a');
+                clientAnchor.href = clientUrl;
+                clientAnchor.textContent = clientUrl;
+                clientAnchor.target = '_blank'; // 在新标签页打开
+                clientLinkSpan.appendChild(clientAnchor);
+
+                // 显示房间信息区域
+                roomInfoDiv.classList.remove('hidden');
+
+                // Re-enable button and restore text
+                createRoomBtn.disabled = false;
+                // Restore original text via i18n
+                createRoomBtn.textContent = i18n.t('createRoomButton');
+            }, 500); // Simulate delay
+        });
+
+        // --- Copy Link Functionality ---
+        let copyTimeout = null; // To manage status message timeout
+
+        function showCopyStatus(statusSpan, success) {
+            clearTimeout(copyTimeout); // Clear previous timeout if any
+            // Use dedicated i18n keys for copy status messages
+            statusSpan.textContent = success ? i18n.t('copySuccessMessage') : i18n.t('copyErrorMessage');
+            statusSpan.classList.add('visible');
+            statusSpan.classList.toggle('success', success);
+            statusSpan.classList.toggle('error', !success);
+
+            // Hide status after a few seconds
+            copyTimeout = setTimeout(() => {
+                statusSpan.classList.remove('visible', 'success', 'error');
+                statusSpan.textContent = ''; // Clear text
+            }, 2500);
+        }
+
+        copyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const linkId = button.dataset.linkId;
+                const linkElement = document.getElementById(linkId);
+                const statusSpan = document.querySelector(`.copy-status[data-status-for="${linkId}"]`);
+
+                if (!linkElement || !statusSpan) {
+                    console.error('Could not find link element or status span for ID:', linkId);
+                    return;
+                }
+
+                const linkText = linkElement.textContent;
+                // Store original text using i18n key
+                const originalButtonTextKey = button.getAttribute('data-i18n');
+                button.disabled = true; // Disable button during copy
+
+                navigator.clipboard.writeText(linkText).then(() => {
+                    console.log('Link copied:', linkText);
+                    showCopyStatus(statusSpan, true);
+                    // Use dedicated i18n key for copied status
+                    button.textContent = i18n.t('copiedStatus');
+                    // Restore button text after a short delay
+                    setTimeout(() => {
+                        // Restore original text via i18n
+                        button.textContent = i18n.t(originalButtonTextKey);
+                        button.disabled = false;
+                    }, 1500);
+                }).catch(err => {
+                    console.error('Failed to copy link:', err);
+                    showCopyStatus(statusSpan, false);
+                    // Restore original text via i18n on failure
+                    button.textContent = i18n.t(originalButtonTextKey);
+                    button.disabled = false; // Re-enable button on failure
+                });
+            });
+        });
+        // --- End Copy Link Functionality ---
+
+
+        // --- i18n Implementation ---
+        const i18n = {
+            currentLanguage: 'zh-CN', // Default language
+            translations: {},
+
+            // Basic translation function
+            t: function(key, fallback = null) {
+                // Provide the key itself as a fallback if no explicit fallback is given
+                return this.translations[key] || fallback || key;
+            },
+
+            // Load translations
+            loadTranslations: async function(lang) {
+                try {
+                    const response = await fetch(`/locales/${lang}.json`); // Added leading slash
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    this.translations = await response.json();
+                    this.currentLanguage = lang;
+                    document.documentElement.lang = lang;
+                    console.log(`Translations loaded for ${lang}`);
+                } catch (error) {
+                    console.error(`Failed to load translations for ${lang}:`, error);
+                    // Fallback logic remains the same
+                    if (lang !== 'zh-CN') {
+                        console.log('Falling back to zh-CN');
+                        await this.loadTranslations('zh-CN');
+                    } else {
+                         // If even zh-CN fails, use keys as text
+                         this.translations = {};
+                         console.error('Fallback language zh-CN also failed to load.');
+                    }
+                }
+            },
+
+            // Update page elements
+            translatePage: function() {
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    const translation = this.t(key);
+
+                    // Skip elements that display dynamic content like links or keys
+                    if (element.id === 'controllerLink' || element.id === 'clientLink' || element.id === 'roomKey') {
+                        return;
+                    }
+
+                    // Handle button states carefully
+                    if (element.tagName === 'BUTTON') {
+                        // Only update if not disabled (i.e., not in a temporary state like 'Creating...' or 'Copied!')
+                        if (!element.disabled) {
+                            element.textContent = translation;
+                        } else if (element.id === 'createRoomBtn') {
+                            // If it's the create button and it's disabled, update with creating status text
+                            element.textContent = this.t('creatingRoomStatus');
+                        }
+                        // Note: The 'Copied!' state is handled within the copy function itself
+                    } else if (element.tagName === 'TITLE') {
+                         document.title = translation; // Set title directly
+                    }
+                     else {
+                        // For other elements like H1, H2, STRONG, etc.
+                        element.textContent = translation;
+                    }
+                });
+            },
+
+
+            // Detect language: localStorage -> browser -> default
+            detectLanguage: function() {
+                const savedLang = localStorage.getItem('preferredLanguage');
+                if (savedLang && (savedLang === 'en' || savedLang === 'zh-CN')) {
+                    console.log(`Using saved language: ${savedLang}`);
+                    return savedLang;
+                }
+                const browserLang = navigator.language || navigator.userLanguage || 'zh-CN';
+                console.log(`Detected browser language: ${browserLang}`);
+                return browserLang.startsWith('zh') ? 'zh-CN' : 'en';
+            },
+
+            // Set language, load, translate, save
+            setLanguage: async function(lang) {
+                if (lang === this.currentLanguage) return;
+                try {
+                    await this.loadTranslations(lang);
+                    this.translatePage(); // Translate elements after loading
+                    localStorage.setItem('preferredLanguage', lang);
+                    console.log(`Language switched to ${lang} and saved.`);
+                } catch (error) {
+                    console.error(`Failed to switch language to ${lang}:`, error);
+                }
+            }
+        };
+        // --- End i18n Implementation ---
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Detect and load initial language
+            const initialLang = i18n.detectLanguage();
+            await i18n.loadTranslations(initialLang);
+
+            // 2. Translate static elements
+            i18n.translatePage();
+
+            // 3. Add Language Switch Button Listeners
+            const langSwitchEn = document.getElementById('lang-switch-en');
+            const langSwitchZh = document.getElementById('lang-switch-zh');
+
+            if (langSwitchEn) {
+                langSwitchEn.addEventListener('click', () => i18n.setLanguage('en'));
+            }
+            if (langSwitchZh) {
+                langSwitchZh.addEventListener('click', () => i18n.setLanguage('zh-CN'));
+            }
+
+            // Note: Event listeners for copy buttons are added above
+        });
+        // --- End Initialization ---
+
+    </script>
+
+</body>
+</html>

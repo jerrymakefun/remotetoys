@@ -1,0 +1,18 @@
+{
+  "pageTitle": "创建控制房间",
+  "mainHeading": "创建新的控制房间",
+  "createRoomButton": "创建房间",
+  "creatingRoomStatus": "创建中...",
+  "roomInfoHeading": "房间信息",
+  "roomKeyLabel": "房间 Key:",
+  "controllerLinkLabel": "控制端链接:",
+  "clientLinkLabel": "被控端链接:",
+  "copyLinkButton": "复制链接",
+  "copiedStatus": "已复制 ✓",
+  "copySuccessMessage": "已复制!",
+  "copyErrorMessage": "失败!",
+  "alertLinkCopied": "链接已复制到剪贴板!",
+  "alertCopyFailed": "复制失败，请手动复制。",
+  "switchToEnglish": "Switch to English",
+  "switchToChinese": "切换到中文"
+}

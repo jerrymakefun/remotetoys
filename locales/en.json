@@ -1,0 +1,18 @@
+{
+  "pageTitle": "Create Control Room",
+  "mainHeading": "Create New Control Room",
+  "createRoomButton": "Create Room",
+  "creatingRoomStatus": "Creating...",
+  "roomInfoHeading": "Room Information",
+  "roomKeyLabel": "Room Key:",
+  "controllerLinkLabel": "Controller Link:",
+  "clientLinkLabel": "Client Link:",
+  "copyLinkButton": "Copy Link",
+  "copiedStatus": "Copied ✓",
+  "copySuccessMessage": "Copied!",
+  "copyErrorMessage": "Failed!",
+  "alertLinkCopied": "Link copied to clipboard!",
+  "alertCopyFailed": "Copy failed, please copy manually.",
+  "switchToEnglish": "Switch to English",
+  "switchToChinese": "切换到中文"
+}

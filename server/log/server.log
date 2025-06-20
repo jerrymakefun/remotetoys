@@ -1,0 +1,957 @@
+2025/06/20 08:10:01 --- Server Started: Logging redirected to file ---
+2025/06/20 08:10:01 HTTP server starting on :8080, serving /ws, /style.css, /locales/, /controller/, /client/, and / for index.html
+2025/06/20 08:12:57 Client Connected: Type=controller, Key=mc4236xvows0ulcojw
+2025/06/20 08:12:57 Creating new room for key: mc4236xvows0ulcojw
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6157689166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8069523833333334 Speed:0.4761904762749503 SampleIntervalMs:100}
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.48391825000000005 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.17736544999999998 Speed:0.6746031747228454 SampleIntervalMs:100}
+2025/06/20 08:12:58 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.12792145000000005 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8036561166666667 Speed:0.6746031747228454 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.78058225 Speed:0.7984031934702935 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5795099833333333 Speed:0.3636363636363639 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.4938070500000001 Speed:0.20080321292350747 SampleIntervalMs:100}
+2025/06/20 08:12:59 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.25647585000000006 Speed:0.7185628741232637 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.71136065 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6388427833333333 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2696609166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.19384678333333338 Speed:0.48192771101641557 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0.25394477308597885 SampleIntervalMs:100}
+2025/06/20 08:13:00 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.055403583333333346 Speed:0.5462398371998469 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2498833166666667 Speed:0.5158730159645291 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6289539833333333 Speed:0.758483033796778 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0.49851190440817106 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.42788171666666674 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.11473638333333329 Speed:0.7317073174720709 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7575083833333334 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.82013745 Speed:0.4819277110164169 SampleIntervalMs:100}
+2025/06/20 08:13:01 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.19384678333333338 Speed:0.627450980392157 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.12792145000000005 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.46084438333333344 Speed:0.5988023956370234 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7641009166666667 Speed:0.44715447138219977 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8267299833333334 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6520278500000001 Speed:0.9126984128603205 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2828459833333334 Speed:0.833333333481163 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.052107316666666716 Speed:0.5158730159645291 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:02 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.58280625 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8827665166666667 Speed:0.4761904762749503 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9783582500000001 Speed:0.2619760478574399 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.37184518333333333 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.16418038333333335 Speed:0.19960079836757405 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3685489166666667 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:03 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8563963833333333 Speed:0.5189620757556896 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9948395833333333 Speed:0.19960079836757272 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7542121166666667 Speed:0.767676767676768 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.4740294500000001 Speed:0.5220883531324599 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.34547505000000006 Speed:0.31936127738811687 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.22351318333333342 Speed:0.12121212121211997 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.20043931666666664 Speed:0.11976047902054417 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.11473638333333329 Speed:0.20202020202020265 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.045514783333333336 Speed:0.07936507937915882 SampleIntervalMs:100}
+2025/06/20 08:13:04 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.41799291666666677 Speed:0.6666666666666676 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7047681166666666 Speed:0.5588822354292052 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9882470500000001 Speed:0.5522682443811583 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8300262500000001 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2795497166666667 Speed:0.7984031934702935 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.06858864999999999 Speed:0.317460317516634 SampleIntervalMs:100}
+2025/06/20 08:13:05 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.13781025000000005 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7838785166666667 Speed:0.7100591713472029 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.95858065 Speed:0.39920159673514677 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9519881166666667 Speed:0.5883838383838389 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5663249166666667 Speed:0.5656565656565652 SampleIntervalMs:100}
+2025/06/20 08:13:06 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.17736544999999998 Speed:0.8730158731707418 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.10155131666666664 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9124329166666667 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.28614225 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.10484758333333338 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.45425185000000007 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:07 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7080643833333334 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.4114003833333334 Speed:0.1212121212121213 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.32899371666666666 Speed:0.27944111771460395 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9519881166666667 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:08 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.69158305 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.24329078333333332 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0.49063116353504654 SampleIntervalMs:100}
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:13:09 Key mc4236xvows0ulcojw: Command dropped: Client device index not set in this room.
+2025/06/20 08:13:15 Client Connected: Type=client, Key=mc4236xvows0ulcojw
+2025/06/20 08:13:58 Key mc4236xvows0ulcojw: Received from client/beikongduan: {Type:setDeviceIndex Index:0xc0001c9f6c}
+2025/06/20 08:13:58 Key mc4236xvows0ulcojw: Client reported device index: 1
+2025/06/20 08:13:58 Key mc4236xvows0ulcojw: Device index changed (or was set), resetting last commanded position.
+2025/06/20 08:14:01 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3586601166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:01 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.36, Speed=0.00, Interval=100ms
+2025/06/20 08:14:01 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.3586601166666667}]}}]
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3586601166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.36, Speed=0.00, Interval=100ms
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.3586601166666667}]}}]
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3586601166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.36, Speed=0.00, Interval=100ms
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.3586601166666667}]}}]
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3586601166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.36, Speed=0.00, Interval=100ms
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.3586601166666667}]}}]
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5366585166666668 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.54, Speed=0.05, Interval=100ms
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5366585166666668}]}}]
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5597323833333333 Speed:0.11904761906873758 SampleIntervalMs:100}
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.56, Speed=0.12, Interval=100ms
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":38,"Position":0.5597323833333333}]}}]
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6849905166666667 Speed:0.5588822359278875 SampleIntervalMs:100}
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.68, Speed=0.56, Interval=100ms
+2025/06/20 08:14:02 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":44,"Position":0.6849905166666667}]}}]
+2025/06/20 08:14:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9882470500000001 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:04 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.99, Speed=0.00, Interval=100ms
+2025/06/20 08:14:04 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.9882470500000001}]}}]
+2025/06/20 08:14:04 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:04 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:04 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9816545166666667 Speed:0.12048192775410423 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.98, Speed=0.12, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.9816545166666667}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7575083833333334 Speed:0.6311637078641799 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.76, Speed=0.63, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":71,"Position":0.7575083833333334}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5992875833333333 Speed:0.3193612773881182 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.60, Speed=0.32, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5992875833333333}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.37184518333333333 Speed:0.518962075755691 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.37, Speed=0.52, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":87,"Position":0.37184518333333333}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.07847744999999999 Speed:0.44176706803515786 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.08, Speed=0.44, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.07847744999999999}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.032329716666666695 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.03, Speed=0.00, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.032329716666666695}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2136243833333334 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.21, Speed=1.00, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":36,"Position":0.2136243833333334}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7410270499999999 Speed:0.7984031941826969 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.74, Speed=0.80, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.7410270499999999}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8992478500000001 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.90, Speed=0.05, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.8992478500000001}]}}]
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8761739833333333 Speed:0.27777777782705526 SampleIntervalMs:100}
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.88, Speed=0.28, Interval=100ms
+2025/06/20 08:14:05 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.8761739833333333}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3191049166666666 Speed:0.9638554220328338 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.32, Speed=0.96, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.3191049166666666}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.1509953166666667 Speed:0.12048192775410423 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.15, Speed=0.12, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.1509953166666667}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.1509953166666667 Speed:0.11976047902054417 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.15, Speed=0.12, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.1509953166666667}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.76080465 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.76, Speed=1.00, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.76080465}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9717657166666667 Speed:0.15968063869405844 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.97, Speed=0.16, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.9717657166666667}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8926553166666668 Speed:0.6425702807784123 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.89, Speed=0.64, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.8926553166666668}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5333622499999999 Speed:0.6868686868686866 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.53, Speed=0.69, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5333622499999999}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3388825166666667 Speed:0.19960079836757405 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.34, Speed=0.20, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.3388825166666667}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.23010571666666668 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.23, Speed=0.00, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.23010571666666668}]}}]
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.23010571666666668 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.23, Speed=0.00, Interval=100ms
+2025/06/20 08:14:06 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.23010571666666668}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7476195833333334 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.75, Speed=1.00, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.7476195833333334}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0.5677387916208964 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.57, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":88,"Position":0.99999}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6289539833333333 Speed:0.6786427144497493 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.63, Speed=0.68, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.6289539833333333}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.40480785 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.40, Speed=0.00, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.40480785}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.40810411666666674 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.41, Speed=0.05, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.40810411666666674}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.92891425 Speed:0.8576998053671907 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.93, Speed=0.86, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.92891425}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:07 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.35536385000000004 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.36, Speed=1.00, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.35536385000000004}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.055403583333333346 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.06, Speed=0.00, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.055403583333333346}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.05, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.01111}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2531795833333333 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.25, Speed=1.00, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":48,"Position":0.2531795833333333}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0.6611776445925867 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.66, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.99999}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:08 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.84980385 Speed:0.31936127738811687 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.85, Speed=0.32, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.84980385}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6948793166666667 Speed:0.1972386587075568 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.69, Speed=0.20, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.6948793166666667}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5893987833333333 Speed:0.07984031934702988 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.59, Speed=0.08, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5893987833333333}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.4872145166666667 Speed:0.08080808080808133 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.49, Speed=0.08, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.4872145166666667}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.34877131666666666 Speed:0.4016064258470136 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.35, Speed=0.40, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":68,"Position":0.34877131666666666}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.1509953166666667 Speed:0.4313725490196073 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.15, Speed=0.43, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.1509953166666667}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0.2539447733098884 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.25, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.01111}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.33558625000000003 Speed:0.718562874123265 SampleIntervalMs:100}
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.34, Speed=0.72, Interval=100ms
+2025/06/20 08:14:09 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.33558625000000003}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6882867833333334 Speed:0.718562874123265 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.69, Speed=0.72, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.6882867833333334}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.91902545 Speed:0.3508771927989998 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.92, Speed=0.35, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.91902545}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6882867833333334 Speed:0.6868686868686866 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.69, Speed=0.69, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.6882867833333334}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.43447425 Speed:0.19960079836757405 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.43, Speed=0.20, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.43447425}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.29273478333333336 Speed:0.2777777775806723 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.29, Speed=0.28, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.29273478333333336}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.16418038333333335 Speed:0.07984031934702988 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.16, Speed=0.08, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.16418038333333335}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.16088411666666672 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.16, Speed=0.00, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.16088411666666672}]}}]
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.23999451666666669 Speed:0.3614457832623127 SampleIntervalMs:100}
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.24, Speed=0.36, Interval=100ms
+2025/06/20 08:14:10 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":43,"Position":0.23999451666666669}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.41799291666666677 Speed:0.24096385529190475 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.42, Speed=0.24, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.41799291666666677}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5300659833333333 Speed:0.24096385529190342 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.53, Speed=0.24, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5300659833333333}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.64213905 Speed:0.2008032127432544 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.64, Speed=0.20, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.64213905}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7212494500000001 Speed:0.08080808080808133 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.72, Speed=0.08, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.7212494500000001}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8036561166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.80, Speed=0.00, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.8036561166666667}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8366187833333333 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.84, Speed=0.05, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.8366187833333333}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8432113166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.84, Speed=0.00, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.8432113166666667}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8432113166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.84, Speed=0.00, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.8432113166666667}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8432113166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.84, Speed=0.00, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.8432113166666667}]}}]
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.84980385 Speed:0.07984031941827022 SampleIntervalMs:100}
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.85, Speed=0.08, Interval=100ms
+2025/06/20 08:14:11 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.84980385}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9223217166666667 Speed:0.11834319522453382 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.92, Speed=0.12, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.9223217166666667}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9684694500000001 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.97, Speed=0.05, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.9684694500000001}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9948395833333333 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.99, Speed=0.00, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.9948395833333333}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9948395833333333 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.99, Speed=0.00, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.9948395833333333}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8728777166666667 Speed:0.44176706803515786 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.87, Speed=0.44, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":57,"Position":0.8728777166666667}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5861025166666668 Speed:0.27613412219057715 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.59, Speed=0.28, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5861025166666668}]}}]
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3619563833333333 Speed:0.3992015970913498 SampleIntervalMs:100}
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.36, Speed=0.40, Interval=100ms
+2025/06/20 08:14:12 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.3619563833333333}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.12462518333333329 Speed:0.43650793658537157 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.12, Speed=0.44, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.12462518333333329}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0.057043650803769705 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.06, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.01111}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.17736544999999998 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.18, Speed=1.00, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":33,"Position":0.17736544999999998}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=1.00, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.99999}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:13 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6586203833333334 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.66, Speed=1.00, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":68,"Position":0.6586203833333334}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.19384678333333338 Speed:0.48484848484848386 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.19, Speed=0.48, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.19384678333333338}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.82013745 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.82, Speed=1.00, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.82013745}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8432113166666667 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.84, Speed=1.00, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":31,"Position":0.8432113166666667}]}}]
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.06529238333333336 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.07, Speed=1.00, Interval=100ms
+2025/06/20 08:14:14 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.06529238333333336}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=1.00, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.99999}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5234734499999999 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.52, Speed=1.00, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5234734499999999}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.21692065000000002 Speed:0.3592814370616325 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.22, Speed=0.36, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.21692065000000002}]}}]
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:15 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6849905166666667 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.68, Speed=1.00, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.6849905166666667}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9948395833333333 Speed:0.27777777782705393 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.99, Speed=0.28, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.9948395833333333}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3191049166666666 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.32, Speed=1.00, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.3191049166666666}]}}]
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:16 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.012552116666666672 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.05, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.012552116666666672}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6849905166666667 Speed:0.8383233531438078 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.68, Speed=0.84, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.6849905166666667}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.92891425 Speed:0.36144578326231136 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.93, Speed=0.36, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.92891425}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:17 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7377307833333334 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.74, Speed=1.00, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":52,"Position":0.7377307833333334}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.07188491666666662 Speed:0.23809523813747516 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.07, Speed=0.24, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.07188491666666662}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.052107316666666716 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.05, Speed=0.00, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.052107316666666716}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.18395798333333338 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.18, Speed=1.00, Interval=100ms
+2025/06/20 08:14:18 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.18395798333333338}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.4872145166666667 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.49, Speed=1.00, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":60,"Position":0.4872145166666667}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2828459833333334 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.28, Speed=1.00, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":54,"Position":0.2828459833333334}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.4938070500000001 Speed:0.7889546348302245 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.49, Speed=0.79, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":53,"Position":0.4938070500000001}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7871747833333333 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.79, Speed=1.00, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.7871747833333333}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.11473638333333329 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.11, Speed=1.00, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.11473638333333329}]}}]
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3619563833333333 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.36, Speed=1.00, Interval=100ms
+2025/06/20 08:14:19 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":49,"Position":0.3619563833333333}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.82013745 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.82, Speed=1.00, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":35,"Position":0.82013745}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.18725425 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.19, Speed=0.05, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.18725425}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9882470500000001 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.99, Speed=1.00, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.9882470500000001}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5201771833333333 Speed:0.4016064258470136 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.52, Speed=0.40, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5201771833333333}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7344345166666667 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.73, Speed=1.00, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":42,"Position":0.7344345166666667}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5795099833333333 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.58, Speed=1.00, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":84,"Position":0.5795099833333333}]}}]
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.4773257166666667 Speed:0.2777777775806723 SampleIntervalMs:100}
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.48, Speed=0.28, Interval=100ms
+2025/06/20 08:14:20 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":73,"Position":0.4773257166666667}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5267697166666667 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.53, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.5267697166666667}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.88935905 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.89, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.88935905}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:21 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.4740294500000001 Speed:0.8333333327420169 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.47, Speed=0.83, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.4740294500000001}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.12462518333333329 Speed:0.718562874123265 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.12, Speed=0.72, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.12462518333333329}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8596926500000001 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.86, Speed=1.00, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.8596926500000001}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2630683833333333 Speed:0.27777777782705393 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.26, Speed=0.28, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.2630683833333333}]}}]
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.11144011666666666 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.11, Speed=0.00, Interval=100ms
+2025/06/20 08:14:22 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.11144011666666666}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.28943851666666676 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.29, Speed=1.00, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":35,"Position":0.28943851666666676}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7772859833333333 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.78, Speed=1.00, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.7772859833333333}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6586203833333334 Speed:0.27450980392156843 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.66, Speed=0.27, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.6586203833333334}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5168809166666667 Speed:0.5588822354292052 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.52, Speed=0.56, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":50,"Position":0.5168809166666667}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.4377705166666668 Speed:0.24096385550820712 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.44, Speed=0.24, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":65,"Position":0.4377705166666668}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3949190500000001 Speed:0.2380952379262896 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.39, Speed=0.24, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":35,"Position":0.3949190500000001}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.32899371666666666 Speed:0.08032128516940326 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.33, Speed=0.08, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.32899371666666666}]}}]
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.28614225 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.29, Speed=0.00, Interval=100ms
+2025/06/20 08:14:23 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.28614225}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2334019833333333 Speed:0.16064257033880652 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.23, Speed=0.16, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":65,"Position":0.2334019833333333}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.22680945000000005 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.23, Speed=0.05, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.22680945000000005}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.11473638333333329 Speed:0.43650793658537157 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.11, Speed=0.44, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":51,"Position":0.11473638333333329}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.09166251666666664 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.09, Speed=0.00, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.09166251666666664}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.3388825166666667 Speed:0.6024096387705198 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.34, Speed=0.60, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":82,"Position":0.3388825166666667}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5564361166666667 Speed:0.2008032127432544 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.56, Speed=0.20, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5564361166666667}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6718054500000001 Speed:0.19960079836757538 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.67, Speed=0.20, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.6718054500000001}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.7476195833333334 Speed:0.19960079836757405 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.75, Speed=0.20, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":75,"Position":0.7476195833333334}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8168411833333333 Speed:0.07889546348302298 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.82, Speed=0.08, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.8168411833333333}]}}]
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.8234337166666668 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.82, Speed=0.00, Interval=100ms
+2025/06/20 08:14:24 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.8234337166666668}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.5959913166666666 Speed:0.43912175680048426 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.60, Speed=0.44, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.5959913166666666}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.46414065000000004 Speed:0.20080321274325308 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.46, Speed=0.20, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.46414065000000004}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.36525265000000007 Speed:0.2828282828282826 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.37, Speed=0.28, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":69,"Position":0.36525265000000007}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.2531795833333333 Speed:0.24096385529190475 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.25, Speed=0.24, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.2531795833333333}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.15758784999999997 Speed:0.23952095825480937 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.16, Speed=0.24, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":79,"Position":0.15758784999999997}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.015848383333333306 Speed:0.05 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.02, Speed=0.05, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.015848383333333306}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:25 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.40151158333333337 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.40, Speed=1.00, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":78,"Position":0.40151158333333337}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.91902545 Speed:0.439121756408661 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.92, Speed=0.44, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.91902545}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.88935905 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.89, Speed=1.00, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.88935905}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.18725425 Speed:0.6387225547762351 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.19, Speed=0.64, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.18725425}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:26 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.6388427833333333 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.64, Speed=1.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.6388427833333333}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.10484758333333338 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.10, Speed=1.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.10484758333333338}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.01111 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.01, Speed=0.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.01111}]}}]
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.9618769166666666 Speed:1 SampleIntervalMs:100}
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=0.96, Speed=1.00, Interval=100ms
+2025/06/20 08:14:27 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":90,"Position":0.9618769166666666}]}}]
+2025/06/20 08:14:28 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:28 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:28 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
+2025/06/20 08:14:28 Key mc4236xvows0ulcojw: Received from controller: {Type:control Position:0.99999 Speed:0 SampleIntervalMs:100}
+2025/06/20 08:14:28 Key mc4236xvows0ulcojw: Constructing LinearCmd for DeviceIndex 1: Pos=1.00, Speed=0.00, Interval=100ms
+2025/06/20 08:14:28 Key mc4236xvows0ulcojw: Forwarded command to client/beikongduan: [{"LinearCmd":{"Id":1,"DeviceIndex":1,"Vectors":[{"Index":0,"Duration":30,"Position":0.99999}]}}]
