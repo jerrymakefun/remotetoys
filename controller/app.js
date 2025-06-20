@@ -162,6 +162,11 @@ let mainLoopFrameId = null; // ID for requestAnimationFrame
 let lastSentPosition = 0.5; // Track last sent position to detect meaningful changes
 let lastCommandedPosition = -1.0; // Track last commanded position for duration calculation
 
+// --- Dynamic Hybrid Control State ---
+let currentSendingMode = 'streaming'; // 'streaming' or 'acknowledged'
+let previousSendingMode = 'streaming'; // Track previous mode for transition handling
+const SPEED_THRESHOLD = 0.4; // 40% speed threshold for mode switching
+
 // --- Reconnection State ---
 let reconnectAttempts = 0;
 let reconnectTimeoutId = null;
@@ -389,7 +394,7 @@ function mainControlLoop() {
         return;
     }
     
-    if (!isDeviceReadyForNextCommand || currentDeviceIndex === null) {
+    if (currentDeviceIndex === null) {
         return;
     }
     
@@ -438,8 +443,39 @@ function mainControlLoop() {
         }
     }
     
-    // Mark device as busy
-    isDeviceReadyForNextCommand = false;
+    // Mode decision based on speed
+    previousSendingMode = currentSendingMode;
+    if (calculatedSpeed < SPEED_THRESHOLD) {
+        currentSendingMode = 'streaming';
+    } else {
+        currentSendingMode = 'acknowledged';
+    }
+    
+    // Handle mode transition
+    if (previousSendingMode === 'acknowledged' && currentSendingMode === 'streaming') {
+        // Switching from acknowledged to streaming mode
+        // Reset the ready flag to allow immediate sending in streaming mode
+        isDeviceReadyForNextCommand = true;
+        console.log('Mode switch: acknowledged -> streaming, resetting ready flag');
+    }
+    
+    // Conditional sending based on mode
+    let shouldSend = false;
+    if (currentSendingMode === 'streaming') {
+        // In streaming mode, always send without waiting for receipt
+        shouldSend = true;
+    } else {
+        // In acknowledged mode, only send if device is ready
+        if (isDeviceReadyForNextCommand) {
+            shouldSend = true;
+            // Mark device as busy - will be reset when receipt arrives
+            isDeviceReadyForNextCommand = false;
+        }
+    }
+    
+    if (!shouldSend) {
+        return; // Wait for receipt in acknowledged mode
+    }
     
     // Generate command ID
     const commandId = nextButtplugId++;
@@ -471,7 +507,7 @@ function mainControlLoop() {
     };
     
     serverWs.send(JSON.stringify(message));
-    console.log(`Sent command ${commandId}: pos=${limitedPos.toFixed(3)}, speed=${calculatedSpeed.toFixed(3)}, duration=${duration}ms`);
+    console.log(`[${currentSendingMode}] Sent command ${commandId}: pos=${limitedPos.toFixed(3)}, speed=${calculatedSpeed.toFixed(3)}, duration=${duration}ms`);
     
     // Update state
     lastSentPosition = limitedPos;
@@ -482,7 +518,12 @@ function mainControlLoop() {
     if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = (calculatedSpeed * 100).toFixed(1);
     if (diagSentPositionElem) diagSentPositionElem.textContent = limitedPos.toFixed(3);
     if (diagSentDurationElem) diagSentDurationElem.textContent = duration + ' ms';
-    if (diagSampleIntervalElem) diagSampleIntervalElem.textContent = "Adaptive";
+    if (diagSampleIntervalElem) {
+        diagSampleIntervalElem.textContent = currentSendingMode === 'streaming' ? '流模式' : '确认模式';
+        // Add visual feedback for mode
+        diagSampleIntervalElem.style.color = currentSendingMode === 'streaming' ? '#28a745' : '#dc3545';
+        diagSampleIntervalElem.style.fontWeight = 'bold';
+    }
     
     // Update UI
     currentSpeedElem.textContent = (calculatedSpeed * 100).toFixed(1);
