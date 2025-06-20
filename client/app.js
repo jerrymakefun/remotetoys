@@ -212,6 +212,10 @@ function connectToServer() {
     					updateSessionStatus('statusControllerDisconnected', 'disconnected');
     					// Maybe revert to 'statusWaitingController' after a delay? Or just show disconnected.
     					break;
+    				case 'ready':
+    					// Everything is ready - controller connected, device selected
+    					updateSessionStatus('statusDeviceReady', 'connected');
+    					break;
     				// Add other server-sent statuses if needed
     			}
     		} else {

@@ -19,6 +19,38 @@ type Client struct {
 	conn         *websocket.Conn
 	Type         string    // "controller" or "client"
 	lastPingTime time.Time // Track last heartbeat time
+	send         chan []byte // Buffered channel for outbound messages
+}
+
+// writePump pumps messages from the send channel to the websocket connection.
+func (c *Client) writePump() {
+	ticker := time.NewTicker(54 * time.Second)
+	defer func() {
+		ticker.Stop()
+		c.conn.Close()
+	}()
+	
+	for {
+		select {
+		case message, ok := <-c.send:
+			c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
+			if !ok {
+				// The send channel was closed.
+				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
+				return
+			}
+			
+			if err := c.conn.WriteMessage(websocket.TextMessage, message); err != nil {
+				return
+			}
+			
+		case <-ticker.C:
+			c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
+			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+				return
+			}
+		}
+	}
 }
 
 // Room represents a single session identified by a key.
@@ -95,7 +127,15 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	}
 	defer ws.Close()
 
-	currentClient := &Client{conn: ws, Type: clientType, lastPingTime: time.Now()}
+	currentClient := &Client{
+		conn:         ws,
+		Type:         clientType,
+		lastPingTime: time.Now(),
+		send:         make(chan []byte, 256),
+	}
+	
+	// Start the write pump goroutine
+	go currentClient.writePump()
 	log.Printf("Client Connected: Type=%s, Key=%s", clientType, key)
 
 	// Find or create room
@@ -178,6 +218,9 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 
 	// Unregister client on disconnect, update status, notify other party, and potentially clean up room
 	defer func() {
+		// Close the send channel to signal writePump to exit
+		close(currentClient.send)
+		
 		room.mu.Lock()
 		var otherParty *Client = nil
 		var disconnectStatusForOtherParty string = ""
@@ -311,18 +354,17 @@ func handleControllerMessages(controller *Client, room *Room) { // Added room pa
 		room.mu.RUnlock()
 
 		if beikongduan != nil && buttplugCmdJSON != nil {
-			// Lock the client's connection for writing (best practice, though Gorilla might handle concurrent writes)
-			// Note: If write contention becomes an issue, consider a dedicated write goroutine per client.
-			err = beikongduan.conn.WriteMessage(websocket.TextMessage, buttplugCmdJSON)
-			if err != nil {
-				log.Printf("Key %s: Error writing to client/beikongduan: %v", room.key, err)
-				// Consider closing the client connection here if write fails repeatedly
-			} else {
+			// Non-blocking send to the client's send channel
+			select {
+			case beikongduan.send <- buttplugCmdJSON:
 				log.Printf("Key %s: Forwarded command to client/beikongduan: %s", room.key, string(buttplugCmdJSON))
-				// Update last commanded position for this room AFTER successful send attempt
+				// Update last commanded position for this room AFTER queuing
 				room.mu.Lock()
 				room.lastCommandedPosition = msg.Position
 				room.mu.Unlock()
+			default:
+				// Channel is full, drop the message
+				log.Printf("Key %s: Command dropped: Client send buffer full", room.key)
 			}
 		} else if beikongduan == nil {
 			log.Printf("Key %s: Command dropped: Client/Beikongduan not connected in this room.", room.key)
@@ -390,6 +432,11 @@ func handleClientMessages(client *Client, room *Room) { // Added room parameter
 					room.sendStatusUpdate(controller, "waiting_toy", "")
 				}
 			}
+			
+			// Also notify the client itself about the ready status
+			if deviceSelected && client != nil {
+				room.sendStatusUpdate(client, "ready", "")
+			}
 
 		default:
 			log.Printf("Key %s: Unknown message type from client/beikongduan: %s", room.key, msg.Type)
@@ -411,16 +458,20 @@ func (r *Room) sendStatusUpdate(targetClient *Client, state string, message stri
 		Message: message, // Can be empty
 	}
 
-	// It's generally safer to lock the specific connection for writing if the library doesn't guarantee it.
-	// However, gorilla/websocket is documented as safe for concurrent writes.
-	// If performance issues arise or strict ordering is needed, implement a write queue/mutex per client.
-	err := targetClient.conn.WriteJSON(statusMsg)
+	// Convert to JSON
+	msgJSON, err := json.Marshal([]interface{}{statusMsg})
 	if err != nil {
-		// Log error, but don't necessarily disconnect the client immediately
-		// Check for specific errors if needed (e.g., broken pipe)
-		log.Printf("Key %s: Error sending status update '%s' to %s: %v", r.key, state, targetClient.Type, err)
-	} else {
+		log.Printf("Key %s: Error marshaling status update: %v", r.key, err)
+		return
+	}
+
+	// Non-blocking send to the client's send channel
+	select {
+	case targetClient.send <- msgJSON:
 		log.Printf("Key %s: Sent status update '%s' to %s", r.key, state, targetClient.Type)
+	default:
+		// Channel is full, log but don't block
+		log.Printf("Key %s: Status update '%s' dropped for %s: send buffer full", r.key, state, targetClient.Type)
 	}
 }
 
