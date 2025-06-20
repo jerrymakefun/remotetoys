@@ -8,7 +8,9 @@ WORKDIR /app
 # 复制 Go 模块文件并下载依赖
 # 将 server 目录下的 go.mod 和 go.sum 复制到当前工作目录
 COPY server/go.mod server/go.sum ./
-RUN go mod download
+RUN go env -w GO111MODULE=on && \
+    go env -w GOPROXY=https://goproxy.cn,direct && \
+    go mod download
 
 # 复制服务器源代码
 # 将 server 目录下的所有文件复制到当前工作目录
