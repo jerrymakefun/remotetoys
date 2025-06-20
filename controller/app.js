@@ -727,9 +727,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 4. Initialize UI elements AFTER translation
     maxSpeedValElem.textContent = maxSpeedSlider.value;
     sampleIntervalValElem.textContent = sampleIntervalSlider.value;
-    currentRawPosition = 0.5;
-    updateSleevePosition(currentRawPosition);
-    updatePositionDisplay(currentRawPosition);
+    // Initialize physics model to center position
+    updateSleevePosition(virtualPosition);
+    updatePositionDisplay(virtualPosition);
     updateRangeSliderVisuals();
     handleModeChange();
     handleStyleChange();
