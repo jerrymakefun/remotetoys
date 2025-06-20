@@ -507,11 +507,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         langSwitchZh.addEventListener('click', () => i18n.setLanguage('zh-CN'));
     }
 
-    // 6. Connect to server
+    // 6. Set default Intiface URL based on current protocol
+    const defaultIntifaceProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    intifaceUrlInput.value = `${defaultIntifaceProtocol}//localhost:12345`;
+
+    // 7. Connect to server
     connectToServer();
 
     // Optional: Auto-connect Intiface logic remains unchanged
-    // if (intifaceUrlInput.value === 'ws://localhost:12345') {
+    // if (intifaceUrlInput.value === `${defaultIntifaceProtocol}//localhost:12345`) {
     //     connectToIntiface();
     // }
 });
