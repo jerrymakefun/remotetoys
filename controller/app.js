@@ -138,6 +138,13 @@ const styleDefaultRadio = document.getElementById('style-default'); // NEW
 const styleCupRadio = document.getElementById('style-cup'); // NEW
 const cupTransparencyCheckbox = document.getElementById('cup-transparency'); // NEW
 
+// --- Diagnostic Panel Elements ---
+const diagRawPositionElem = document.getElementById('diag-raw-position');
+const diagCalculatedSpeedElem = document.getElementById('diag-calculated-speed');
+const diagSentPositionElem = document.getElementById('diag-sent-position');
+const diagSentDurationElem = document.getElementById('diag-sent-duration');
+const diagSampleIntervalElem = document.getElementById('diag-sample-interval');
+
 // --- State Variables ---
 let serverWs = null;
 let isDragging = false; // Track if slider is being actively dragged
@@ -441,6 +448,12 @@ function constructAndSendCommand() {
     const limitedSpeed = calculatedSpeed * maxSpeedLimit;
 
 
+    // --- Update Diagnostic Panel ---
+    if (diagRawPositionElem) diagRawPositionElem.textContent = targetPos.toFixed(3);
+    if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = (limitedSpeed * 100).toFixed(3);
+    if (diagSentPositionElem) diagSentPositionElem.textContent = limitedPos.toFixed(3);
+    if (diagSampleIntervalElem) diagSampleIntervalElem.textContent = currentSampleIntervalMs + ' ms';
+    
     // --- Send Command ---
     sendControlCommand(limitedPos, limitedSpeed);
     
@@ -541,6 +554,9 @@ function constructLinearCmd(deviceIndex, targetPosition, speed, isFinal = false)
     
     // Update last commanded position after constructing command
     lastCommandedPosition = pos;
+    
+    // Update diagnostic panel with the calculated duration
+    if (diagSentDurationElem) diagSentDurationElem.textContent = duration + ' ms';
     
     return [cmd]; // Wrap in array as per Buttplug protocol
 }

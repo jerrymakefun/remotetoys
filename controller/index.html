@@ -328,6 +328,27 @@
       document.write(`<script src="app.js?v=${CACHE_BUSTER}"><\/script>`);
     </script>
 
+    <!-- Diagnostic Panel -->
+    <div id="diagnostic-panel" style="background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 5px; padding: 15px; margin: 20px auto; max-width: 400px; font-family: monospace; font-size: 14px;">
+        <h3 style="margin-top: 0; text-align: center;">诊断信息</h3>
+        <div style="display: grid; grid-template-columns: auto auto; gap: 8px; align-items: center;">
+            <label>原始位置 (Raw Position):</label>
+            <span id="diag-raw-position">-</span>
+            
+            <label>计算速度 (Calculated Speed):</label>
+            <span id="diag-calculated-speed">-</span>
+            
+            <label>发送位置 (Sent Position):</label>
+            <span id="diag-sent-position">-</span>
+            
+            <label>发送时长 (Sent Duration):</label>
+            <span id="diag-sent-duration">-</span>
+            
+            <label>指令间隔 (Sample Interval):</label>
+            <span id="diag-sample-interval">-</span>
+        </div>
+    </div>
+
     <!-- Language Switch Buttons -->
     <div style="text-align: center; margin-top: 20px; padding-bottom: 10px;">
         <button id="lang-switch-en" data-i18n="switchToEnglish">Switch to English</button>
