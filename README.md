@@ -136,17 +136,29 @@ Once the image is successfully built, you can run it with a single command.
 
 For a quick and automated update process, use the provided deployment script:
 
-1. **Make the script executable** (only needed once):
+1. **Navigate to the project directory**:
+   ```bash
+   cd remotetoys/GO/
+   ```
+
+2. **Make the script executable** (only needed once):
    ```bash
    chmod +x deploy.sh
    ```
 
-2. **Run the deployment script**:
+3. **Run the deployment script**:
    ```bash
    ./deploy.sh
    ```
 
-This script will automatically pull the latest code, rebuild the Docker image, restart the container, and clean up old images.
+This script will automatically:
+- Pull the latest code from GitHub
+- Rebuild the Docker image
+- Safely stop and remove the old container
+- Start a new container with the updated image
+- Clean up dangling Docker images to save disk space
+
+**Note**: The default port mapping is set to `15544:8080`. If you need a different port configuration, you can edit the `PORT_MAPPING` variable at the top of the `deploy.sh` file before running it.
 
 ### Manual Update Steps
 
