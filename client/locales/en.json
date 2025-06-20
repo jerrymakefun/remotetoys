@@ -20,6 +20,8 @@
   "copyStatusShareCancelled": "Share cancelled",
   "switchToEnglish": "Switch to English",
   "switchToChinese": "切换到中文",
+  "serverStatusLabel": "Server Status:",
+  "sessionStatusLabel": "Session Status:",
  
   "statusConnectingServer": "Connecting to server...",
   "statusWaitingController": "Waiting for controller...",
