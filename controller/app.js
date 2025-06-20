@@ -152,15 +152,10 @@ let sendIntervalId = null; // Interval timer ID for SENDING commands
 let currentSampleIntervalMs = parseInt(sampleIntervalSlider.value, 10);
 let currentControlMode = 'slider';
 let currentRawPosition = 0.5; // Store the raw 0-1 position from the vertical slider
-let lastCommandedPosition = -1.0; // Track last commanded position for duration calculation
 let currentDeviceIndex = null; // Track current device index
 
-// --- Adaptive Command Scheduler State ---
-let isDeviceReadyForNextCommand = true;
-let lastSentCommandId = null;
-let nextButtplugId = 1; // For generating unique command IDs
-let mainLoopFrameId = null; // ID for requestAnimationFrame
-let lastSentPosition = 0.5; // Track last sent position to detect meaningful changes
+// --- State Reporting ---
+let reportIntervalId = null; // ID for position reporting interval
 
 // --- Reconnection State ---
 let reconnectAttempts = 0;
@@ -231,12 +226,19 @@ function connectToServer() {
         }
         heartbeatIntervalId = setInterval(() => {
             if (serverWs && serverWs.readyState === WebSocket.OPEN) {
-                // Send ping as a command array (empty array since ping doesn't need commands)
-                const pingMsg = { commands: [] };
+                // Send position update as heartbeat
+                const minStrokeLimit = minStrokeValue;
+                const maxStrokeLimit = maxStrokeValue;
+                const limitedPos = minStrokeLimit + currentRawPosition * (maxStrokeLimit - minStrokeLimit);
+                
+                const pingMsg = {
+                    type: "update",
+                    position: limitedPos
+                };
                 serverWs.send(JSON.stringify(pingMsg));
-                console.log('Sent heartbeat ping to server');
+                console.log('Sent heartbeat position update to server');
             }
-        }, 10000); // Send ping every 10 seconds
+        }, 10000); // Send position update every 10 seconds
     };
 
     serverWs.onmessage = (event) => {
@@ -250,16 +252,13 @@ function connectToServer() {
     			if (message.state === 'ready' && message.deviceIndex !== undefined && message.deviceIndex !== null) {
     				currentDeviceIndex = message.deviceIndex;
     				console.log(`Device index set to: ${currentDeviceIndex}`);
+    				// Start position reporting when device is ready
+    				startPositionReporting();
     			} else if (message.state === 'waiting_toy' || message.state === 'client_disconnected') {
     				currentDeviceIndex = null;
-    				lastCommandedPosition = -1.0; // Reset position tracking
     				console.log('Device index cleared');
-    			}
-    		} else if (message.type === 'command_ok') {
-    			// Handle command receipt from client
-    			if (message.id === lastSentCommandId) {
-    				isDeviceReadyForNextCommand = true;
-    				console.log(`Command ${message.id} acknowledged, device ready for next command`);
+    				// Stop position reporting when device is not available
+    				stopPositionReporting();
     			}
     		} else {
     			console.log('Received non-status message:', message);
@@ -365,127 +364,56 @@ function stopHighFrequencySampler() {
 }
 
 
-// --- Main Control Loop Management ---
-function startMainControlLoop() {
-    if (mainLoopFrameId) return; // Already running
-    console.log('Starting main control loop');
-    mainControlLoop();
-}
-
-function stopMainControlLoop() {
-    if (!mainLoopFrameId) return;
-    console.log('Stopping main control loop');
-    cancelAnimationFrame(mainLoopFrameId);
-    mainLoopFrameId = null;
-}
-
-// Main control loop using requestAnimationFrame
-function mainControlLoop() {
-    // Schedule next frame
-    mainLoopFrameId = requestAnimationFrame(mainControlLoop);
+// --- Position Reporting ---
+function startPositionReporting() {
+    if (reportIntervalId) return; // Already running
+    console.log('Starting position reporting');
     
-    // Check if we can send a command
-    if (!serverWs || serverWs.readyState !== WebSocket.OPEN) {
-        return;
-    }
-    
-    if (!isDeviceReadyForNextCommand || currentDeviceIndex === null) {
-        return;
-    }
-    
-    // Get current position with stroke limits applied
-    const minStrokeLimit = minStrokeValue;
-    const maxStrokeLimit = maxStrokeValue;
-    const limitedPos = minStrokeLimit + currentRawPosition * (maxStrokeLimit - minStrokeLimit);
-    
-    // Check if position has changed meaningfully (threshold: 0.5%)
-    const positionChangeThreshold = 0.005;
-    if (Math.abs(limitedPos - lastSentPosition) < positionChangeThreshold) {
-        return; // No meaningful change
-    }
-    
-    // Calculate speed and duration
-    let calculatedSpeed = 0.0;
-    let duration = 30; // Default minimum duration
-    
-    if (sampleBuffer.length >= 2) {
-        const latestSample = sampleBuffer[sampleBuffer.length - 1];
-        const oldestSample = sampleBuffer[0];
-        const timeDiffSeconds = (latestSample.timestamp - oldestSample.timestamp) / 1000.0;
+    // Use requestAnimationFrame for smooth reporting
+    function reportPosition() {
+        reportIntervalId = requestAnimationFrame(reportPosition);
         
-        if (timeDiffSeconds > 0.005) {
-            const posDiff = Math.abs(latestSample.position - oldestSample.position);
-            const rawSpeed = posDiff / timeDiffSeconds;
-            
-            // Normalize speed
-            const assumedMaxRawSpeed = 5.0;
-            calculatedSpeed = Math.min(1.0, rawSpeed / assumedMaxRawSpeed);
-            
-            // Apply max speed limit
-            const maxSpeedLimit = maxSpeedSlider.value / 100.0;
-            calculatedSpeed = calculatedSpeed * maxSpeedLimit;
-            
-            // Calculate duration based on displacement and speed
-            if (lastCommandedPosition >= 0) {
-                const deltaPos = Math.abs(limitedPos - lastCommandedPosition);
-                if (calculatedSpeed > 0.05 && deltaPos > 0.001) {
-                    const effectiveSpeed = calculatedSpeed * assumedMaxRawSpeed;
-                    const durationSeconds = deltaPos / effectiveSpeed;
-                    duration = Math.floor(durationSeconds * 1000);
-                    duration = Math.max(30, Math.min(duration, 150)); // Clamp between 30-150ms
-                }
-            }
+        // Check if we can send
+        if (!serverWs || serverWs.readyState !== WebSocket.OPEN) {
+            return;
         }
+        
+        if (currentDeviceIndex === null) {
+            return;
+        }
+        
+        // Get current position with stroke limits applied
+        const minStrokeLimit = minStrokeValue;
+        const maxStrokeLimit = maxStrokeValue;
+        const limitedPos = minStrokeLimit + currentRawPosition * (maxStrokeLimit - minStrokeLimit);
+        
+        // Send position update
+        const message = {
+            type: "update",
+            position: limitedPos
+        };
+        
+        serverWs.send(JSON.stringify(message));
+        
+        // Update diagnostic panel (simplified)
+        if (diagRawPositionElem) diagRawPositionElem.textContent = currentRawPosition.toFixed(3);
+        if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = "N/A";
+        if (diagSentPositionElem) diagSentPositionElem.textContent = limitedPos.toFixed(3);
+        if (diagSentDurationElem) diagSentDurationElem.textContent = "N/A";
+        if (diagSampleIntervalElem) diagSampleIntervalElem.textContent = "State Sync";
+        
+        // Hide speed display since we're not calculating it
+        currentSpeedElem.textContent = "N/A";
     }
     
-    // Mark device as busy
-    isDeviceReadyForNextCommand = false;
-    
-    // Generate command ID
-    const commandId = nextButtplugId++;
-    lastSentCommandId = commandId;
-    
-    // Construct commands
-    const stopCmd = {
-        "StopDeviceCmd": {
-            "Id": commandId,
-            "DeviceIndex": currentDeviceIndex
-        }
-    };
-    
-    const linearCmd = {
-        "LinearCmd": {
-            "Id": commandId,
-            "DeviceIndex": currentDeviceIndex,
-            "Vectors": [{
-                "Index": 0,
-                "Duration": duration,
-                "Position": limitedPos
-            }]
-        }
-    };
-    
-    // Send commands
-    const message = {
-        commands: [JSON.stringify([stopCmd]), JSON.stringify([linearCmd])]
-    };
-    
-    serverWs.send(JSON.stringify(message));
-    console.log(`Sent command ${commandId}: pos=${limitedPos.toFixed(3)}, speed=${calculatedSpeed.toFixed(3)}, duration=${duration}ms`);
-    
-    // Update state
-    lastSentPosition = limitedPos;
-    lastCommandedPosition = limitedPos;
-    
-    // Update diagnostic panel
-    if (diagRawPositionElem) diagRawPositionElem.textContent = currentRawPosition.toFixed(3);
-    if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = (calculatedSpeed * 100).toFixed(1);
-    if (diagSentPositionElem) diagSentPositionElem.textContent = limitedPos.toFixed(3);
-    if (diagSentDurationElem) diagSentDurationElem.textContent = duration + ' ms';
-    if (diagSampleIntervalElem) diagSampleIntervalElem.textContent = "Adaptive";
-    
-    // Update UI
-    currentSpeedElem.textContent = (calculatedSpeed * 100).toFixed(1);
+    reportPosition();
+}
+
+function stopPositionReporting() {
+    if (!reportIntervalId) return;
+    console.log('Stopping position reporting');
+    cancelAnimationFrame(reportIntervalId);
+    reportIntervalId = null;
 }
 
 // Removed Buttplug command constructors - no longer needed in state sync model
@@ -542,7 +470,6 @@ verticalSliderContainer.addEventListener('pointerdown', (e) => {
     console.log(`Initial Raw Position: ${currentRawPosition.toFixed(3)}`);
 
     startHighFrequencySampler(); // Start high-frequency internal sampling
-    startMainControlLoop(); // Start the main control loop
 });
 
 verticalSliderContainer.addEventListener('pointermove', (e) => {
@@ -561,21 +488,10 @@ verticalSliderContainer.addEventListener('pointerup', (e) => {
     verticalSliderContainer.releasePointerCapture(e.pointerId); // Release pointer capture
     console.log('Pointer Up - Dragging Stop');
     stopHighFrequencySampler(); // Stop high-frequency internal sampling
-    
-    // Don't stop the main control loop - let it continue to handle any pending commands
-    // It will naturally stop sending when position stops changing
 
     // Ensure UI reflects the final state
     updateSleevePosition(currentRawPosition);
     updatePositionDisplay(currentRawPosition);
-    
-    // Send final position command if needed
-    const minSL = minStrokeValue;
-    const maxSL = maxStrokeValue;
-    const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
-    
-    // Force one last update by changing lastSentPosition
-    lastSentPosition = -1;
     
     speedWarningElem.textContent = '';
 });
@@ -599,9 +515,6 @@ verticalSliderContainer.addEventListener('pointerleave', (e) => {
              // Fallback safety stop if dispatch fails
              isDragging = false;
              stopHighFrequencySampler();
-             
-             // Force final position update
-             lastSentPosition = -1;
              
              speedWarningElem.textContent = '';
          }
@@ -638,8 +551,6 @@ function handleModeChange() {
         if (isDragging) {
             isDragging = false; // Force stop dragging state
             stopHighFrequencySampler();
-            // Force final position update
-            lastSentPosition = -1;
             speedWarningElem.textContent = '';
         }
         // startMotionControl(); // Placeholder
@@ -814,9 +725,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 6. Connect to server
     connectToServer();
-    
-    // 7. Start main control loop
-    startMainControlLoop();
 });
 // --- Session Status Update ---
 function updateSessionStatus(state) {

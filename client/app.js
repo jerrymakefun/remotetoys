@@ -199,16 +199,39 @@ function connectToServer() {
     				// Add other server-sent statuses if needed
     			}
     		} else {
-    			// Assume it's a Buttplug command for Intiface
+    			// Assume it's a Buttplug command array from server
     			console.log('Received Buttplug Command from server:', event.data);
     			// Forward message to Intiface if connected AND we have a target device index
     			if (intifaceWs && intifaceWs.readyState === WebSocket.OPEN && targetDeviceIndex !== null) {
     				try {
-    					// Just forward the command as is
-    					intifaceWs.send(event.data);
-    					console.log(`Forwarded command to Intiface (DeviceIndex ${targetDeviceIndex})`);
+    					// Parse the command array
+    					const commands = JSON.parse(event.data);
+    					
+    					// Check if this is a LinearCmd
+    					if (commands && commands.length > 0 && commands[0].LinearCmd) {
+    						// Implement stop-then-move atomic operation
+    						const linearCmd = commands[0];
+    						
+    						// First send StopDeviceCmd
+    						const stopCmd = [{
+    							"StopDeviceCmd": {
+    								"Id": 1,
+    								"DeviceIndex": targetDeviceIndex
+    							}
+    						}];
+    						intifaceWs.send(JSON.stringify(stopCmd));
+    						console.log('Sent StopDeviceCmd to clear queue');
+    						
+    						// Then send the LinearCmd
+    						intifaceWs.send(event.data);
+    						console.log(`Forwarded LinearCmd to Intiface (DeviceIndex ${targetDeviceIndex})`);
+    					} else {
+    						// For other commands, just forward as is
+    						intifaceWs.send(event.data);
+    						console.log(`Forwarded command to Intiface (DeviceIndex ${targetDeviceIndex})`);
+    					}
     				} catch (e) {
-    					console.error("Error forwarding message to Intiface:", e);
+    					console.error("Error processing/forwarding message to Intiface:", e);
     				}
     			} else if (targetDeviceIndex === null) {
     				console.warn('Target device index not yet known, command dropped.');
@@ -319,19 +342,7 @@ function connectToIntiface() {
             messages.forEach(msgContainer => {
                 if (msgContainer.Ok) {
                     console.log(`Intiface OK for Id: ${msgContainer.Ok.Id}`);
-                    // Send command_ok receipt to server for tracking
-                    if (serverWs && serverWs.readyState === WebSocket.OPEN) {
-                        const receiptMsg = {
-                            type: "command_ok",
-                            id: msgContainer.Ok.Id
-                        };
-                        try {
-                            serverWs.send(JSON.stringify(receiptMsg));
-                            console.log("Sent command_ok to server:", receiptMsg);
-                        } catch (e) {
-                            console.error("Error sending command_ok to server:", e);
-                        }
-                    }
+                    // No longer tracking command acknowledgments
                 } else if (msgContainer.Error) {
                     console.error(`Intiface Error: ${msgContainer.Error.ErrorMessage} (Code: ${msgContainer.Error.ErrorCode}, Id: ${msgContainer.Error.Id})`);
                 } else if (msgContainer.ServerInfo) {
