@@ -199,13 +199,28 @@ function connectToServer() {
     				// Add other server-sent statuses if needed
     			}
     		} else {
-    			// Assume it's a Buttplug command for Intiface
+    			// Assume it's a Buttplug command array for Intiface
     			console.log('Received Buttplug Command from server:', event.data);
     			// Forward message to Intiface if connected AND we have a target device index
     			if (intifaceWs && intifaceWs.readyState === WebSocket.OPEN && targetDeviceIndex !== null) {
     				try {
+    					// Parse the command array
+    					const commands = JSON.parse(event.data);
+    					
+    					// Implement stop-then-move atomic operation
+    					// First send StopDeviceCmd
+    					const stopCmd = [{
+    						"StopDeviceCmd": {
+    							"Id": nextButtplugId++,
+    							"DeviceIndex": targetDeviceIndex
+    						}
+    					}];
+    					intifaceWs.send(JSON.stringify(stopCmd));
+    					console.log('Sent StopDeviceCmd to clear queue');
+    					
+    					// Then send the LinearCmd
     					intifaceWs.send(event.data);
-    					console.log(`Forwarded command to Intiface (DeviceIndex ${targetDeviceIndex})`);
+    					console.log(`Forwarded LinearCmd to Intiface (DeviceIndex ${targetDeviceIndex})`);
     				} catch (e) {
     					console.error("Error forwarding message to Intiface:", e);
     				}

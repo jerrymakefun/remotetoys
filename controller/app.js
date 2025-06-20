@@ -152,8 +152,7 @@ let sendIntervalId = null; // Interval timer ID for SENDING commands
 let currentSampleIntervalMs = parseInt(sampleIntervalSlider.value, 10);
 let currentControlMode = 'slider';
 let currentRawPosition = 0.5; // Store the raw 0-1 position from the vertical slider
-let lastCommandedPosition = -1.0; // Track last commanded position for duration calculation
-let currentDeviceIndex = null; // Track current device index
+// Removed lastCommandedPosition and currentDeviceIndex - no longer needed
 
 // --- Reconnection State ---
 let reconnectAttempts = 0;
@@ -165,9 +164,7 @@ let shouldReconnect = true; // Flag to control reconnection
 // --- Heartbeat State ---
 let heartbeatIntervalId = null;
 
-// --- Momentum State ---
-let momentumIntervalId = null;
-let lastCalculatedSpeed = 0; // Store last speed for momentum calculation
+// Removed momentum state - no longer needed
 
 // --- Custom Range Slider State ---
 const rangeContainer = document.querySelector('.range-slider-container');
@@ -241,15 +238,7 @@ function connectToServer() {
    
     		if (message.type === 'status') {
     			updateSessionStatus(message.state);
-    			// Extract device index from session status if available
-    			if (message.state === 'ready' && message.deviceIndex !== undefined && message.deviceIndex !== null) {
-    				currentDeviceIndex = message.deviceIndex;
-    				console.log(`Device index set to: ${currentDeviceIndex}`);
-    			} else if (message.state === 'waiting_toy' || message.state === 'client_disconnected') {
-    				currentDeviceIndex = null;
-    				lastCommandedPosition = -1.0; // Reset position tracking
-    				console.log('Device index cleared');
-    			}
+    			// Device index handling removed - no longer needed in state sync model
     		} else {
     			console.log('Received non-status message:', message);
     		}
@@ -372,7 +361,7 @@ function stopSendCommandInterval() {
     sendIntervalId = null;
 }
 
-// Called by the SEND interval timer
+// Called by the SEND interval timer - now just sends position state
 function constructAndSendCommand() {
     if (!serverWs || serverWs.readyState !== WebSocket.OPEN) {
         console.warn('Server not connected, stopping send interval.');
@@ -381,284 +370,33 @@ function constructAndSendCommand() {
         return;
     }
 
-    if (sampleBuffer.length < 2) {
-        console.warn('Not enough samples in buffer to calculate speed.');
-        // Send a command with speed 0 and current position if dragging just started
-        // Use the stored currentRawPosition
-        const latestPosRaw = currentRawPosition;
-        // Use current min/max stroke values
-        const minStrokeLimit = minStrokeValue;
-        const maxStrokeLimit = maxStrokeValue;
-        const initialLimitedPos = minStrokeLimit + latestPosRaw * (maxStrokeLimit - minStrokeLimit);
-        sendControlCommand(initialLimitedPos, 0); // Send speed 0
-        currentSpeedElem.textContent = (0.0).toFixed(1); // Update UI
-        speedWarningElem.textContent = ''; // Clear warning
-        return;
-    }
-
-    // --- Calculate Smoothed Position and Speed from Buffer ---
-    // Use latest position, calculate speed based on oldest vs newest in buffer for smoother result
-    const latestSample = sampleBuffer[sampleBuffer.length - 1];
-    const oldestSample = sampleBuffer[0]; // Use the oldest sample in the buffer
-
-    const targetPos = latestSample.position; // Use latest position for target
-    const timeDiffSeconds = (latestSample.timestamp - oldestSample.timestamp) / 1000.0;
-    let calculatedSpeed = 0.0;
-    let rawCalculatedSpeed = 0.0;
-
-    // Ensure buffer has time span and position has changed
-    if (timeDiffSeconds > 0.005 && sampleBuffer.length >= Math.min(SAMPLE_BUFFER_SIZE, 3)) { // Need at least 3 points ideally and some time diff
-        const posDiff = latestSample.position - oldestSample.position;
-        rawCalculatedSpeed = Math.abs(posDiff) / timeDiffSeconds; // Average speed over buffer duration
-        calculatedSpeed = rawCalculatedSpeed; // Start with raw
-
-        // --- Speed Warning ---
-        const SPEED_WARNING_THRESHOLD = 6.0; // units/sec
-        if (rawCalculatedSpeed > SPEED_WARNING_THRESHOLD) {
-            speedWarningElem.textContent = i18n.t('warningSpeedTooFast'); // Use key
-        } else {
-            speedWarningElem.textContent = ''; // Clear warning
-        }
-        // --- End Speed Warning ---
-
-        // Normalize speed
-        const assumedMaxRawSpeed = 5.0; // units/sec for normalization reference
-        calculatedSpeed = Math.min(1.0, calculatedSpeed / assumedMaxRawSpeed);
-
-        // Apply minimum speed if dragging slowly but moving
-        const MIN_DRAG_SPEED_VALUE = 0.05;
-        // Check raw speed to avoid boosting speed if buffer samples are identical but time passed
-        if (rawCalculatedSpeed > 0.001 && calculatedSpeed > 0 && calculatedSpeed < MIN_DRAG_SPEED_VALUE) {
-            calculatedSpeed = MIN_DRAG_SPEED_VALUE;
-        }
-    } else {
-        calculatedSpeed = 0.0; // Speed is 0 if interval too short or no movement
-        speedWarningElem.textContent = ''; // Clear warning
-    }
-    // --- End Calculation ---
-
-
-    // --- Apply Limits ---
-    const maxSpeedLimit = maxSpeedSlider.value / 100.0;
-    // Use current min/max stroke values
+    // Get current position with stroke limits applied
     const minStrokeLimit = minStrokeValue;
     const maxStrokeLimit = maxStrokeValue;
-    // Map target position (0-1) to the defined stroke range [minStroke, maxStroke]
-    const limitedPos = minStrokeLimit + targetPos * (maxStrokeLimit - minStrokeLimit);
-    const limitedSpeed = calculatedSpeed * maxSpeedLimit;
+    const limitedPos = minStrokeLimit + currentRawPosition * (maxStrokeLimit - minStrokeLimit);
 
+    // Send simple position update message
+    const updateMsg = {
+        type: "update",
+        position: limitedPos
+    };
+    
+    serverWs.send(JSON.stringify(updateMsg));
 
-    // --- Update Diagnostic Panel ---
-    if (diagRawPositionElem) diagRawPositionElem.textContent = targetPos.toFixed(3);
-    if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = (limitedSpeed * 100).toFixed(3);
+    // Update diagnostic panel
+    if (diagRawPositionElem) diagRawPositionElem.textContent = currentRawPosition.toFixed(3);
+    if (diagCalculatedSpeedElem) diagCalculatedSpeedElem.textContent = "N/A"; // No longer calculating speed
     if (diagSentPositionElem) diagSentPositionElem.textContent = limitedPos.toFixed(3);
+    if (diagSentDurationElem) diagSentDurationElem.textContent = "N/A"; // Duration handled by server
     if (diagSampleIntervalElem) diagSampleIntervalElem.textContent = currentSampleIntervalMs + ' ms';
     
-    // --- Send Command ---
-    sendControlCommand(limitedPos, limitedSpeed);
-    
-    // Store the last calculated speed for momentum
-    lastCalculatedSpeed = limitedSpeed;
-
-    // --- Update UI ---
-    // Position UI updated in high freq loop for responsiveness
-    currentSpeedElem.textContent = (limitedSpeed * 100).toFixed(1); // Update speed display here
+    // Clear speed displays since we're not calculating speed anymore
+    currentSpeedElem.textContent = "N/A";
+    speedWarningElem.textContent = '';
 }
 
-// --- Buttplug Command Constructors ---
-const BUTTPLUG_MSG_ID = 1; // Fixed ID for commands
-const MIN_SAFETY_DURATION = 30; // Minimum duration in ms
-
-// Construct StopDeviceCmd JSON object
-function constructStopDeviceCmd(deviceIndex) {
-    const cmd = {
-        StopDeviceCmd: {
-            Id: BUTTPLUG_MSG_ID,
-            DeviceIndex: deviceIndex
-        }
-    };
-    return [cmd]; // Wrap in array as per Buttplug protocol
-}
-
-// Construct LinearCmd JSON object with velocity-aware duration calculation
-function constructLinearCmd(deviceIndex, targetPosition, speed, isFinal = false) {
-    const pos = Math.max(0.0, Math.min(1.0, targetPosition)); // Clamp position
-    
-    let duration;
-    const maxCalculatedDuration = 90; // Max duration in ms
-    const assumedMaxRawSpeed = 5.0; // Maximum physical speed (units per second) when speed=1.0
-    const minSpeedThreshold = 0.05; // Minimum speed to avoid extremely long durations
-    const finalCommandDuration = 150; // Fixed duration for final positioning commands
-    const endpointThreshold = 0.05; // 5% from either end
-    const endpointDuration = 200; // Fixed duration for endpoint movements
-    
-    // Handle Final Command
-    if (isFinal) {
-        duration = finalCommandDuration;
-        console.log(`Final command: Using fixed duration of ${duration}ms for precise positioning`);
-    } else if (pos < endpointThreshold || pos > (1.0 - endpointThreshold)) {
-        // Handle Endpoint Regions
-        duration = endpointDuration;
-        console.log(`Endpoint region detected (pos=${pos.toFixed(3)}): Using fixed duration of ${duration}ms`);
-    } else {
-        // Velocity-Aware Duration Calculation
-        let deltaPos = 0.0;
-        if (lastCommandedPosition >= 0.0) {
-            deltaPos = Math.abs(pos - lastCommandedPosition);
-        }
-        
-        // Handle special cases first
-        if (lastCommandedPosition < 0.0) {
-            // First command - no previous position
-            duration = MIN_SAFETY_DURATION;
-            console.log(`First command (no previous position), using min duration: ${duration}ms`);
-        } else if (deltaPos < 0.001) {
-            // Position hasn't changed meaningfully
-            duration = MIN_SAFETY_DURATION;
-            console.log(`Position unchanged (delta=${deltaPos.toFixed(4)}), using min duration: ${duration}ms`);
-        } else if (speed < minSpeedThreshold) {
-            // Speed too low - apply minimum speed threshold
-            const effectiveSpeed = minSpeedThreshold * assumedMaxRawSpeed;
-            const durationSeconds = deltaPos / effectiveSpeed;
-            duration = Math.floor(durationSeconds * 1000);
-            console.log(`Speed too low (${speed.toFixed(3)}), using minimum threshold. Delta=${deltaPos.toFixed(4)}, Duration=${duration}ms`);
-        } else {
-            // Normal case: Calculate duration based on displacement and speed
-            const effectiveSpeed = speed * assumedMaxRawSpeed;
-            const durationSeconds = deltaPos / effectiveSpeed;
-            duration = Math.floor(durationSeconds * 1000);
-            console.log(`Normal calculation: Delta=${deltaPos.toFixed(4)}, Speed=${speed.toFixed(3)}, Duration=${duration}ms`);
-        }
-        
-        // Apply safety boundaries
-        if (duration < MIN_SAFETY_DURATION) {
-            console.log(`Duration ${duration}ms below minimum, clamping to ${MIN_SAFETY_DURATION}ms`);
-            duration = MIN_SAFETY_DURATION;
-        } else if (duration > maxCalculatedDuration) {
-            console.log(`Duration ${duration}ms above maximum, clamping to ${maxCalculatedDuration}ms`);
-            duration = maxCalculatedDuration;
-        }
-    }
-    
-    const cmd = {
-        LinearCmd: {
-            Id: BUTTPLUG_MSG_ID,
-            DeviceIndex: deviceIndex,
-            Vectors: [{
-                Index: 0, // Assuming single linear actuator at index 0
-                Duration: duration,
-                Position: pos
-            }]
-        }
-    };
-    
-    // Update last commanded position after constructing command
-    lastCommandedPosition = pos;
-    
-    // Update diagnostic panel with the calculated duration
-    if (diagSentDurationElem) diagSentDurationElem.textContent = duration + ' ms';
-    
-    return [cmd]; // Wrap in array as per Buttplug protocol
-}
-
-// Helper function to send the actual control message
-function sendControlCommand(position, speed, isFinal = false) {
-    if (!serverWs || serverWs.readyState !== WebSocket.OPEN) {
-        console.warn('Cannot send command, WebSocket not open.');
-        return;
-    }
-    
-    // Check if we have a device index set
-    if (currentDeviceIndex === null) {
-        console.warn('Cannot send command, device index not set.');
-        return;
-    }
-    
-    // Clamp position and speed just before sending
-    const finalPos = Math.max(0.0, Math.min(1.0, position));
-    const finalSpeed = Math.max(0.0, Math.min(1.0, speed));
-    
-    // Construct both StopDeviceCmd and LinearCmd
-    const stopCmd = constructStopDeviceCmd(currentDeviceIndex);
-    const linearCmd = constructLinearCmd(currentDeviceIndex, finalPos, finalSpeed, isFinal);
-    
-    // JSON.stringify both command objects
-    const stopCmdJson = JSON.stringify(stopCmd);
-    const linearCmdJson = JSON.stringify(linearCmd);
-    
-    // Package both strings into an array
-    const message = {
-        commands: [stopCmdJson, linearCmdJson]
-    };
-    
-    // Send the message
-    serverWs.send(JSON.stringify(message));
-    console.log(`Sent Stop-Then-Move commands for position: ${finalPos.toFixed(3)}, speed: ${finalSpeed.toFixed(3)}`);
-}
-
-
-// --- Momentum Implementation ---
-function initiateMomentum(initialSpeed) {
-    // Clear any existing momentum interval
-    if (momentumIntervalId) {
-        clearInterval(momentumIntervalId);
-        momentumIntervalId = null;
-    }
-    
-    const MOMENTUM_INTERVAL = 20; // 20ms = 50fps
-    const DECAY_FACTOR = 0.95; // Speed decays by 5% each frame
-    const MIN_MOMENTUM_SPEED = 0.02; // Stop when speed is very low
-    
-    let currentSpeed = initialSpeed;
-    let virtualPosition = currentRawPosition; // Start from current position
-    
-    console.log(`Starting momentum with initial speed: ${initialSpeed.toFixed(3)}`);
-    
-    momentumIntervalId = setInterval(() => {
-        // Calculate how much to move in this frame
-        const frameMovement = currentSpeed * (MOMENTUM_INTERVAL / 1000.0);
-        
-        // Determine direction based on the last movement
-        const direction = sampleBuffer.length > 1 && 
-                         sampleBuffer[sampleBuffer.length - 1].position > sampleBuffer[sampleBuffer.length - 2].position ? 1 : -1;
-        
-        // Update virtual position
-        virtualPosition += frameMovement * direction;
-        
-        // Clamp to valid range
-        virtualPosition = Math.max(0, Math.min(1, virtualPosition));
-        
-        // Convert to device coordinates
-        const minSL = minStrokeValue;
-        const maxSL = maxStrokeValue;
-        const devicePosition = minSL + virtualPosition * (maxSL - minSL);
-        
-        // Send command with current (decaying) speed
-        sendControlCommand(devicePosition, currentSpeed);
-        
-        // Update UI
-        updateSleevePosition(virtualPosition);
-        updatePositionDisplay(virtualPosition);
-        currentSpeedElem.textContent = (currentSpeed * 100).toFixed(1);
-        
-        // Apply decay
-        currentSpeed *= DECAY_FACTOR;
-        
-        // Check stopping conditions
-        if (currentSpeed < MIN_MOMENTUM_SPEED || virtualPosition <= 0 || virtualPosition >= 1) {
-            // Stop momentum
-            clearInterval(momentumIntervalId);
-            momentumIntervalId = null;
-            
-            // Send final positioning command
-            sendControlCommand(devicePosition, 0.1, true);
-            
-            // Update UI to show stopped
-            currentSpeedElem.textContent = "0.0";
-            console.log(`Momentum stopped at position: ${virtualPosition.toFixed(3)}`);
-        }
-    }, MOMENTUM_INTERVAL);
-}
+// Removed Buttplug command constructors - no longer needed in state sync model
+// Removed momentum implementation - server handles smooth movement
 
 // --- UI Update Helpers ---
 function updateSleevePosition(position) { // position is 0-1
@@ -732,32 +470,13 @@ verticalSliderContainer.addEventListener('pointerup', (e) => {
     stopHighFrequencySampler(); // Stop high-frequency internal sampling
     stopSendCommandInterval(); // Stop sending commands at interval
 
-    // --- Final Position Update ---
-    // Position is already updated by the last pointermove/down via currentRawPosition
     // Ensure UI reflects the final state
     updateSleevePosition(currentRawPosition);
     updatePositionDisplay(currentRawPosition);
-
-    // Check if we should initiate momentum or send final command
-    const MOMENTUM_THRESHOLD = 0.3; // Minimum speed to trigger momentum
     
-    if (lastCalculatedSpeed > MOMENTUM_THRESHOLD) {
-        // High speed detected, initiate momentum
-        console.log(`High speed detected (${lastCalculatedSpeed.toFixed(3)}), initiating momentum`);
-        initiateMomentum(lastCalculatedSpeed);
-        speedWarningElem.textContent = ''; // Clear warning
-    } else {
-        // Low speed, send final positioning command
-        const minSL = minStrokeValue;
-        const maxSL = maxStrokeValue;
-        const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
-        const finalSpeed = 0.1; // Low speed for precise positioning
-        sendControlCommand(finalPosition, finalSpeed, true); // Send with isFinal=true
-        
-        // Update UI speed display
-        currentSpeedElem.textContent = (0.0).toFixed(1); // Show 0 speed immediately on UI
-        speedWarningElem.textContent = ''; // Clear warning on pointer up
-    }
+    // Clear UI displays
+    currentSpeedElem.textContent = "N/A";
+    speedWarningElem.textContent = '';
 });
 
 verticalSliderContainer.addEventListener('pointerleave', (e) => {
@@ -781,19 +500,8 @@ verticalSliderContainer.addEventListener('pointerleave', (e) => {
              stopSendCommandInterval();
              stopHighFrequencySampler();
              
-             // Check if we should initiate momentum or send final command
-             const MOMENTUM_THRESHOLD = 0.3;
-             if (lastCalculatedSpeed > MOMENTUM_THRESHOLD) {
-                 initiateMomentum(lastCalculatedSpeed);
-             } else {
-                 // Send final positioning command, using the last known raw position
-                 const minSL = minStrokeValue;
-                 const maxSL = maxStrokeValue;
-                 const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
-                 sendControlCommand(finalPosition, 0.1, true); // Send with isFinal=true
-                 // Update UI
-                 currentSpeedElem.textContent = (0.0).toFixed(1);
-             }
+             // Update UI
+             currentSpeedElem.textContent = "N/A";
              speedWarningElem.textContent = '';
          }
     }
@@ -835,14 +543,9 @@ function handleModeChange() {
             isDragging = false; // Force stop dragging state
             stopSendCommandInterval();
             stopHighFrequencySampler();
-            // Send final positioning command, using the last known raw position
-            const minSL = minStrokeValue;
-            const maxSL = maxStrokeValue;
-            const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
-            sendControlCommand(finalPosition, 0.1, true); // Send with isFinal=true
             // Update UI
-             currentSpeedElem.textContent = (0.0).toFixed(1);
-             speedWarningElem.textContent = '';
+            currentSpeedElem.textContent = "N/A";
+            speedWarningElem.textContent = '';
         }
         // startMotionControl(); // Placeholder
     }
