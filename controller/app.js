@@ -531,6 +531,59 @@ function initiateMomentum(initialSpeed) {
     }, MOMENTUM_INTERVAL);
 }
 
+// Soft landing function for smooth stop
+let softLandingIntervalId = null;
+
+function initiateSoftLanding(targetPosition) {
+    // Stop any existing soft landing
+    if (softLandingIntervalId) {
+        clearInterval(softLandingIntervalId);
+        softLandingIntervalId = null;
+    }
+    
+    // Get current position in device space
+    const minSL = minStrokeValue;
+    const maxSL = maxStrokeValue;
+    const currentDevicePosition = minSL + currentRawPosition * (maxSL - minSL);
+    
+    // Soft landing parameters
+    const SOFT_LANDING_DURATION = 200; // Total duration in ms
+    const SOFT_LANDING_INTERVAL = 20; // Update interval in ms
+    const TOTAL_STEPS = SOFT_LANDING_DURATION / SOFT_LANDING_INTERVAL;
+    
+    let stepCount = 0;
+    const startPosition = currentDevicePosition;
+    const positionDelta = targetPosition - startPosition;
+    
+    console.log(`Starting soft landing from ${startPosition.toFixed(3)} to ${targetPosition.toFixed(3)}`);
+    
+    softLandingIntervalId = setInterval(() => {
+        stepCount++;
+        
+        if (stepCount >= TOTAL_STEPS) {
+            // Final step - send final position with isFinal=true
+            clearInterval(softLandingIntervalId);
+            softLandingIntervalId = null;
+            sendControlCommand(targetPosition, 0.1, true);
+            console.log(`Soft landing completed at ${targetPosition.toFixed(3)}`);
+            return;
+        }
+        
+        // Calculate eased position using ease-out curve
+        const progress = stepCount / TOTAL_STEPS;
+        const easedProgress = 1 - Math.pow(1 - progress, 3); // Cubic ease-out
+        const currentPosition = startPosition + (positionDelta * easedProgress);
+        
+        // Calculate speed that decreases over time
+        const remainingProgress = 1 - progress;
+        const speed = 0.3 * remainingProgress + 0.1; // Speed from 0.4 to 0.1
+        
+        // Send intermediate command
+        sendControlCommand(currentPosition, speed, false);
+        
+    }, SOFT_LANDING_INTERVAL);
+}
+
 // --- UI Update Helpers ---
 function updateSleevePosition(position) { // position is 0-1
     // const sleeveHeight = sleeveElem.offsetHeight; // No longer needed for centering
@@ -618,12 +671,11 @@ verticalSliderContainer.addEventListener('pointerup', (e) => {
         initiateMomentum(lastCalculatedSpeed);
         speedWarningElem.textContent = ''; // Clear warning
     } else {
-        // Low speed, send final positioning command
+        // Low speed, initiate soft landing instead of abrupt stop
         const minSL = minStrokeValue;
         const maxSL = maxStrokeValue;
         const finalPosition = minSL + currentRawPosition * (maxSL - minSL);
-        const finalSpeed = 0.1; // Low speed for precise positioning
-        sendControlCommand(finalPosition, finalSpeed, true); // Send with isFinal=true
+        initiateSoftLanding(finalPosition);
         
         // Update UI speed display
         currentSpeedElem.textContent = (0.0).toFixed(1); // Show 0 speed immediately on UI

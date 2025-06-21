@@ -125,6 +125,7 @@ let reconnectTimeoutId = null;
 const maxReconnectAttempts = 10;
 const maxReconnectInterval = 30000; // 30 seconds
 let shouldReconnect = true; // Flag to control reconnection
+let heartbeatIntervalId = null; // For heartbeat timer
 
 // --- Server WebSocket Connection ---
 
@@ -165,6 +166,21 @@ function connectToServer() {
     	    clearTimeout(reconnectTimeoutId);
     	    reconnectTimeoutId = null;
     	}
+    	
+    	// Clear any existing heartbeat interval
+    	if (heartbeatIntervalId) {
+    	    clearInterval(heartbeatIntervalId);
+    	    heartbeatIntervalId = null;
+    	}
+    	
+    	// Start heartbeat timer
+    	heartbeatIntervalId = setInterval(() => {
+    	    if (serverWs && serverWs.readyState === WebSocket.OPEN) {
+    	        serverWs.send(JSON.stringify({ type: "ping" }));
+    	        console.log('Sent heartbeat ping to server');
+    	    }
+    	}, 10000); // Send heartbeat every 10 seconds
+    	
     	// 连接成功后显示分享按钮区域
     	if (shareSection) {
             shareSection.style.display = 'block';
@@ -195,6 +211,10 @@ function connectToServer() {
     					// Controller left, go back to waiting (if server is still up)
     					updateSessionStatus('statusControllerDisconnected', 'disconnected');
     					// Maybe revert to 'statusWaitingController' after a delay? Or just show disconnected.
+    					break;
+    				case 'ready':
+    					// Everything is ready - controller connected, device selected
+    					updateSessionStatus('statusDeviceReady', 'connected');
     					break;
     				// Add other server-sent statuses if needed
     			}
@@ -228,6 +248,12 @@ function connectToServer() {
     serverWs.onclose = (event) => {
     	console.log('Disconnected from server:', event.code, event.reason);
     	serverWs = null;
+    	
+    	// Clear heartbeat interval
+    	if (heartbeatIntervalId) {
+    	    clearInterval(heartbeatIntervalId);
+    	    heartbeatIntervalId = null;
+    	}
     	
     	// Implement auto-reconnect with exponential backoff
     	if (shouldReconnect && reconnectAttempts < maxReconnectAttempts) {
