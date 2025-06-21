@@ -24,15 +24,18 @@ graph TD
 
 The Go server is more than just a simple message forwarder; it acts as an intelligent intermediary. Its core value lies in translating the user's smooth operations into precise commands that the device can understand.
 
-*   **Connection Management**:
+*   **Robust Connection Management**:
     *   Accepts WebSocket connections on `/ws`, distinguishing between `?type=controller` and `?type=client`.
     *   Uses a `?key=some_room_key` to pair a controller and a client into the same `Room` for an isolated session.
+    *   **Concurrency-Safe Writes**: Each client connection is equipped with a dedicated, buffered channel (`send`) and a corresponding `writePump` goroutine. This architecture prevents write conflicts under high-frequency command scenarios, ensuring non-blocking, real-time message delivery and overall system stability.
+    *   **Heartbeat-Driven Stability**: A robust, bidirectional heartbeat mechanism is implemented. Both the controller and the client send periodic pings, and the server actively monitors them to promptly close any truly disconnected or timed-out connections, preventing stale sessions.
 
-*   **State Synchronization**:
-    *   Tracks the state of each room (e.g., `waiting_client`, `waiting_toy`, `ready`) and sends these status updates to both parties, allowing their UIs to display correct information.
+*   **Full-Duplex State Synchronization**:
+    *   Tracks the state of each room (e.g., `waiting_client`, `waiting_toy`, `ready`) and sends these status updates to **both** parties. This ensures that both the controller and the client have a perfectly synchronized and accurate view of the session status.
 
 *   **Intelligent Command Processing & Translation**:
     *   **Receives Intent**: Gets a `ControlMessage` with the desired `Position` and `Speed` from the controller.
+    *   **Soft-Landing Algorithm**: The controller-side logic now includes a "soft-landing" feature. When user input ceases, it initiates a brief, smooth easing animation to the final position instead of stopping abruptly, providing a more natural and less jarring physical experience.
     *   **Calculates Duration Dynamically**: This is the server's key feature. Instead of directly using the speed, it calculates a very short movement `Duration` based on the difference between the target position and the last commanded position. This logic is in the `constructLinearCmd` function.
     *   **Constructs Buttplug Commands**: Packages the calculated duration and target position into a `Buttplug` protocol standard `LinearCmd` JSON message, which Intiface Core understands.
     *   **Forwards Commands**: Sends the constructed Buttplug JSON message to the corresponding client in the same room.
@@ -217,15 +220,18 @@ graph TD
 
 Go 服务器不仅仅是一个简单的消息转发器，它扮演着一个智能中间人的角色，其核心价值在于将用户的平滑操作转换为设备能理解的精确指令。
 
-*   **连接管理 (Connection Management)**:
+*   **健壮的连接管理 (Robust Connection Management)**:
     *   通过 WebSocket (`/ws`) 接收连接，并使用查询参数 `?type=controller` 或 `?type=client` 来区分连接类型。
     *   使用 `?key=some_room_key` 来将一个“操控端”和一个“被控端”配对到同一个“房间”(`Room`)里，实现独立的控制会话。
+    *   **并发安全写入**: 每个客户端连接都配备了专属的、带缓冲的通道 (`send chan`) 和一个独立的写入协程 (`writePump`)。此架构在高频指令下能有效避免写入冲突，确保了消息的无阻塞实时传递和系统稳定性。
+    *   **心跳驱动的稳定性**: 实现了完整的双向心跳机制。操控端和被控端都会定时发送 `ping`，服务器会主动监控，并及时清理真正断开或超时的连接，防止会话僵死。
 
-*   **状态同步 (State Synchronization)**:
-    *   服务器实时跟踪每个房间的状态（如 `waiting_client`, `waiting_toy`, `ready`），并将这些状态更新发送给双方，以便它们在 UI 上显示正确的信息。
+*   **全双工状态同步 (Full-Duplex State Synchronization)**:
+    *   服务器实时跟踪每个房间的状态（如 `waiting_client`, `waiting_toy`, `ready`），并将这些状态更新**同时发送给双方**。这确保了操控端和被控端都能拥有完全同步和准确的会话状态视图。
 
 *   **智能指令处理与转换 (Command Processing & Translation)**:
     *   **接收指令**: 从“操控端”接收包含期望**位置** (`Position`) 和**速度** (`Speed`) 的 `ControlMessage`。
+    *   **“软着陆”算法**: 操控端新增了“软着陆”功能。当用户输入停止时，它会启动一个短暂的平滑缓动动画来过渡到最终位置，而不是生硬地停止，从而提供更自然、无冲撞感的物理体验。
     *   **动态计算时长 (Duration)**: 这是服务器最关键的智能所在。它不直接使用操控端发来的速度，而是根据收到的**目标位置**和服务器自己记录的**上一次命令的位置**之间的差距，以及操控端提供的速度参考，动态地计算出一个非常短的**运动时长** (`Duration`)。这个核心逻辑在 `constructLinearCmd` 函数中实现。
     *   **构造 Buttplug 指令**: 将计算出的时长和目标位置，打包成一个符合 `Buttplug` 协议标准的 `LinearCmd` JSON 消息，这是 `Intiface Core` 能理解的格式。
     *   **转发指令**: 将构造好的 `Buttplug` JSON 消息发送给同一房间里的“被控端”。
